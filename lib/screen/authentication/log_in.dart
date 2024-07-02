@@ -116,8 +116,8 @@ class _LogInState extends State<LogIn> {
 
     _fluwx
         .authBy(
-            which: NormalAuth(
-                scope: 'snsapi_userinfo', state: 'wechat_sdk_demo_test'))
+            which:
+                NormalAuth(scope: 'snsapi_userinfo', state: 'vm_wechat_login'))
         .then((value) {
       if (!value) {
         log("scope:${value.toString()}");
