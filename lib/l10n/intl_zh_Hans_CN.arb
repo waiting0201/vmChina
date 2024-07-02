@@ -359,7 +359,7 @@
     "forgotpasswordInvalidEmail": "无效的电子邮箱",
     "forgotpasswordInformation": "确认邮件已发送，请查看您的电子邮箱收件箱以获取进一步的指示。",
     "forgotpasswordAlert": "您输入的电子邮箱地址不在我们的记录中，请重试。",
-    "wechatemailTitle": "电子邮箱 Binding",
+    "wechatemailTitle": "电子邮箱绑定",
     "wechatemailCaption": "输入您的电子邮箱，用于与微信绑定。",
     "wechatemailEmail": "电子邮箱",
     "wechatemailEmailPlaceholder": "输入您的电子邮箱",

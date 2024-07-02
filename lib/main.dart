@@ -56,8 +56,6 @@ class _MyAppState extends State<MyApp> {
       doOnIOS: true,
       universalLink: 'https://vetrinamiahk-frontend.azurewebsites.net/app/',
     );
-    var result = await _fluwx.isWeChatInstalled;
-    debugPrint('is installed $result');
   }
 
   @override

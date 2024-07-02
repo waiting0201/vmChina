@@ -88,12 +88,25 @@ class _LogInState extends State<LogIn> {
   }
 
   Future<void> doLogin() async {
-    /*bool isInstalled = await _fluwx.isWeChatInstalled;
+    bool isInstalled = await _fluwx.isWeChatInstalled;
 
     if (!isInstalled) {
-      log("請先安裝微信");
+      setState(
+        () {
+          showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (BuildContext context) {
+              return const WarnModal(
+                title: 'Information',
+                message: "請先安裝微信",
+              );
+            },
+          );
+        },
+      );
       return;
-    }*/
+    }
 
     if (mounted) {
       setState(() {

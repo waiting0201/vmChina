@@ -723,8 +723,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("无效的电子邮箱"),
         "wechatemailRequiredEmail":
             MessageLookupByLibrary.simpleMessage("电子邮箱必填"),
-        "wechatemailTitle":
-            MessageLookupByLibrary.simpleMessage("电子邮箱 Binding"),
+        "wechatemailTitle": MessageLookupByLibrary.simpleMessage("电子邮箱绑定"),
         "whatsnewCaption": MessageLookupByLibrary.simpleMessage("了解最新产品发布和更新"),
         "whatsnewProducts": MessageLookupByLibrary.simpleMessage("推荐产品"),
         "whatsnewTitle": MessageLookupByLibrary.simpleMessage("新品动态")
