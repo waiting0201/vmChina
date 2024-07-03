@@ -89,6 +89,8 @@
   "memberplanpaymentPayment": "Select your preferred payment method",
   "memberplanpaymentConfirmCaption": "By pressing 'Confirm', you agree to pay a total of {currencySign}{price} to subscribe to {brandtitle} as a {plantitle} Insider.",
   "memberplanpaymentTrialCaption": "Your card will only be charged at the end of the {days} days trial periol. Before the expiration date, you are free to cancel the auto-renew any time and your card will not be charged.",
+  "memberplanpaymentCNTrialCaption": "There is a {days}-day trial period and you can join the brand club for free.",
+  "memberplanpaymentCNCaption": "The charging method will be sent to your email: {email}. Please pay within the deadline to activate it.",
   "memberplanpaymentcompleteTitle": "Complete",
   "memberplanpaymentcompleteSucceeded": "Congratulations!",
   "memberplanpaymentcompleteWrong": "Oops, looks like something went wrong.",

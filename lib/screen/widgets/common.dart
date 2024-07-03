@@ -1267,17 +1267,21 @@ class _PopularBrandsListState extends State<PopularBrandsList> {
         log('getbrands code: ${data["statusCode"]}');
 
         if (data["statusCode"] == 200) {
-          setState(() {
-            _brands.addAll(
-                (data["data"] as List).map((e) => Brand.fromMap(e)).toList());
+          if (mounted) {
+            setState(() {
+              _brands.addAll(
+                  (data["data"] as List).map((e) => Brand.fromMap(e)).toList());
 
-            _isBrandLoading = false;
-          });
+              _isBrandLoading = false;
+            });
+          }
         } else {
-          setState(() {
-            log('getbrands isloading');
-            _isBrandLoading = false;
-          });
+          if (mounted) {
+            setState(() {
+              log('getbrands isloading');
+              _isBrandLoading = false;
+            });
+          }
         }
       });
     }

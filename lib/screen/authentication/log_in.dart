@@ -58,6 +58,10 @@ class _LogInState extends State<LogIn> {
     responseListener = (res) {
       if (res is WeChatAuthResponse) {
         if (res.isSuccessful) {
+          setState(() {
+            _startLogin = false;
+          });
+
           _authChangeProvider.wechatBinding(res.code!).then((value) {
             if (value != null) {
               Navigator.push(

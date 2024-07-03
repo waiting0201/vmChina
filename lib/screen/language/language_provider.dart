@@ -36,15 +36,18 @@ class LanguageChangeProvider with ChangeNotifier {
     if (xlocale.languageCode == "zh") {
       if (xlocale.countryCode == "CN") {
         _currentCurrency = "CNY";
-      } else if (xlocale.countryCode == "TW") {
+        /*} else if (xlocale.countryCode == "TW") {
         _currentCurrency = "TWD";
       } else if (xlocale.countryCode == "HK") {
         _currentCurrency = "HKD";
+      }*/
+      } else {
+        _currentCurrency = "EUR";
       }
-    } else if (xlocale.languageCode == "ja") {
+      /*} else if (xlocale.languageCode == "ja") {
       _currentCurrency = "JPY";
     } else if (xlocale.languageCode == "ko") {
-      _currentCurrency = "KRW";
+      _currentCurrency = "KRW";*/
     } else {
       _currentCurrency = "EUR";
     }
@@ -95,17 +98,17 @@ class LanguageChangeProvider with ChangeNotifier {
   Future<void> changeLocale(String language) async {
     SharedPreferences pres = await SharedPreferences.getInstance();
 
-    if (language == "zh-TW") {
-      _currentLocale = const Locale.fromSubtags(
-        languageCode: "zh",
-        scriptCode: "Hant",
-        countryCode: "TW",
-      );
-    } else if (language == "zh-CN") {
+    if (language == "zh-CN") {
       _currentLocale = const Locale.fromSubtags(
         languageCode: "zh",
         scriptCode: "Hans",
         countryCode: "CN",
+      );
+      /*} else if (language == "zh-TW") {
+      _currentLocale = const Locale.fromSubtags(
+        languageCode: "zh",
+        scriptCode: "Hant",
+        countryCode: "TW",
       );
     } else if (language == "zh-HK") {
       _currentLocale = const Locale.fromSubtags(
@@ -116,15 +119,13 @@ class LanguageChangeProvider with ChangeNotifier {
     } else if (language == "ja-JP") {
       _currentLocale = const Locale.fromSubtags(
         languageCode: "ja",
-        //scriptCode: "Hant",
         countryCode: "JP",
       );
     } else if (language == "ko-KR") {
       _currentLocale = const Locale.fromSubtags(
         languageCode: "ko",
-        //scriptCode: "Hant",
         countryCode: "KR",
-      );
+      );*/
     } else {
       _currentLocale = Locale(language);
     }

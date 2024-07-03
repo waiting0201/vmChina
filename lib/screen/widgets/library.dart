@@ -11,13 +11,7 @@ String convertCurrency(double price, double exchange) {
 }
 
 Locale setDefaultLocale(Locale locale, Iterable<Locale> supportedlocales) {
-  return const Locale.fromSubtags(
-    languageCode: "zh",
-    scriptCode: "Hans",
-    countryCode: "CN",
-  );
-
-  /*for (Locale supportedLocale in supportedlocales) {
+  for (Locale supportedLocale in supportedlocales) {
     if (locale.languageCode == supportedLocale.languageCode) {
       if (locale.languageCode == 'zh') {
         if (locale.countryCode == 'CN') {
@@ -26,7 +20,7 @@ Locale setDefaultLocale(Locale locale, Iterable<Locale> supportedlocales) {
             scriptCode: "Hans",
             countryCode: "CN",
           );
-        } else if (locale.countryCode == "TW") {
+        } /*else if (locale.countryCode == "TW") {
           return const Locale.fromSubtags(
             languageCode: "zh",
             scriptCode: "Hant",
@@ -38,8 +32,14 @@ Locale setDefaultLocale(Locale locale, Iterable<Locale> supportedlocales) {
             scriptCode: "Hant",
             countryCode: "HK",
           );
+        }*/
+        else {
+          return const Locale.fromSubtags(
+            languageCode: "en",
+            countryCode: "US",
+          );
         }
-      } else if (locale.languageCode == 'ja') {
+        /*} else if (locale.languageCode == 'ja') {
         return const Locale.fromSubtags(
           languageCode: "ja",
           countryCode: "JP",
@@ -48,7 +48,7 @@ Locale setDefaultLocale(Locale locale, Iterable<Locale> supportedlocales) {
         return const Locale.fromSubtags(
           languageCode: "ko",
           countryCode: "KR",
-        );
+        );*/
       } else if (locale.languageCode == 'en') {
         return const Locale.fromSubtags(
           languageCode: "en",
@@ -59,7 +59,7 @@ Locale setDefaultLocale(Locale locale, Iterable<Locale> supportedlocales) {
     }
   }
 
-  return const Locale("en", "US");*/
+  return const Locale("en", "US");
 }
 
 List<TextSpan> parseTextWithStyles(String text) {

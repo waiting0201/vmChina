@@ -51,16 +51,22 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m12(trialday) => "${trialday} days free trial";
 
-  static String m13(currencySign, price, brandtitle, plantitle) =>
-      "By pressing \'Confirm\', you agree to pay a total of ${currencySign}${price} to subscribe to ${brandtitle} as a ${plantitle} Insider.";
+  static String m13(email) =>
+      "The charging method will be sent to your email: ${email}. Please pay within the deadline to activate it.";
 
   static String m14(days) =>
+      "There is a ${days}-day trial period and you can join the brand club for free.";
+
+  static String m15(currencySign, price, brandtitle, plantitle) =>
+      "By pressing \'Confirm\', you agree to pay a total of ${currencySign}${price} to subscribe to ${brandtitle} as a ${plantitle} Insider.";
+
+  static String m16(days) =>
       "Your card will only be charged at the end of the ${days} days trial periol. Before the expiration date, you are free to cancel the auto-renew any time and your card will not be charged.";
 
-  static String m15(brandtitle, plantitle) =>
+  static String m17(brandtitle, plantitle) =>
       "Welcome to ${brandtitle}! From now on, you will be able to enjoy all the benefits of being a ${plantitle} Club Insider.";
 
-  static String m16(code) => "No ${code} Product";
+  static String m18(code) => "No ${code} Product";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -550,17 +556,19 @@ class MessageLookup extends MessageLookupByLibrary {
             "Invited to participate in specific events with the brand\'s creative directors"),
         "memberplanPlan3Trial": m12,
         "memberplanPricing": MessageLookupByLibrary.simpleMessage("Pricing"),
-        "memberplanpaymentConfirmCaption": m13,
+        "memberplanpaymentCNCaption": m13,
+        "memberplanpaymentCNTrialCaption": m14,
+        "memberplanpaymentConfirmCaption": m15,
         "memberplanpaymentEmptyCaption": MessageLookupByLibrary.simpleMessage(
             "Add more payment methods to make your future shopping checkout easier and faster."),
         "memberplanpaymentPayment": MessageLookupByLibrary.simpleMessage(
             "Select your preferred payment method"),
         "memberplanpaymentTitle":
             MessageLookupByLibrary.simpleMessage("Payment"),
-        "memberplanpaymentTrialCaption": m14,
+        "memberplanpaymentTrialCaption": m16,
         "memberplanpaymentcompleteSucceeded":
             MessageLookupByLibrary.simpleMessage("Congratulations!"),
-        "memberplanpaymentcompleteSucceededCaption": m15,
+        "memberplanpaymentcompleteSucceededCaption": m17,
         "memberplanpaymentcompleteTitle":
             MessageLookupByLibrary.simpleMessage("Complete"),
         "memberplanpaymentcompleteViewProfile":
@@ -753,7 +761,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "productlistSizeGuide":
             MessageLookupByLibrary.simpleMessage("Size Guides"),
         "productlistSortBy": MessageLookupByLibrary.simpleMessage("Sort By"),
-        "qrscanNoProduct": m16,
+        "qrscanNoProduct": m18,
         "qrscanTitle": MessageLookupByLibrary.simpleMessage("Scan"),
         "shareamomentDiscover":
             MessageLookupByLibrary.simpleMessage("Discover the Collections"),

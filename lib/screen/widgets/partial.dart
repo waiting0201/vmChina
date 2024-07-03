@@ -1343,63 +1343,44 @@ class ClubInsiderPrice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
-    SetupChangeProvider setupChangeProvider =
-        Provider.of<SetupChangeProvider>(context, listen: false);
+
     LanguageChangeProvider languageChangeProvider =
         Provider.of<LanguageChangeProvider>(context, listen: true);
 
     return Consumer<AuthChangeProvider>(
       builder: (context, auth, child) {
-        bool isMembershipFree = (setupChangeProvider
-                    .setup.ischargemembershipfee ==
-                0 &&
-            DateTime.parse(setupChangeProvider.setup.freemembershipfeeuntil!)
-                    .compareTo(DateTime.now()) >
-                0);
         bool isChangeCurr = currencySign != languageChangeProvider.currsymbol;
 
-        if (isMembershipFree) {
-          return Padding(
-            padding: const EdgeInsets.only(top: 0, left: 0, right: 0),
-            child: Text(
-              lang.S.of(context).productdetailNoDiscountCaption,
-              style: textTheme.titleSmall?.copyWith(
-                color: darkColor,
-              ),
-            ),
-          );
-        } else {
-          return ListView.builder(
-            padding: const EdgeInsets.only(top: 0, left: 0, right: 0),
-            shrinkWrap: true,
-            physics: const BouncingScrollPhysics(),
-            itemCount: brandmemberplans.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Row(
-                children: [
+        return ListView.builder(
+          padding: const EdgeInsets.only(top: 0, left: 0, right: 0),
+          shrinkWrap: true,
+          physics: const BouncingScrollPhysics(),
+          itemCount: brandmemberplans.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Row(
+              children: [
+                Text(
+                  '${brandmemberplans[index].plantitle} $currencySign${(product.price * brandmemberplans[index].promote).roundToDouble().toStringAsFixed(0)}',
+                  style: textTheme.titleSmall?.copyWith(color: darkColor),
+                ),
+                if (isChangeCurr)
                   Text(
-                    '${brandmemberplans[index].plantitle} $currencySign${(product.price * brandmemberplans[index].promote).roundToDouble().toStringAsFixed(0)}',
-                    style: textTheme.titleSmall?.copyWith(color: darkColor),
+                    ' / ${lang.S.of(context).commonApprox} ',
+                    style: textTheme.bodySmall
+                        ?.copyWith(color: lightGreyTextColor),
                   ),
-                  if (isChangeCurr)
-                    Text(
-                      ' / ${lang.S.of(context).commonApprox} ',
-                      style: textTheme.bodySmall
-                          ?.copyWith(color: lightGreyTextColor),
+                if (isChangeCurr)
+                  ExchangePrice(
+                    price: (product.price * brandmemberplans[index].promote)
+                        .roundToDouble(),
+                    style: textTheme.titleSmall?.copyWith(
+                      color: darkColor,
                     ),
-                  if (isChangeCurr)
-                    ExchangePrice(
-                      price: (product.price * brandmemberplans[index].promote)
-                          .roundToDouble(),
-                      style: textTheme.titleSmall?.copyWith(
-                        color: darkColor,
-                      ),
-                    ),
-                ],
-              );
-            },
-          );
-        }
+                  ),
+              ],
+            );
+          },
+        );
       },
     );
   }

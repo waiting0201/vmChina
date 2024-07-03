@@ -951,6 +951,26 @@ class S {
     );
   }
 
+  /// `There is a {days}-day trial period and you can join the brand club for free.`
+  String memberplanpaymentCNTrialCaption(Object days) {
+    return Intl.message(
+      'There is a $days-day trial period and you can join the brand club for free.',
+      name: 'memberplanpaymentCNTrialCaption',
+      desc: '',
+      args: [days],
+    );
+  }
+
+  /// `The charging method will be sent to your email: {email}. Please pay within the deadline to activate it.`
+  String memberplanpaymentCNCaption(Object email) {
+    return Intl.message(
+      'The charging method will be sent to your email: $email. Please pay within the deadline to activate it.',
+      name: 'memberplanpaymentCNCaption',
+      desc: '',
+      args: [email],
+    );
+  }
+
   /// `Complete`
   String get memberplanpaymentcompleteTitle {
     return Intl.message(

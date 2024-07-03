@@ -48,16 +48,20 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m12(trialday) => "${trialday} 天免费试用";
 
-  static String m13(currencySign, price, brandtitle, plantitle) =>
+  static String m13(email) => "收费方式将寄送至您的邮件：${email}，请在期限内付款才会开通";
+
+  static String m14(days) => "试用期${days}天，您可以免费加入品牌俱乐部。";
+
+  static String m15(currencySign, price, brandtitle, plantitle) =>
       "按下“确认”，即表示您同意支付总计 ${currencySign}${price} 以订阅 ${brandtitle} 成为 ${plantitle} 会员。";
 
-  static String m14(days) =>
+  static String m16(days) =>
       "您的卡将在 ${days} 天试用期结束时才会被扣款。在到期日前，您可以随时取消自动续订，您的卡将不会被扣款。";
 
-  static String m15(brandtitle, plantitle) =>
+  static String m17(brandtitle, plantitle) =>
       "欢迎加入 ${brandtitle}！从现在开始，您将享受作为 ${plantitle} 俱乐部会员的所有福利。";
 
-  static String m16(code) => "没有找到${code}产品";
+  static String m18(code) => "没有找到${code}产品";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -463,16 +467,18 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("受邀参加品牌创意总监的特定活动"),
         "memberplanPlan3Trial": m12,
         "memberplanPricing": MessageLookupByLibrary.simpleMessage("价格"),
-        "memberplanpaymentConfirmCaption": m13,
+        "memberplanpaymentCNCaption": m13,
+        "memberplanpaymentCNTrialCaption": m14,
+        "memberplanpaymentConfirmCaption": m15,
         "memberplanpaymentEmptyCaption":
             MessageLookupByLibrary.simpleMessage("添加更多支付方式，使未来的购物结账更容易、更快捷。"),
         "memberplanpaymentPayment":
             MessageLookupByLibrary.simpleMessage("选择您的首选支付方式"),
         "memberplanpaymentTitle": MessageLookupByLibrary.simpleMessage("付款"),
-        "memberplanpaymentTrialCaption": m14,
+        "memberplanpaymentTrialCaption": m16,
         "memberplanpaymentcompleteSucceeded":
             MessageLookupByLibrary.simpleMessage("恭喜！"),
-        "memberplanpaymentcompleteSucceededCaption": m15,
+        "memberplanpaymentcompleteSucceededCaption": m17,
         "memberplanpaymentcompleteTitle":
             MessageLookupByLibrary.simpleMessage("完成"),
         "memberplanpaymentcompleteViewProfile":
@@ -627,7 +633,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "productlistSize": MessageLookupByLibrary.simpleMessage("尺码"),
         "productlistSizeGuide": MessageLookupByLibrary.simpleMessage("尺码指南"),
         "productlistSortBy": MessageLookupByLibrary.simpleMessage("排序方式"),
-        "qrscanNoProduct": m16,
+        "qrscanNoProduct": m18,
         "qrscanTitle": MessageLookupByLibrary.simpleMessage("扫描"),
         "shareamomentDiscover": MessageLookupByLibrary.simpleMessage("发现系列"),
         "shareamomentHometown": MessageLookupByLibrary.simpleMessage("家乡"),

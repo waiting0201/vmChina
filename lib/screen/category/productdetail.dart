@@ -13,6 +13,7 @@ import '../../generated/l10n.dart' as lang;
 import '../../model/models.dart';
 import '../../model/repository.dart';
 import '../../theme/theme_constants.dart';
+import '../home/setup_provider.dart';
 import '../brand/homebrand.dart';
 import '../brand/designer.dart';
 import '../brand/collectiondetail.dart';
@@ -55,9 +56,11 @@ class _ProductDetailState extends State<ProductDetail> {
   final List<Carts> _carts = [];
 
   late CartChangeProvider _cartChangeProvider;
+  late SetupChangeProvider _setupChangeProvider;
   late AuthChangeProvider _authChangeProvider;
   late Product _product;
   late Brand _brand;
+  late Setup _setup;
   late bool _isBrandLoading = false;
   late bool _isPhotoLoading = false;
   late bool _isProductByBrandLoading = false;
@@ -69,6 +72,7 @@ class _ProductDetailState extends State<ProductDetail> {
   late bool _isSizeLoading = false;
   late bool _isCollectionLoading = false;
   late bool lastStatus = false;
+  late bool _isMembershipFree = false;
   late int _selectedIndex = 0; // index of the selected photo
   late String selectedSize = ""; //購買尺寸
   late int buyamount = 1; //購買數量
@@ -78,12 +82,26 @@ class _ProductDetailState extends State<ProductDetail> {
   @override
   void initState() {
     super.initState();
+
     _cartChangeProvider =
         Provider.of<CartChangeProvider>(context, listen: false);
     _authChangeProvider =
         Provider.of<AuthChangeProvider>(context, listen: false);
+    _setupChangeProvider =
+        Provider.of<SetupChangeProvider>(context, listen: false);
+
+    if (!_setupChangeProvider.isloading) {
+      setState(() {
+        _setup = _setupChangeProvider.setup;
+        _isMembershipFree = (_setup.ischargemembershipfee == 0 &&
+            DateTime.parse(_setup.freemembershipfeeuntil!)
+                    .compareTo(DateTime.now()) >
+                0);
+      });
+    }
 
     _product = widget.product;
+
     getBrand();
     getPhotos();
     getProductsByBrandID();
@@ -760,10 +778,23 @@ class _ProductDetailState extends State<ProductDetail> {
                               ],
                             ),
                             children: [
-                              ClubInsiderPrice(
-                                brandmemberplans: _brand.brandmemberplans,
-                                product: _product,
-                              ),
+                              _isMembershipFree
+                                  ? Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 0, left: 0, right: 0),
+                                      child: Text(
+                                        lang.S
+                                            .of(context)
+                                            .productdetailNoDiscountCaption,
+                                        style: textTheme.titleSmall?.copyWith(
+                                          color: darkColor,
+                                        ),
+                                      ),
+                                    )
+                                  : ClubInsiderPrice(
+                                      brandmemberplans: _brand.brandmemberplans,
+                                      product: _product,
+                                    ),
                             ],
                           ),
                         ),

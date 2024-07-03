@@ -57,7 +57,7 @@ class _HomebrandState extends State<Homebrand> {
         _authChangeProvider.member.membershipfees!
             .any((e) => e.brandmemberplan!.brandid == widget.brand.brandid);*/
 
-    if (!_authChangeProvider.status) {
+    if (!_authChangeProvider.status && widget.brand.publishstatus != 2) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _showAlertDialog();
       });
@@ -486,14 +486,16 @@ class _HomebrandState extends State<Homebrand> {
                       ),
                     ),
                   )
-                : Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10,
-                    ),
-                    child: ProductsHorizonSlideList(
-                      products: _products,
-                    ),
-                  ),
+                : _products.isNotEmpty
+                    ? Padding(
+                        padding: const EdgeInsets.only(
+                          top: 10,
+                        ),
+                        child: ProductsHorizonSlideList(
+                          products: _products,
+                        ),
+                      )
+                    : Container(),
             Padding(
               padding: const EdgeInsets.only(
                 left: horizonSpace,

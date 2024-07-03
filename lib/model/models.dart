@@ -659,6 +659,7 @@ class MyPaymentMethod {
 class Brand {
   final String brandid;
   final String title;
+  final int publishstatus;
   final String? videourl;
   final String? storyvideourl;
   //橫圖
@@ -676,6 +677,7 @@ class Brand {
   Brand({
     required this.brandid,
     required this.title,
+    required this.publishstatus,
     this.videourl,
     this.storyvideourl,
     this.landscapeurl,
@@ -694,6 +696,7 @@ class Brand {
   Brand.fromMap(Map<String, dynamic> json)
       : brandid = json['brandid'],
         title = json['title'],
+        publishstatus = json['publishstatus'],
         videourl = json['videourl'],
         storyvideourl = json['storyvideourl'],
         landscapeurl = json['landscapeurl'],
@@ -709,6 +712,7 @@ class Brand {
   Map<String, dynamic> toMap() => {
         'brandid': brandid,
         'title': title,
+        'publishstatus': publishstatus,
         'videourl': videourl,
         'storyvideourl': storyvideourl,
         'landscapeurl': landscapeurl,

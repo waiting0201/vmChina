@@ -1190,6 +1190,19 @@ class HttpService {
     return response;
   }
 
+  Future<Response> postcreatecnsubscription(
+    String memberid,
+    String brandmemberplanid,
+  ) async {
+    Response response =
+        await _dio.post('/order/postcreatecnsubscription', queryParameters: {
+      "memberid": memberid,
+      "brandmemberplanid": brandmemberplanid,
+    });
+
+    return response;
+  }
+
   Future<Response> postupdatesubscription(
     String brandmemberplanid,
     String membershipfeeid,

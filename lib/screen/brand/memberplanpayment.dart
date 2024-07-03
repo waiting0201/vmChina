@@ -11,7 +11,6 @@ import '../home/setup_provider.dart';
 import '../authentication/auth_provider.dart';
 import '../widgets/constant.dart';
 import '../widgets/partial.dart';
-import 'memberplanaddpayment.dart';
 import 'memberplancomplete.dart';
 
 class MemberPlanPayment extends StatefulWidget {
@@ -34,9 +33,7 @@ class _MemberPlanPaymentState extends State<MemberPlanPayment> {
   late AuthChangeProvider _authChangeProvider;
   late Setup _setup;
   late Member _member;
-  late String _selectedpaymentid = '';
   late bool _isMembershipFree = false;
-  late bool _isLoading = false;
   late int _trialdays = 0;
 
   @override
@@ -68,38 +65,11 @@ class _MemberPlanPaymentState extends State<MemberPlanPayment> {
         }
       });
     }
-
-    if (_authChangeProvider.status && _member.awid != null) {
-      getMyPaymentMethods();
-    }
   }
 
   Future<void> postCreatePrice() async {
     HttpService httpService = HttpService();
     await httpService.postcreateprice(widget.brandmemberplan.brandmemberplanid);
-  }
-
-  Future<void> getMyPaymentMethods() async {
-    setState(() {
-      _isLoading = true;
-    });
-    HttpService httpService = HttpService();
-    await httpService.getpaymentmethodbyawid(_member.awid!).then((value) {
-      var data = json.decode(value.toString());
-
-      if (data["statusCode"] == 200) {
-        setState(() {
-          _mypaymentmethods.addAll((data["data"] as List)
-              .map((e) => MyPaymentMethod.fromMap(e))
-              .toList());
-          _isLoading = false;
-        });
-      } else {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    });
   }
 
   @override
@@ -133,160 +103,23 @@ class _MemberPlanPaymentState extends State<MemberPlanPayment> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            if (_mypaymentmethods.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 30,
-                  left: horizonSpace,
-                  right: horizonSpace,
-                ),
-                child: Text(
-                  lang.S.of(context).memberplanpaymentPayment,
-                  style: textTheme.titleLarge,
-                ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: verticalSpace,
+                left: horizonSpace,
+                right: horizonSpace,
               ),
-            !_isLoading && _mypaymentmethods.isNotEmpty
-                ? ListView.builder(
-                    padding: const EdgeInsets.only(
-                      top: 20,
-                      left: horizonSpace,
-                      right: horizonSpace,
-                    ),
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: _mypaymentmethods.length,
-                    itemBuilder: (BuildContext context, int index) => Padding(
-                      padding: const EdgeInsets.only(
-                        bottom: itemSpace,
-                      ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: _selectedpaymentid ==
-                                    _mypaymentmethods[index].paymentmethodid
-                                ? primaryColor
-                                : lightGreyTextColor,
-                            width: _selectedpaymentid ==
-                                    _mypaymentmethods[index].paymentmethodid
-                                ? 2.5
-                                : 1.0,
-                          ),
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        padding: const EdgeInsets.only(
-                          top: 12.0,
-                          bottom: 12.0,
-                        ),
-                        child: InkWell(
-                          onTap: () {
-                            setState(() {
-                              _selectedpaymentid =
-                                  _mypaymentmethods[index].paymentmethodid;
-                            });
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                _mypaymentmethods[index].brand.toUpperCase(),
-                                style: TextStyle(
-                                  color: _selectedpaymentid ==
-                                          _mypaymentmethods[index]
-                                              .paymentmethodid
-                                      ? primaryColor
-                                      : lightGreyTextColor,
-                                ),
-                              ),
-                              Text(
-                                '****-****-****-${_mypaymentmethods[index].cardlast4}',
-                                style: TextStyle(
-                                  color: _selectedpaymentid ==
-                                          _mypaymentmethods[index]
-                                              .paymentmethodid
-                                      ? primaryColor
-                                      : lightGreyTextColor,
-                                ),
-                              ),
-                              Text(
-                                '${_mypaymentmethods[index].expmonth}/${_mypaymentmethods[index].expyear}',
-                                style: TextStyle(
-                                  color: _selectedpaymentid ==
-                                          _mypaymentmethods[index]
-                                              .paymentmethodid
-                                      ? primaryColor
-                                      : lightGreyTextColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-                : Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            top: 20,
-                            left: 50,
-                            right: 50,
-                          ),
-                          child: Text(
-                            lang.S.of(context).memberplanpaymentEmptyCaption,
-                            textAlign: TextAlign.center,
-                            style: textTheme.bodyMedium,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        ElevatedButton(
-                          child: Text(
-                            lang.S.of(context).commonAddPayment,
-                            style: textTheme.titleSmall?.copyWith(
-                              color: whiteColor,
-                            ),
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Memberplanaddpayment(
-                                  brandmemberplan: widget.brandmemberplan,
-                                  brand: widget.brand,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-            if (_mypaymentmethods.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: Center(
-                  child: ElevatedButton(
-                    child: Text(
-                      lang.S.of(context).commonAddPayment,
-                      style: textTheme.titleSmall?.copyWith(
-                        color: whiteColor,
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Memberplanaddpayment(
-                            brandmemberplan: widget.brandmemberplan,
-                            brand: widget.brand,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
+              child: Text(
+                _trialdays > 0
+                    ? lang.S
+                        .of(context)
+                        .memberplanpaymentCNTrialCaption(_trialdays)
+                    : lang.S.of(context).memberplanpaymentCNCaption(
+                        _authChangeProvider.member.email),
+                textAlign: TextAlign.center,
+                style: textTheme.bodyMedium,
               ),
+            ),
           ],
         ),
       ),
@@ -384,10 +217,9 @@ class _MemberPlanPaymentState extends State<MemberPlanPayment> {
 
                       HttpService httpService = HttpService();
                       httpService
-                          .postcreatesubscription(
+                          .postcreatecnsubscription(
                         _member.memberid,
                         widget.brandmemberplan.brandmemberplanid,
-                        _selectedpaymentid,
                       )
                           .then(
                         (value) {
