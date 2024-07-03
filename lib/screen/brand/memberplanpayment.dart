@@ -27,8 +27,6 @@ class MemberPlanPayment extends StatefulWidget {
 }
 
 class _MemberPlanPaymentState extends State<MemberPlanPayment> {
-  final List<MyPaymentMethod> _mypaymentmethods = [];
-
   late SetupChangeProvider _setupChangeProvider;
   late AuthChangeProvider _authChangeProvider;
   late Setup _setup;
@@ -109,157 +107,153 @@ class _MemberPlanPaymentState extends State<MemberPlanPayment> {
                 left: horizonSpace,
                 right: horizonSpace,
               ),
-              child: Text(
-                _trialdays > 0
-                    ? lang.S
-                        .of(context)
-                        .memberplanpaymentCNTrialCaption(_trialdays)
-                    : lang.S.of(context).memberplanpaymentCNCaption(
-                        _authChangeProvider.member.email),
-                textAlign: TextAlign.center,
-                style: textTheme.bodyMedium,
+              child: Center(
+                child: Text(
+                  _trialdays > 0
+                      ? lang.S
+                          .of(context)
+                          .memberplanpaymentCNTrialCaption(_trialdays)
+                      : lang.S.of(context).memberplanpaymentCNCaption(
+                          _authChangeProvider.member.email),
+                  style: textTheme.bodyMedium,
+                ),
               ),
             ),
           ],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: _mypaymentmethods.isEmpty
-          ? Container()
-          : Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: horizonSpace,
-              ),
-              width: MediaQuery.of(context).size.width,
-              child: OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  backgroundColor: darkColor,
+      floatingActionButton: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: horizonSpace,
+        ),
+        width: MediaQuery.of(context).size.width,
+        child: OutlinedButton(
+          style: OutlinedButton.styleFrom(
+            backgroundColor: darkColor,
+          ),
+          child: Text(
+            lang.S.of(context).commonSubmit,
+            style: textTheme.titleSmall?.copyWith(
+              color: whiteColor,
+            ),
+          ),
+          onPressed: () {
+            showDialog(
+              barrierDismissible: true,
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                icon: const Icon(
+                  Icons.payment,
+                  size: 50,
                 ),
-                child: Text(
-                  lang.S.of(context).commonSubmit,
-                  style: textTheme.titleSmall?.copyWith(
-                    color: whiteColor,
-                  ),
-                ),
-                onPressed: () {
-                  showDialog(
-                    barrierDismissible: true,
-                    context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                      icon: const Icon(
-                        Icons.payment,
-                        size: 50,
-                      ),
-                      iconColor: primaryColor,
-                      backgroundColor: whiteColor,
-                      title: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            _trialdays > 0
-                                ? '${lang.S.of(context).memberplanpaymentConfirmCaption(currencySign, widget.brandmemberplan.price.toStringAsFixed(2), widget.brandmemberplan.plantitle, widget.brandmemberplan.brandtitle!)}\n\n${lang.S.of(context).memberplanpaymentTrialCaption(_trialdays)}'
-                                : lang.S
-                                    .of(context)
-                                    .memberplanpaymentConfirmCaption(
-                                        currencySign,
-                                        widget.brandmemberplan.price
-                                            .toStringAsFixed(2),
-                                        widget.brandmemberplan.plantitle,
-                                        widget.brandmemberplan.brandtitle!),
-                            style: textTheme.bodySmall,
-                          ),
-                        ],
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context, false);
-                          },
-                          child: Text(
-                            lang.S.of(context).commonBack,
-                            style: textTheme.titleSmall?.copyWith(
-                              color: darkColor,
-                              decoration: TextDecoration.underline,
-                            ),
-                          ),
-                        ),
-                        OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            backgroundColor: darkColor,
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context, true);
-                          },
-                          child: Text(
-                            lang.S.of(context).commonConfirm,
-                            style: textTheme.titleSmall?.copyWith(
-                              color: whiteColor,
-                            ),
-                          ),
-                        ),
-                      ],
+                iconColor: primaryColor,
+                backgroundColor: whiteColor,
+                title: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      _trialdays > 0
+                          ? '${lang.S.of(context).memberplanpaymentConfirmCaption(currencySign, widget.brandmemberplan.price.toStringAsFixed(2), widget.brandmemberplan.plantitle, widget.brandmemberplan.brandtitle!)}\n\n${lang.S.of(context).memberplanpaymentTrialCaption(_trialdays)}'
+                          : lang.S.of(context).memberplanpaymentConfirmCaption(
+                              currencySign,
+                              widget.brandmemberplan.price.toStringAsFixed(2),
+                              widget.brandmemberplan.plantitle,
+                              widget.brandmemberplan.brandtitle!),
+                      style: textTheme.bodySmall,
                     ),
-                  ).then((dialogresult) {
-                    if (dialogresult) {
-                      OverlayEntry overlayEntry = OverlayEntry(
-                        builder: (context) => Positioned(
-                          top: 0,
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            color: Colors.black.withOpacity(0.5),
-                            child: const LoadingCircle(),
+                  ],
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context, false);
+                    },
+                    child: Text(
+                      lang.S.of(context).commonBack,
+                      style: textTheme.titleSmall?.copyWith(
+                        color: darkColor,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                  OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      backgroundColor: darkColor,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context, true);
+                    },
+                    child: Text(
+                      lang.S.of(context).commonConfirm,
+                      style: textTheme.titleSmall?.copyWith(
+                        color: whiteColor,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ).then((dialogresult) {
+              if (dialogresult) {
+                OverlayEntry overlayEntry = OverlayEntry(
+                  builder: (context) => Positioned(
+                    top: 0,
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      color: Colors.black.withOpacity(0.5),
+                      child: const LoadingCircle(),
+                    ),
+                  ),
+                );
+                Overlay.of(context).insert(overlayEntry);
+
+                HttpService httpService = HttpService();
+                httpService
+                    .postcreatecnsubscription(
+                  _member.memberid,
+                  widget.brandmemberplan.brandmemberplanid,
+                )
+                    .then(
+                  (value) {
+                    var data = json.decode(value.toString());
+
+                    if (data["statusCode"] == 200) {
+                      _authChangeProvider.refreshMember();
+                      overlayEntry.remove();
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MemberPlanComplete(
+                            brandmemberplan: widget.brandmemberplan,
+                            brand: widget.brand,
+                            result: true,
                           ),
                         ),
+                        (route) => false,
                       );
-                      Overlay.of(context).insert(overlayEntry);
-
-                      HttpService httpService = HttpService();
-                      httpService
-                          .postcreatecnsubscription(
-                        _member.memberid,
-                        widget.brandmemberplan.brandmemberplanid,
-                      )
-                          .then(
-                        (value) {
-                          var data = json.decode(value.toString());
-
-                          if (data["statusCode"] == 200) {
-                            _authChangeProvider.refreshMember();
-                            overlayEntry.remove();
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MemberPlanComplete(
-                                  brandmemberplan: widget.brandmemberplan,
-                                  brand: widget.brand,
-                                  result: true,
-                                ),
-                              ),
-                              (route) => false,
-                            );
-                          } else {
-                            overlayEntry.remove();
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MemberPlanComplete(
-                                  brandmemberplan: widget.brandmemberplan,
-                                  brand: widget.brand,
-                                  result: false,
-                                ),
-                              ),
-                              (route) => false,
-                            );
-                          }
-                        },
+                    } else {
+                      overlayEntry.remove();
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MemberPlanComplete(
+                            brandmemberplan: widget.brandmemberplan,
+                            brand: widget.brand,
+                            result: false,
+                          ),
+                        ),
+                        (route) => false,
                       );
                     }
-                  });
-                },
-              ),
-            ),
+                  },
+                );
+              }
+            });
+          },
+        ),
+      ),
     );
   }
 }

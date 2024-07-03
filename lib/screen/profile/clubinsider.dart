@@ -31,7 +31,7 @@ class _ClubinsiderState extends State<Clubinsider> {
   late AuthChangeProvider _authChangeProvider;
   late Setup _setup;
   late Member _member;
-  late bool _isMembershipFree = false;
+  late bool _isMembershipFree = true;
   late bool _isLoading = false;
   late bool _hasMore = true;
   late int _skip = 0;

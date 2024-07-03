@@ -182,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
         //log('getcategorys code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200) {
+        if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _categorys.addAll((data["data"] as List)
                 .map((e) => Category.fromMap(e))
