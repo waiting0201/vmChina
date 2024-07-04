@@ -47,7 +47,7 @@ class _SignUpState extends State<SignUp> {
 
   Future<void> getCountrys() async {
     HttpService httpService = HttpService();
-    await httpService.getcncountrylists().then((value) {
+    await httpService.getcountrylists().then((value) {
       var data = json.decode(value.toString());
 
       if (data["statusCode"] == 200) {

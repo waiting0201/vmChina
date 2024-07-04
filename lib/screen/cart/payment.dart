@@ -172,10 +172,6 @@ Page resource error:
             fontWeight: FontWeight.bold,
           ),
         ),
-        bottom: const PreferredSize(
-          preferredSize: Size.fromHeight(90),
-          child: CartSummary(),
-        ),
       ),
       body: _isLoading
           ? const LoadingCircle()
