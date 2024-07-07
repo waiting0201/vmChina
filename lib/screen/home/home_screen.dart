@@ -17,6 +17,8 @@ import '../widgets/partial.dart';
 import 'whatsnew.dart';
 import 'home.dart';
 
+import '../cart/payment.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
     super.key,
@@ -190,10 +192,12 @@ class _HomeScreenState extends State<HomeScreen> {
             _isCategoryLoading = false;
           });
         } else {
-          setState(() {
-            //log('getcategorys failed');
-            _isCategoryLoading = false;
-          });
+          if (mounted) {
+            setState(() {
+              //log('getcategorys failed');
+              _isCategoryLoading = false;
+            });
+          }
         }
       });
     }
@@ -717,6 +721,31 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     ),
                                   ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 20,
+                              left: horizonSpace,
+                              right: horizonSpace,
+                            ),
+                            child: Center(
+                              child: OutlinedButton(
+                                onPressed: () {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const Payment(),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  'Pay',
+                                  style: textTheme.titleSmall?.copyWith(
+                                    color: darkColor,
+                                  ),
                                 ),
                               ),
                             ),

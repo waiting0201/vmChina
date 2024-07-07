@@ -17,9 +17,9 @@ import 'cart_provider.dart';
 import 'complete.dart';
 
 class Payment extends StatefulWidget {
-  final String shippinglocationid;
+  //final String shippinglocationid;
   const Payment({
-    required this.shippinglocationid,
+    //required this.shippinglocationid,
     super.key,
   });
 
@@ -47,7 +47,7 @@ class _PaymentState extends State<Payment> {
 
     _cartChangeProvider =
         Provider.of<CartChangeProvider>(context, listen: false);
-    _member = Provider.of<AuthChangeProvider>(context, listen: false).member;
+    //_member = Provider.of<AuthChangeProvider>(context, listen: false).member;
     _subtotal = _cartChangeProvider.getSubTotalPrice();
 
     CartData cartdata = CartData(
@@ -102,7 +102,17 @@ Page resource error:
             debugPrint('Error occurred on page: ${error.response?.statusCode}');
           },
           onUrlChange: (UrlChange change) {
+            log(change.url!);
             debugPrint('url change to ${change.url}');
+            if (change.url!.contains('AlipayComplete')) {
+              _controller.addJavaScriptChannel(
+                'cPaymentresponse',
+                onMessageReceived: (JavaScriptMessage message) {
+                  log(message.message);
+                  _onButtonPressed(message.message);
+                },
+              );
+            }
           },
           onHttpAuthRequest: (HttpAuthRequest request) {},
         ),
@@ -110,19 +120,20 @@ Page resource error:
       ..addJavaScriptChannel(
         'Paymentresponse',
         onMessageReceived: (JavaScriptMessage message) {
-          _onButtonPressed(message.message);
+          log(message.message);
+          //_onButtonPressed(message.message);
         },
       )
       ..loadRequest(
         Uri.parse(
             'https://vetrinamiahk-frontend.azurewebsites.net/paymentms/mobilecnpayment'),
         headers: {
-          "memberid": _member.memberid,
-          "platform": "ios",
-          "shippinglocationid": widget.shippinglocationid,
-          "shippingtype": "B",
-          "ispreorder": "n",
-          "carts": cartdata.toJson(),
+          //"memberid": _member.memberid,
+          //"platform": "ios",
+          //"shippinglocationid": widget.shippinglocationid,
+          //"shippingtype": "B",
+          //"ispreorder": "n",
+          //"carts": cartdata.toJson(),
         },
       );
 

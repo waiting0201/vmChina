@@ -546,9 +546,9 @@ class _CheckoutState extends State<Checkout> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Payment(
-                      shippinglocationid: _selected,
-                    ),
+                    builder: (context) => const Payment(
+                        //shippinglocationid: _selected,
+                        ),
                   ),
                 );
               }

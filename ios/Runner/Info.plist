@@ -75,11 +75,5 @@
 	<false/>
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>weixin</string>
-		<string>weixinULAPI</string>
-		<string>weixinURLParamsAPI</string>
-	</array>
 </dict>
 </plist>

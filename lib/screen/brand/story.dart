@@ -365,7 +365,7 @@ class _StoryState extends State<Story> {
                   ),
                 ),
               ),
-            if (!_isDesignerLoading)
+            if (!_isDesignerLoading && _designers[0].summary != null)
               Padding(
                 padding: const EdgeInsets.only(
                   top: 10,
