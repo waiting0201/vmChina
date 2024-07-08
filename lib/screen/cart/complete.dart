@@ -17,10 +17,12 @@ import 'cart_provider.dart';
 
 class Complete extends StatefulWidget {
   final String orderid;
-  final bool result;
+  final String status;
+  final String? redirectstatus;
   const Complete({
     required this.orderid,
-    required this.result,
+    required this.status,
+    this.redirectstatus,
     super.key,
   });
 
@@ -106,7 +108,7 @@ class _CompleteState extends State<Complete> {
                     children: [
                       _isLoading
                           ? Container()
-                          : widget.result
+                          : widget.status == 'succeeded'
                               ? const Icon(
                                   Icons.check_circle,
                                   color: Colors.green,
@@ -123,7 +125,7 @@ class _CompleteState extends State<Complete> {
                         child: Text(
                           _isLoading
                               ? ''
-                              : widget.result
+                              : widget.status == 'succeeded'
                                   ? lang.S.of(context).paymentcompleteSucceeded
                                   : lang.S.of(context).paymentcompleteWrong,
                           textAlign: TextAlign.center,
@@ -142,7 +144,7 @@ class _CompleteState extends State<Complete> {
                         child: Text(
                           _isLoading
                               ? ''
-                              : widget.result
+                              : widget.status == 'succeeded'
                                   ? 'Thank you ${_member.firstname}.\n${lang.S.of(context).paymentcompleteSucceededCaption}'
                                   : 'Sorry ${_member.firstname}. ${lang.S.of(context).paymentcompleteWrongCaption}',
                           textAlign: TextAlign.center,

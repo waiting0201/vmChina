@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:dio/dio.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../generated/l10n.dart' as lang;
 import '../../model/repository.dart';
@@ -12,7 +13,6 @@ import '../../theme/theme_constants.dart';
 import '../authentication/auth_provider.dart';
 import '../widgets/constant.dart';
 import '../widgets/partial.dart';
-import 'cartaddpayment.dart';
 import 'complete.dart';
 
 class Preorderpayment extends StatefulWidget {
@@ -29,61 +29,136 @@ class Preorderpayment extends StatefulWidget {
 }
 
 class _PreorderpaymentState extends State<Preorderpayment> {
-  final List<MyPaymentMethod> _mypaymentmethods = [];
-
+  late final WebViewController _controller;
   late Member _member;
   late double _subtotal;
-  late String _selectedpaymentid = '';
-  late bool _isPaying = false;
-  late bool _isLoading = false;
   late String _orderid = "";
+  late bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
+    checkislogin();
+  }
+
+  Future<void> checkislogin() async {
+    setState(() {
+      _isLoading = true;
+    });
 
     _member = Provider.of<AuthChangeProvider>(context, listen: false).member;
     _subtotal = widget.carts.fold(0, (sum, e) => sum + e.total);
 
-    if (_member.awid != null) {
-      getMyPaymentMethods();
-    }
+    CartData cartdata = CartData(
+      items: widget.carts,
+      subtotal: _subtotal,
+    );
+
+    // #docregion platform_features
+    late final PlatformWebViewControllerCreationParams params;
+    params = const PlatformWebViewControllerCreationParams();
+
+    final WebViewController controller =
+        WebViewController.fromPlatformCreationParams(params);
+    // #enddocregion platform_features
+
+    controller
+      ..clearCache()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(const Color(0x00000000))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (int progress) {
+            debugPrint('WebView is loading (progress : $progress%)');
+          },
+          onPageStarted: (String url) {
+            debugPrint('Page started loading: $url');
+          },
+          onPageFinished: (String url) {
+            debugPrint('Page finished loading: $url');
+            setState(() {
+              _isLoading = false;
+            });
+          },
+          onWebResourceError: (WebResourceError error) {
+            debugPrint('''
+Page resource error:
+  code: ${error.errorCode}
+  description: ${error.description}
+  errorType: ${error.errorType}
+  isForMainFrame: ${error.isForMainFrame}
+          ''');
+          },
+          onNavigationRequest: (NavigationRequest request) {
+            if (request.url.startsWith('https://www.youtube.com/')) {
+              debugPrint('blocking navigation to ${request.url}');
+              return NavigationDecision.prevent;
+            }
+            debugPrint('allowing navigation to ${request.url}');
+            return NavigationDecision.navigate;
+          },
+          onHttpError: (HttpResponseError error) {
+            debugPrint('Error occurred on page: ${error.response?.statusCode}');
+          },
+          onUrlChange: (UrlChange change) {
+            log(change.url!);
+            debugPrint('url change to ${change.url}');
+            if (change.url!.contains('AlipayComplete')) {
+              _controller.addJavaScriptChannel(
+                'Aliresponse',
+                onMessageReceived: (JavaScriptMessage message) {
+                  log("Ali:${message.message}");
+                  _onAliButtonPressed(message.message);
+                },
+              );
+            }
+          },
+          onHttpAuthRequest: (HttpAuthRequest request) {},
+        ),
+      )
+      ..addJavaScriptChannel(
+        'Cardresponse',
+        onMessageReceived: (JavaScriptMessage message) {
+          log("Card:${message.message}");
+          _onCardButtonPressed(message.message);
+        },
+      )
+      ..addJavaScriptChannel(
+        'WeChatresponse',
+        onMessageReceived: (JavaScriptMessage message) {
+          log("WeChat:");
+          //_onButtonPressed(message.message);
+        },
+      )
+      ..loadRequest(
+        Uri.parse(
+            'https://vetrinamiahk-frontend.azurewebsites.net/paymentms/mobilecnpayment'),
+        headers: {
+          "memberid": _member.memberid,
+          "shippinglocationid": widget.shippinglocationid,
+          "shippingtype": "B",
+          "ispreorder": "y",
+          "carts": cartdata.toJson(),
+        },
+      );
+
+    _controller = controller;
   }
 
-  Future<void> getMyPaymentMethods() async {
-    if (!_isLoading) {
-      setState(() {
-        _isLoading = true;
-      });
-    }
-
-    HttpService httpService = HttpService();
-    await httpService.getpaymentmethodbyawid(_member.awid!).then((value) {
-      var data = json.decode(value.toString());
-
-      if (data["statusCode"] == 200) {
-        setState(() {
-          _mypaymentmethods.addAll((data["data"] as List)
-              .map((e) => MyPaymentMethod.fromMap(e))
-              .toList());
-          _isLoading = false;
-        });
-      } else {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    });
-  }
-
-  Future<bool> payprocess() async {
-    if (mounted) {
-      setState(() {
-        _isPaying = true;
-      });
-    }
-
-    log('payprocess');
+  Future<String> cardprocess(String paymentmethodid) async {
+    OverlayEntry overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        child: Container(
+          color: Colors.black.withOpacity(0.5),
+          child: const LoadingCircle(),
+        ),
+      ),
+    );
+    Overlay.of(context).insert(overlayEntry);
 
     CartData cartdata = CartData(
       items: widget.carts,
@@ -94,7 +169,7 @@ class _PreorderpaymentState extends State<Preorderpayment> {
     Response response = await httpService.postpaymentintent(
       cartdata.toJson(),
       _member.memberid,
-      _selectedpaymentid,
+      paymentmethodid,
       widget.shippinglocationid,
       "B",
       "y",
@@ -104,28 +179,24 @@ class _PreorderpaymentState extends State<Preorderpayment> {
     OrderResponse or = OrderResponse.fromMap(data["data"]);
 
     if (data["statusCode"] == 200) {
-      if (mounted) {
-        setState(() {
-          _orderid = or.orderid;
-          _isPaying = false;
-        });
-      }
+      overlayEntry.remove();
+      setState(() {
+        _orderid = or.orderid;
+      });
 
-      return true;
+      return 'succeeded';
     } else {
-      if (mounted) {
-        setState(() {
-          _orderid = or.orderid;
-          _isPaying = false;
-        });
-      }
+      overlayEntry.remove();
+      setState(() {
+        _orderid = or.orderid;
+      });
 
-      return false;
+      return 'failed';
     }
   }
 
-  void _onButtonPressed() async {
-    bool result = await payprocess();
+  void _onCardButtonPressed(String paymentmethodid) async {
+    String result = await cardprocess(paymentmethodid);
 
     if (mounted) {
       Navigator.pushAndRemoveUntil(
@@ -133,7 +204,28 @@ class _PreorderpaymentState extends State<Preorderpayment> {
         MaterialPageRoute(
           builder: (context) => Complete(
             orderid: _orderid,
-            result: result,
+            status: result,
+          ),
+        ),
+        (route) => false,
+      );
+    }
+  }
+
+  void _onAliButtonPressed(String message) async {
+    if (mounted) {
+      final Map<String, dynamic> data = jsonDecode(message);
+      final String orderid = data['orderid'];
+      final String redirectstatus = data['redirectstatus'];
+      final String status = data['status'];
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Complete(
+            orderid: orderid,
+            status: status,
+            redirectstatus: redirectstatus,
           ),
         ),
         (route) => false,
@@ -167,184 +259,10 @@ class _PreorderpaymentState extends State<Preorderpayment> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(90),
-          child: PreorderSummary(
-            carts: widget.carts,
-          ),
-        ),
       ),
       body: _isLoading
-          ? const Center(
-              child: LoadingCircle(),
-            )
-          : SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (_mypaymentmethods.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 30,
-                        left: horizonSpace,
-                        right: horizonSpace,
-                      ),
-                      child: Text(
-                        lang.S.of(context).preorderpaymentPayment,
-                        style: textTheme.titleLarge,
-                      ),
-                    ),
-                  !_isLoading && _mypaymentmethods.isNotEmpty
-                      ? ListView.separated(
-                          padding: const EdgeInsets.only(
-                            top: 20,
-                            left: horizonSpace,
-                            right: horizonSpace,
-                          ),
-                          separatorBuilder: (context, index) =>
-                              const SizedBox(height: 10),
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: _mypaymentmethods.length,
-                          itemBuilder: (BuildContext context, int index) =>
-                              InkWell(
-                            onTap: () {
-                              setState(() {
-                                _selectedpaymentid =
-                                    _mypaymentmethods[index].paymentmethodid;
-                              });
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: _selectedpaymentid ==
-                                          _mypaymentmethods[index]
-                                              .paymentmethodid
-                                      ? primaryColor
-                                      : lightGreyTextColor,
-                                  width: _selectedpaymentid ==
-                                          _mypaymentmethods[index]
-                                              .paymentmethodid
-                                      ? 2.5
-                                      : 1.0,
-                                ),
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              padding: const EdgeInsets.only(
-                                top: 12.0,
-                                bottom: 12.0,
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text(
-                                    _mypaymentmethods[index]
-                                        .brand
-                                        .toUpperCase(),
-                                    style: TextStyle(
-                                      color: _selectedpaymentid ==
-                                              _mypaymentmethods[index]
-                                                  .paymentmethodid
-                                          ? primaryColor
-                                          : lightGreyTextColor,
-                                    ),
-                                  ),
-                                  Text(
-                                    '****-****-****-${_mypaymentmethods[index].cardlast4}',
-                                    style: TextStyle(
-                                      color: _selectedpaymentid ==
-                                              _mypaymentmethods[index]
-                                                  .paymentmethodid
-                                          ? primaryColor
-                                          : lightGreyTextColor,
-                                    ),
-                                  ),
-                                  Text(
-                                    '${_mypaymentmethods[index].expmonth}/${_mypaymentmethods[index].expyear}',
-                                    style: TextStyle(
-                                      color: _selectedpaymentid ==
-                                              _mypaymentmethods[index]
-                                                  .paymentmethodid
-                                          ? primaryColor
-                                          : lightGreyTextColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        )
-                      : Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 20,
-                                  left: 50,
-                                  right: 50,
-                                ),
-                                child: Text(
-                                  lang.S
-                                      .of(context)
-                                      .preorderpaymentEmptyCaption,
-                                  textAlign: TextAlign.center,
-                                  style: textTheme.bodyMedium,
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              ElevatedButton(
-                                child: Text(
-                                  lang.S.of(context).commonAddPayment,
-                                  style: textTheme.titleSmall?.copyWith(
-                                    color: whiteColor,
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => Cartaddpayment(
-                                        shippinglocationid:
-                                            widget.shippinglocationid,
-                                        ispreorder: "y",
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                ],
-              ),
-            ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: _mypaymentmethods.isEmpty
-          ? Container()
-          : Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: horizonSpace,
-              ),
-              width: MediaQuery.of(context).size.width,
-              child: _isPaying
-                  ? const LoadingCircle()
-                  : ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: darkColor,
-                      ),
-                      child: Text(
-                        lang.S.of(context).commonConfirm,
-                        style: textTheme.titleSmall?.copyWith(
-                          color: whiteColor,
-                        ),
-                      ),
-                      onPressed: () {
-                        _onButtonPressed();
-                      },
-                    ),
-            ),
+          ? const LoadingCircle()
+          : WebViewWidget(controller: _controller),
     );
   }
 }

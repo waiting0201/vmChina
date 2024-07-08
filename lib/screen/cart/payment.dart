@@ -32,6 +32,7 @@ class _PaymentState extends State<Payment> {
   late CartChangeProvider _cartChangeProvider;
   late Member _member;
   late double _subtotal;
+  late String _orderid = "";
   late bool _isLoading = false;
 
   @override
@@ -106,10 +107,10 @@ Page resource error:
             debugPrint('url change to ${change.url}');
             if (change.url!.contains('AlipayComplete')) {
               _controller.addJavaScriptChannel(
-                'cPaymentresponse',
+                'Aliresponse',
                 onMessageReceived: (JavaScriptMessage message) {
-                  log(message.message);
-                  _onButtonPressed(message.message);
+                  log("Ali:${message.message}");
+                  _onAliButtonPressed(message.message);
                 },
               );
             }
@@ -118,9 +119,16 @@ Page resource error:
         ),
       )
       ..addJavaScriptChannel(
-        'Paymentresponse',
+        'Cardresponse',
         onMessageReceived: (JavaScriptMessage message) {
-          log(message.message);
+          log("Card:${message.message}");
+          //_onCardButtonPressed(message.message);
+        },
+      )
+      ..addJavaScriptChannel(
+        'WeChatresponse',
+        onMessageReceived: (JavaScriptMessage message) {
+          log("WeChat:");
           //_onButtonPressed(message.message);
         },
       )
@@ -129,7 +137,6 @@ Page resource error:
             'https://vetrinamiahk-frontend.azurewebsites.net/paymentms/mobilecnpayment'),
         headers: {
           //"memberid": _member.memberid,
-          //"platform": "ios",
           //"shippinglocationid": widget.shippinglocationid,
           //"shippingtype": "B",
           //"ispreorder": "n",
@@ -140,16 +147,87 @@ Page resource error:
     _controller = controller;
   }
 
-  void _onButtonPressed(String orderid) async {
-    //bool result = await addprocess(paymentmethodid);
+  /*Future<String> cardprocess(String paymentmethodid) async {
+    OverlayEntry overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        child: Container(
+          color: Colors.black.withOpacity(0.5),
+          child: const LoadingCircle(),
+        ),
+      ),
+    );
+    Overlay.of(context).insert(overlayEntry);
+
+    CartData cartdata = CartData(
+      items: _cartChangeProvider.carts,
+      subtotal: _subtotal,
+    );
+
+    HttpService httpService = HttpService();
+    Response response = await httpService.postpaymentintent(
+      cartdata.toJson(),
+      _member.memberid,
+      paymentmethodid,
+      widget.shippinglocationid,
+      "B",
+      "n",
+    );
+
+    var data = json.decode(response.toString());
+    OrderResponse or = OrderResponse.fromMap(data["data"]);
+
+    if (data["statusCode"] == 200) {
+      overlayEntry.remove();
+      setState(() {
+        _orderid = or.orderid;
+      });
+
+      return 'succeeded';
+    } else {
+      overlayEntry.remove();
+      setState(() {
+        _orderid = or.orderid;
+      });
+
+      return 'failed';
+    }
+  }
+
+  void _onCardButtonPressed(String paymentmethodid) async {
+    String result = await cardprocess(paymentmethodid);
 
     if (mounted) {
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
           builder: (context) => Complete(
+            orderid: _orderid,
+            status: result,
+          ),
+        ),
+        (route) => false,
+      );
+    }
+  }*/
+
+  void _onAliButtonPressed(String message) async {
+    if (mounted) {
+      final Map<String, dynamic> data = jsonDecode(message);
+      final String orderid = data['orderid'];
+      final String redirectstatus = data['redirectstatus'];
+      final String status = data['status'];
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Complete(
             orderid: orderid,
-            result: true,
+            status: status,
+            redirectstatus: redirectstatus,
           ),
         ),
         (route) => false,
