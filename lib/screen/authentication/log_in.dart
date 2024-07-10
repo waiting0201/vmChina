@@ -95,7 +95,7 @@ class _LogInState extends State<LogIn> {
     bool isInstalled = await _fluwx.isWeChatInstalled;
 
     if (!isInstalled) {
-      setState(
+      /*setState(
         () {
           showDialog(
             barrierDismissible: false,
@@ -108,7 +108,7 @@ class _LogInState extends State<LogIn> {
             },
           );
         },
-      );
+      );*/
       return;
     }
 
