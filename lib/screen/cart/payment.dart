@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:dio/dio.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:fluwx/fluwx.dart' as fluwx;
 
 import '../../generated/l10n.dart' as lang;
 import '../../model/repository.dart';
@@ -28,12 +29,16 @@ class Payment extends StatefulWidget {
 }
 
 class _PaymentState extends State<Payment> {
+  final _fluwx = fluwx.Fluwx();
+
   late final WebViewController _controller;
   late CartChangeProvider _cartChangeProvider;
   late Member _member;
   late double _subtotal;
   late String _orderid = "";
   late bool _isLoading = false;
+  late bool _isWeChatPaying = false;
+  late Function(fluwx.WeChatResponse) responseListener;
 
   @override
   void initState() {
@@ -129,7 +134,7 @@ Page resource error:
         'WeChatresponse',
         onMessageReceived: (JavaScriptMessage message) {
           log("WeChat:");
-          //_onButtonPressed(message.message);
+          //_onWeChatButtonPressed(message.message);
         },
       )
       ..loadRequest(
@@ -235,9 +240,64 @@ Page resource error:
     }
   }
 
+  void _onWeChatButtonPressed(String message) async {
+    if (mounted) {
+      setState(() {
+        _isWeChatPaying = true;
+      });
+    }
+
+    responseListener = (res) {
+      if (res is fluwx.WeChatPaymentResponse) {
+        if (res.isSuccessful) {
+          setState(() {
+            _isWeChatPaying = false;
+          });
+
+          /*_authChangeProvider.wechatBinding(res.code!).then((value) {
+            if (value != null) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => WechatEmail(
+                    name: value.nickname,
+                    unionid: value.unionid,
+                  ),
+                ),
+              );
+            } else {
+              Navigator.pop(context);
+            }
+          });*/
+        } else {
+          setState(() {
+            _isWeChatPaying = false;
+          });
+        }
+      } else {
+        setState(() {
+          _isWeChatPaying = false;
+        });
+      }
+    };
+    _fluwx.addSubscriber(responseListener);
+
+    /*_fluwx.pay(
+        which: fluwx.Payment(
+      appId: result['appid'].toString(),
+      partnerId: result['partnerid'].toString(),
+      prepayId: result['prepayid'].toString(),
+      packageValue: result['package'].toString(),
+      nonceStr: result['noncestr'].toString(),
+      timestamp: result['timestamp'],
+      sign: result['sign'].toString(),
+    ));*/
+  }
+
   @override
   void dispose() {
     super.dispose();
+    _fluwx.removeSubscriber(responseListener);
   }
 
   @override

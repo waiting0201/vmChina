@@ -97,6 +97,7 @@ class _ProductDetailState extends State<ProductDetail> {
             DateTime.parse(_setup.freemembershipfeeuntil!)
                     .compareTo(DateTime.now()) >
                 0);
+        log(_isMembershipFree.toString());
       });
     }
 
@@ -941,7 +942,7 @@ class _ProductDetailState extends State<ProductDetail> {
                               ),
                           ],
                         ),
-                        const Divider(
+                        /*const Divider(
                           color: lightbackgroundColor,
                         ),
                         _isManufactureLoading
@@ -996,7 +997,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                           style: textTheme.bodySmall,
                                         ),
                                 ],
-                              ),
+                              ),*/
                         const Divider(
                           color: lightbackgroundColor,
                         ),
@@ -1537,8 +1538,9 @@ class _ProductDetailState extends State<ProductDetail> {
           width: MediaQuery.of(context).size.width,
           child: !isStock
               ? Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Expanded(
+                    /*Expanded(
                       child: ElevatedButton(
                         child: Text(
                           lang.S.of(context).commonPreOrder,
@@ -1601,7 +1603,7 @@ class _ProductDetailState extends State<ProductDetail> {
                         },
                       ),
                     ),
-                    const SizedBox(width: 5),
+                    const SizedBox(width: 5),*/
                     _isBrandLoading
                         ? Container()
                         : MemberPlanIcon(
@@ -1610,8 +1612,9 @@ class _ProductDetailState extends State<ProductDetail> {
                   ],
                 )
               : Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Expanded(
+                    /*Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: darkColor,
@@ -1845,7 +1848,7 @@ class _ProductDetailState extends State<ProductDetail> {
                         },
                       ),
                     ),
-                    const SizedBox(width: 5),
+                    const SizedBox(width: 5),*/
                     _isBrandLoading
                         ? Container()
                         : MemberPlanIcon(

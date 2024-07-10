@@ -917,7 +917,7 @@ class _BrandMenuState extends State<BrandMenu> {
 
         log('getcategorys code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200) {
+        if (data["statusCode"] == 200 && mounted) {
           pres.setString("brandcategorys", json.encode(data["data"]));
 
           setState(() {
@@ -925,7 +925,7 @@ class _BrandMenuState extends State<BrandMenu> {
                 .map((e) => Category.fromMap(e))
                 .toList());
           });
-        } else {
+        } else if (mounted) {
           setState(() {
             log('getcategorys failed');
           });
