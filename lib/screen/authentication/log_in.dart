@@ -38,6 +38,7 @@ class _LogInState extends State<LogIn> {
   late bool status = false;
   late bool _isLoging = false;
   late bool _startLogin = false;
+  late bool _isWeChatInstalled = false;
   late Function(WeChatResponse) responseListener;
 
   @override
@@ -55,6 +56,11 @@ class _LogInState extends State<LogIn> {
   }
 
   Future<void> doInit() async {
+    bool isWeChatInstalled = await _fluwx.isWeChatInstalled;
+    setState(() {
+      _isWeChatInstalled = isWeChatInstalled;
+    });
+
     responseListener = (res) {
       if (res is WeChatAuthResponse) {
         if (res.isSuccessful) {
@@ -92,26 +98,6 @@ class _LogInState extends State<LogIn> {
   }
 
   Future<void> doLogin() async {
-    bool isInstalled = await _fluwx.isWeChatInstalled;
-
-    if (!isInstalled) {
-      /*setState(
-        () {
-          showDialog(
-            barrierDismissible: false,
-            context: context,
-            builder: (BuildContext context) {
-              return const WarnModal(
-                title: 'Information',
-                message: "請先安裝微信",
-              );
-            },
-          );
-        },
-      );*/
-      return;
-    }
-
     if (mounted) {
       setState(() {
         _startLogin = true;
@@ -405,34 +391,36 @@ class _LogInState extends State<LogIn> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.only(left: 25, right: 25),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: _startLogin
-                        ? const LoadingCircle()
-                        : ElevatedButton.icon(
-                            icon: const Icon(
-                              Icons.wechat,
-                              color: whiteColor,
-                            ),
-                            onPressed: () {
-                              doLogin();
-                            },
-                            label: Text(
-                              lang.S
-                                  .of(context)
-                                  .loginSignInorRegisterwithwechat,
-                              style: textTheme.titleSmall?.copyWith(
-                                color: whiteColor,
-                              ),
-                            ),
-                            style: OutlinedButton.styleFrom(
-                              backgroundColor: wechatColor,
-                            ),
-                          ),
-                  ),
-                ),
+                !_isWeChatInstalled
+                    ? Container()
+                    : Padding(
+                        padding: const EdgeInsets.only(left: 25, right: 25),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: _startLogin
+                              ? const LoadingCircle()
+                              : ElevatedButton.icon(
+                                  icon: const Icon(
+                                    Icons.wechat,
+                                    color: whiteColor,
+                                  ),
+                                  onPressed: () {
+                                    doLogin();
+                                  },
+                                  label: Text(
+                                    lang.S
+                                        .of(context)
+                                        .loginSignInorRegisterwithwechat,
+                                    style: textTheme.titleSmall?.copyWith(
+                                      color: whiteColor,
+                                    ),
+                                  ),
+                                  style: OutlinedButton.styleFrom(
+                                    backgroundColor: wechatColor,
+                                  ),
+                                ),
+                        ),
+                      ),
               ],
             ),
           ),
