@@ -56,7 +56,7 @@ class _AccountState extends State<Account> {
     _day.text = _member.day != null ? _member.day!.toString() : '';
     _year.text = _member.year != null ? _member.year!.toString() : '';
     _genderselect = _member.gender != null ? _member.gender! : 0;
-    _mobile.text = _member.mobile;
+    _mobile.text = _member.mobile != null ? _member.mobile! : '';
 
     getCountrys();
   }
@@ -66,7 +66,7 @@ class _AccountState extends State<Account> {
     await httpService.getcountrylists().then((value) {
       var data = json.decode(value.toString());
 
-      if (data["statusCode"] == 200) {
+      if (data["statusCode"] == 200 && mounted) {
         setState(() {
           _countrys.addAll(
               (data["data"] as List).map((e) => Country.fromMap(e)).toList());
@@ -74,7 +74,7 @@ class _AccountState extends State<Account> {
               _countrys.singleWhere((e) => e.countryid == _member.countryid);
         });
         _country.text = '+${_selectedcountry.phonecode}';
-      } else {
+      } else if (mounted) {
         setState(() {});
       }
     });

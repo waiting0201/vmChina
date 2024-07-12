@@ -228,6 +228,7 @@ class AuthChangeProvider with ChangeNotifier {
   }
 
   Future<WeChatData?> wechatBinding(String code) async {
+    log("code: $code");
     await setLoading(true);
 
     HttpService httpService = HttpService();
@@ -244,7 +245,7 @@ class AuthChangeProvider with ChangeNotifier {
 
       await setMember(data["data"]["member"]);
 
-      await setStatus(false);
+      await setStatus(true);
       await setLoading(false);
 
       return null;
@@ -258,20 +259,22 @@ class AuthChangeProvider with ChangeNotifier {
   }
 
   Future<bool> wechatLogin(String email, String name, String unionid) async {
-    try {
-      await setLoading(true);
+    await setLoading(true);
 
-      HttpService httpService = HttpService();
-      Response response = await httpService.wechatlogin(email, name, unionid);
+    HttpService httpService = HttpService();
+    Response response = await httpService.wechatlogin(email, name, unionid);
 
-      var data = json.decode(response.toString());
+    var data = json.decode(response.toString());
 
-      if (data["statusCode"] == 200) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (e) {
+    if (data["statusCode"] == 200) {
+      await setStatus(false);
+      await setLoading(false);
+
+      return true;
+    } else {
+      await setStatus(false);
+      await setLoading(false);
+
       return false;
     }
   }

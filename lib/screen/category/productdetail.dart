@@ -56,11 +56,11 @@ class _ProductDetailState extends State<ProductDetail> {
   final List<Carts> _carts = [];
 
   late CartChangeProvider _cartChangeProvider;
-  late SetupChangeProvider _setupChangeProvider;
   late AuthChangeProvider _authChangeProvider;
   late Product _product;
   late Brand _brand;
   late Setup _setup;
+  late bool _isSetupLoading = false;
   late bool _isBrandLoading = false;
   late bool _isPhotoLoading = false;
   late bool _isProductByBrandLoading = false;
@@ -87,19 +87,6 @@ class _ProductDetailState extends State<ProductDetail> {
         Provider.of<CartChangeProvider>(context, listen: false);
     _authChangeProvider =
         Provider.of<AuthChangeProvider>(context, listen: false);
-    _setupChangeProvider =
-        Provider.of<SetupChangeProvider>(context, listen: false);
-
-    if (!_setupChangeProvider.isloading) {
-      setState(() {
-        _setup = _setupChangeProvider.setup;
-        _isMembershipFree = (_setup.ischargemembershipfee == 0 &&
-            DateTime.parse(_setup.freemembershipfeeuntil!)
-                    .compareTo(DateTime.now()) >
-                0);
-        log(_isMembershipFree.toString());
-      });
-    }
 
     _product = widget.product;
 
@@ -113,6 +100,7 @@ class _ProductDetailState extends State<ProductDetail> {
     getDesigners();
     if (_product.productsizes!.length > 1) getSizes();
     getCollections();
+    getSetup();
 
     if (_product.productsizes!.isNotEmpty) {
       setState(() {
@@ -128,6 +116,34 @@ class _ProductDetailState extends State<ProductDetail> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  Future<void> getSetup() async {
+    if (!_isSetupLoading) {
+      setState(() {
+        _isSetupLoading = true;
+      });
+
+      HttpService httpService = HttpService();
+      await httpService.getsetup().then((value) {
+        var data = json.decode(value.toString());
+
+        if (data["statusCode"] == 200 && mounted) {
+          setState(() {
+            _setup = Setup.fromMap(data["data"]);
+            _isMembershipFree = (_setup.ischargemembershipfee == 0 &&
+                DateTime.parse(_setup.freemembershipfeeuntil!)
+                        .compareTo(DateTime.now()) >
+                    0);
+            _isSetupLoading = false;
+          });
+        } else if (mounted) {
+          setState(() {
+            _isSetupLoading = false;
+          });
+        }
+      });
+    }
   }
 
   Future<void> getPhotos() async {
@@ -779,23 +795,26 @@ class _ProductDetailState extends State<ProductDetail> {
                               ],
                             ),
                             children: [
-                              _isMembershipFree
-                                  ? Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 0, left: 0, right: 0),
-                                      child: Text(
-                                        lang.S
-                                            .of(context)
-                                            .productdetailNoDiscountCaption,
-                                        style: textTheme.titleSmall?.copyWith(
-                                          color: darkColor,
+                              if (!_isSetupLoading) ...[
+                                _isMembershipFree
+                                    ? Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 0, left: 0, right: 0),
+                                        child: Text(
+                                          lang.S
+                                              .of(context)
+                                              .productdetailNoDiscountCaption,
+                                          style: textTheme.titleSmall?.copyWith(
+                                            color: darkColor,
+                                          ),
                                         ),
+                                      )
+                                    : ClubInsiderPrice(
+                                        brandmemberplans:
+                                            _brand.brandmemberplans,
+                                        product: _product,
                                       ),
-                                    )
-                                  : ClubInsiderPrice(
-                                      brandmemberplans: _brand.brandmemberplans,
-                                      product: _product,
-                                    ),
+                              ]
                             ],
                           ),
                         ),

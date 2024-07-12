@@ -8,6 +8,7 @@ import '../authentication/auth_provider.dart';
 import '../widgets/constant.dart';
 import '../widgets/partial.dart';
 import '../widgets/common.dart';
+import '../home/home.dart';
 
 class WechatEmail extends StatefulWidget {
   final String name;
@@ -159,11 +160,40 @@ class _WechatEmailState extends State<WechatEmail> {
                                               barrierDismissible: false,
                                               context: context,
                                               builder: (BuildContext context) {
-                                                return WarnModal(
-                                                  title: 'Information',
-                                                  message: lang.S
-                                                      .of(context)
-                                                      .wechatemailInformation,
+                                                return AlertDialog(
+                                                  backgroundColor: whiteColor,
+                                                  title:
+                                                      const Text('Information'),
+                                                  content: Text(
+                                                    lang.S
+                                                        .of(context)
+                                                        .wechatemailInformation,
+                                                  ),
+                                                  actions: [
+                                                    OutlinedButton(
+                                                      onPressed: () {
+                                                        Navigator
+                                                            .pushAndRemoveUntil(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                const Home(),
+                                                          ),
+                                                          (route) => false,
+                                                        );
+                                                      },
+                                                      child: Text(
+                                                        lang.S
+                                                            .of(context)
+                                                            .commonExit,
+                                                        style: textTheme
+                                                            .titleSmall
+                                                            ?.copyWith(
+                                                                color:
+                                                                    darkColor),
+                                                      ),
+                                                    ),
+                                                  ],
                                                 );
                                               },
                                             );

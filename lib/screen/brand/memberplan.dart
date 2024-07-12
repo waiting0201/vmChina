@@ -7,7 +7,6 @@ import '../../generated/l10n.dart' as lang;
 import '../../model/models.dart';
 import '../../theme/theme_constants.dart';
 import '../../model/repository.dart';
-import '../home/setup_provider.dart';
 import '../authentication/auth_provider.dart';
 import '../widgets/constant.dart';
 import '../widgets/partial.dart';
@@ -24,13 +23,13 @@ class MemberPlan extends StatefulWidget {
 }
 
 class _MemberPlanState extends State<MemberPlan> {
-  late SetupChangeProvider _setupChangeProvider;
   late AuthChangeProvider _authChangeProvider;
   late Setup _setup;
   late Member _member;
   late BrandMemberPlan _plan1;
   late BrandMemberPlan _plan2;
   late BrandMemberPlan _plan3;
+  late bool _isSetupLoading = false;
   late bool _isMembershipFree = false;
   late bool _isLoading = false;
   late double _totalspend = 0;
@@ -43,29 +42,47 @@ class _MemberPlanState extends State<MemberPlan> {
     _plan2 = widget.brand.brandmemberplans[1];
     _plan3 = widget.brand.brandmemberplans[2];
 
-    _setupChangeProvider =
-        Provider.of<SetupChangeProvider>(context, listen: false);
     _authChangeProvider =
         Provider.of<AuthChangeProvider>(context, listen: false);
-
-    if (!_setupChangeProvider.isloading) {
-      setState(() {
-        _setup = _setupChangeProvider.setup;
-        _isMembershipFree = (_setup.ischargemembershipfee == 0 &&
-            DateTime.parse(_setup.freemembershipfeeuntil!)
-                    .compareTo(DateTime.now()) >
-                0);
-        if (_isMembershipFree) {
-          Duration difference = DateTime.parse(_setup.freemembershipfeeuntil!)
-              .difference(DateTime.now());
-          _trialdays = difference.inDays;
-        }
-      });
-    }
 
     if (_authChangeProvider.status) {
       _member = _authChangeProvider.member;
       getTotalSpend();
+    }
+    getSetup();
+  }
+
+  Future<void> getSetup() async {
+    if (!_isSetupLoading) {
+      setState(() {
+        _isSetupLoading = true;
+      });
+
+      HttpService httpService = HttpService();
+      await httpService.getsetup().then((value) {
+        var data = json.decode(value.toString());
+
+        if (data["statusCode"] == 200 && mounted) {
+          setState(() {
+            _setup = Setup.fromMap(data["data"]);
+            _isMembershipFree = (_setup.ischargemembershipfee == 0 &&
+                DateTime.parse(_setup.freemembershipfeeuntil!)
+                        .compareTo(DateTime.now()) >
+                    0);
+            if (_isMembershipFree) {
+              //Duration difference = DateTime.parse(_setup.freemembershipfeeuntil!)
+              //.difference(DateTime.now());
+              //_trialdays = difference.inDays;
+              _trialdays = _plan1.trialday!;
+            }
+            _isSetupLoading = false;
+          });
+        } else if (mounted) {
+          setState(() {
+            _isSetupLoading = false;
+          });
+        }
+      });
     }
   }
 
@@ -82,12 +99,12 @@ class _MemberPlanState extends State<MemberPlan> {
           .then((value) {
         var data = json.decode(value.toString());
 
-        if (data["statusCode"] == 200) {
+        if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _totalspend = data["data"];
             _isLoading = false;
           });
-        } else {
+        } else if (mounted) {
           setState(() {
             _isLoading = false;
           });
@@ -151,7 +168,7 @@ class _MemberPlanState extends State<MemberPlan> {
                 style: textTheme.bodyMedium,
               ),
             ),
-            if (_isMembershipFree) ...[
+            if (!_isSetupLoading && _isMembershipFree) ...[
               Container(
                 padding: const EdgeInsets.only(
                   top: verticalSpace,
@@ -319,7 +336,7 @@ class _MemberPlanState extends State<MemberPlan> {
                   ),
                 ),
               ),
-            ] else ...[
+            ] else if (!_isSetupLoading) ...[
               Container(
                 padding: const EdgeInsets.only(
                   top: verticalSpace,

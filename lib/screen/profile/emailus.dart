@@ -42,7 +42,7 @@ class _EmailUsState extends State<EmailUs> {
     if (_authchangeprovider.status) {
       _member = _authchangeprovider.member;
       _name.text = '${_member.firstname!} ${_member.lastname!}';
-      _phone.text = _member.mobile;
+      _phone.text = _member.mobile != null ? _member.mobile! : '';
       _email.text = _member.email;
     }
   }

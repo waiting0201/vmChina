@@ -63,13 +63,28 @@ class _LogInState extends State<LogIn> {
 
     responseListener = (res) {
       if (res is WeChatAuthResponse) {
-        if (res.isSuccessful) {
-          setState(() {
-            _startLogin = false;
-          });
+        OverlayEntry overlayEntry = OverlayEntry(
+          builder: (context) => Positioned(
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              color: Colors.black.withOpacity(0.5),
+              child: const LoadingCircle(),
+            ),
+          ),
+        );
+        Overlay.of(context).insert(overlayEntry);
 
+        if (res.isSuccessful) {
           _authChangeProvider.wechatBinding(res.code!).then((value) {
             if (value != null) {
+              overlayEntry.remove();
+              setState(() {
+                _startLogin = false;
+              });
+
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -80,10 +95,12 @@ class _LogInState extends State<LogIn> {
                 ),
               );
             } else {
+              overlayEntry.remove();
               Navigator.pop(context);
             }
           });
         } else {
+          overlayEntry.remove();
           setState(() {
             _startLogin = false;
           });

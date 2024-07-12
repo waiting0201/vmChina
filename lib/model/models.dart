@@ -331,7 +331,7 @@ class Member {
   final String memberid;
   final String email;
   final int countryid;
-  final String mobile;
+  final String? mobile;
   final String photourl;
   final List<MembershipFee>? membershipfees;
   final List<MemberBrand>? memberbrands;
@@ -349,7 +349,7 @@ class Member {
     required this.memberid,
     required this.email,
     required this.countryid,
-    required this.mobile,
+    this.mobile,
     required this.photourl,
     this.membershipfees,
     this.memberbrands,

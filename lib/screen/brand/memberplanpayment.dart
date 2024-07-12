@@ -27,10 +27,10 @@ class MemberPlanPayment extends StatefulWidget {
 }
 
 class _MemberPlanPaymentState extends State<MemberPlanPayment> {
-  late SetupChangeProvider _setupChangeProvider;
   late AuthChangeProvider _authChangeProvider;
   late Setup _setup;
   late Member _member;
+  late bool _isSetupLoading = false;
   late bool _isMembershipFree = false;
   late int _trialdays = 0;
 
@@ -41,25 +41,44 @@ class _MemberPlanPaymentState extends State<MemberPlanPayment> {
     if (widget.brandmemberplan.awid == null ||
         widget.brandmemberplan.awid!.isEmpty) postCreatePrice();
 
-    _setupChangeProvider =
-        Provider.of<SetupChangeProvider>(context, listen: false);
     _authChangeProvider =
         Provider.of<AuthChangeProvider>(context, listen: false);
     _member = _authChangeProvider.member;
 
-    if (!_setupChangeProvider.isloading) {
+    getSetup();
+  }
+
+  Future<void> getSetup() async {
+    if (!_isSetupLoading) {
       setState(() {
-        _setup = _setupChangeProvider.setup;
-        _isMembershipFree = (_setup.ischargemembershipfee == 0 &&
-            DateTime.parse(_setup.freemembershipfeeuntil!)
-                    .compareTo(DateTime.now()) >
-                0);
-        if (_isMembershipFree) {
-          Duration difference = DateTime.parse(_setup.freemembershipfeeuntil!)
-              .difference(DateTime.now());
-          _trialdays = difference.inDays;
-        } else {
-          _trialdays = widget.brandmemberplan.trialday!;
+        _isSetupLoading = true;
+      });
+
+      HttpService httpService = HttpService();
+      await httpService.getsetup().then((value) {
+        var data = json.decode(value.toString());
+
+        if (data["statusCode"] == 200 && mounted) {
+          setState(() {
+            _setup = Setup.fromMap(data["data"]);
+            _isMembershipFree = (_setup.ischargemembershipfee == 0 &&
+                DateTime.parse(_setup.freemembershipfeeuntil!)
+                        .compareTo(DateTime.now()) >
+                    0);
+            if (_isMembershipFree) {
+              //Duration difference = DateTime.parse(_setup.freemembershipfeeuntil!)
+              //.difference(DateTime.now());
+              //_trialdays = difference.inDays;
+              _trialdays = widget.brandmemberplan.trialday!;
+            } else {
+              _trialdays = widget.brandmemberplan.trialday!;
+            }
+            _isSetupLoading = false;
+          });
+        } else if (mounted) {
+          setState(() {
+            _isSetupLoading = false;
+          });
         }
       });
     }
