@@ -36,7 +36,9 @@ import '../authentication/sign_up.dart';
 import 'partial.dart';
 
 class AccountSection extends StatelessWidget {
+  final String? refer;
   const AccountSection({
+    this.refer,
     super.key,
   });
 
@@ -117,7 +119,9 @@ class AccountSection extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const LogIn(),
+                      builder: (context) => LogIn(
+                        refer: refer,
+                      ),
                     ),
                   );
                 },

@@ -11,7 +11,6 @@ import '../../model/models.dart';
 import '../../model/repository.dart';
 import '../../theme/theme_constants.dart';
 import '../home/home.dart';
-import '../home/setup_provider.dart';
 import '../authentication/auth_provider.dart';
 import '../widgets/partial.dart';
 import '../widgets/constant.dart';
@@ -27,10 +26,10 @@ class _ClubinsiderState extends State<Clubinsider> {
   final List<MembershipFee> _membershipfees = [];
   final int _take = 10;
 
-  late SetupChangeProvider _setupChangeProvider;
   late AuthChangeProvider _authChangeProvider;
   late Setup _setup;
   late Member _member;
+  late bool _isSetupLoading = false;
   late bool _isMembershipFree = true;
   late bool _isLoading = false;
   late bool _hasMore = true;
@@ -40,23 +39,40 @@ class _ClubinsiderState extends State<Clubinsider> {
   void initState() {
     super.initState();
 
-    _setupChangeProvider =
-        Provider.of<SetupChangeProvider>(context, listen: false);
     _authChangeProvider =
         Provider.of<AuthChangeProvider>(context, listen: false);
     _member = _authChangeProvider.member;
 
-    if (!_setupChangeProvider.isloading) {
+    getSetup();
+    getMembershipFees();
+  }
+
+  Future<void> getSetup() async {
+    if (!_isSetupLoading) {
       setState(() {
-        _setup = _setupChangeProvider.setup;
-        _isMembershipFree = (_setup.ischargemembershipfee == 0 &&
-            DateTime.parse(_setup.freemembershipfeeuntil!)
-                    .compareTo(DateTime.now()) >
-                0);
+        _isSetupLoading = true;
+      });
+
+      HttpService httpService = HttpService();
+      await httpService.getsetup().then((value) {
+        var data = json.decode(value.toString());
+
+        if (data["statusCode"] == 200 && mounted) {
+          setState(() {
+            _setup = Setup.fromMap(data["data"]);
+            _isMembershipFree = (_setup.ischargemembershipfee == 0 &&
+                DateTime.parse(_setup.freemembershipfeeuntil!)
+                        .compareTo(DateTime.now()) >
+                    0);
+            _isSetupLoading = false;
+          });
+        } else if (mounted) {
+          setState(() {
+            _isSetupLoading = false;
+          });
+        }
       });
     }
-
-    getMembershipFees();
   }
 
   Future<void> getMembershipFees() async {

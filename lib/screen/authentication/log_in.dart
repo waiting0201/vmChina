@@ -11,15 +11,16 @@ import '../../theme/theme_constants.dart';
 import '../widgets/constant.dart';
 import '../widgets/common.dart';
 import '../widgets/partial.dart';
+import '../home/home.dart';
 import 'sign_up.dart';
 import 'forgot_password.dart';
 import 'wechat_email.dart';
 
 class LogIn extends StatefulWidget {
-  final int? bottomNavIndex;
+  final String? refer;
   const LogIn({
     super.key,
-    this.bottomNavIndex,
+    this.refer,
   });
 
   @override
@@ -347,7 +348,18 @@ class _LogInState extends State<LogIn> {
                                           });
 
                                           if (value) {
-                                            Navigator.pop(context);
+                                            if (widget.refer == 'intro') {
+                                              Navigator.pushAndRemoveUntil(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const Home(),
+                                                ),
+                                                (route) => false,
+                                              );
+                                            } else {
+                                              Navigator.pop(context);
+                                            }
                                           } else {
                                             setState(
                                               () {

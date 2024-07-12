@@ -120,7 +120,9 @@ class _IntroScreenState extends State<IntroScreen> {
         ),
         PageViewModel(
           title: "",
-          bodyWidget: const AccountSection(),
+          bodyWidget: const AccountSection(
+            refer: "intro",
+          ),
           image: _buildImage("intro_04.jpg"),
           decoration: pageDecoration.copyWith(
             fullScreen: false,
