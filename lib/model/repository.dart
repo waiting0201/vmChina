@@ -8,7 +8,8 @@ class HttpService {
   late String? accessToken = "";
 
   final apiKey = "!@#qwe";
-  final baseUrl = "https://vetrinamiahk-api.azurewebsites.net/api";
+  //final baseUrl = "https://vetrinamiahk-api.azurewebsites.net/api";
+  final baseUrl = "https://api.vetrinamia.com.cn/api";
 
   HttpService() {
     _dio = Dio(BaseOptions(
