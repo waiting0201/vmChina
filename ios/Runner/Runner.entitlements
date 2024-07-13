@@ -7,6 +7,8 @@
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>applinks:vetrinamiahk-frontend.azurewebsites.net</string>
+		<string>applinks:vetrinamia.com.cn</string>
+		<string>applinks:www.vetrinamia.com.cn</string>
 	</array>
 </dict>
 </plist>
