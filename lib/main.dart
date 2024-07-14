@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
-import 'package:firebase_core/firebase_core.dart';
+//import 'package:firebase_core/firebase_core.dart';
 import 'package:fluwx/fluwx.dart';
 
 import 'screen/authentication/auth_provider.dart';
@@ -17,13 +17,13 @@ import 'screen/splash_screen/splashscreen.dart';
 import 'screen/widgets/library.dart';
 import 'theme/theme_constants.dart';
 import 'generated/l10n.dart';
-import 'firebase_options.dart';
+//import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
+  /*await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-  );
+  );*/
 
   //runApp(const MyApp());
   SystemChrome.setPreferredOrientations([
@@ -54,7 +54,7 @@ class _MyAppState extends State<MyApp> {
       appId: 'wx6c9eb433c4b8562f',
       doOnAndroid: true,
       doOnIOS: true,
-      universalLink: 'https://vetrinamiahk-frontend.azurewebsites.net/app/',
+      universalLink: 'https://www.vetrinamia.com.cn/app/',
     );
   }
 
@@ -84,9 +84,9 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider<SetupChangeProvider>(
           create: (context) => SetupChangeProvider(),
         ),
-        ChangeNotifierProvider<NotificationChangeProvider>(
+        /*ChangeNotifierProvider<NotificationChangeProvider>(
           create: (context) => NotificationChangeProvider(),
-        ),
+        ),*/
       ],
       //用Builder原因主要是產生自己的context，屬於上層MultiProvier
       child: Consumer<LanguageChangeProvider>(

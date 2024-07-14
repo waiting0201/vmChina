@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
@@ -11,6 +12,7 @@ import '../../model/repository.dart';
 import '../../theme/theme_constants.dart';
 import '../category/productdetail.dart';
 import '../widgets/partial.dart';
+import 'home.dart';
 
 class QRScan extends StatefulWidget {
   const QRScan({super.key});
@@ -31,9 +33,10 @@ class _QRScan extends State<QRScan> {
 
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
-  /*@override
-  void reassemble() {
+  @override
+  /*void reassemble() {
     super.reassemble();
+
     if (Platform.isAndroid) {
       controller!.pauseCamera();
     }
@@ -133,6 +136,17 @@ class _QRScan extends State<QRScan> {
                                   ),
                                 ),
                               );
+
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const Home(),
+                                ),
+                              );
+                              /*if (Platform.isAndroid) {
+                                controller!.pauseCamera();
+                              }
+                              controller!.resumeCamera();*/
                             }
                           });
                         }
@@ -160,6 +174,7 @@ class _QRScan extends State<QRScan> {
 
   void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
     log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
+
     if (!p) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('no Permission')),

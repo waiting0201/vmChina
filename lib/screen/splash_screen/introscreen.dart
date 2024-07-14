@@ -18,13 +18,13 @@ class IntroScreen extends StatefulWidget {
 }
 
 class _IntroScreenState extends State<IntroScreen> {
-  late NotificationChangeProvider _notificationChangeProvider;
+  //late NotificationChangeProvider _notificationChangeProvider;
 
   @override
   void initState() {
     super.initState();
-    _notificationChangeProvider =
-        Provider.of<NotificationChangeProvider>(context, listen: false);
+    //_notificationChangeProvider =
+    //Provider.of<NotificationChangeProvider>(context, listen: false);
   }
 
   Widget _buildFullscreenImage(String image) {
@@ -156,7 +156,7 @@ class _IntroScreenState extends State<IntroScreen> {
       ),
       onChange: (value) {
         if (value == 3) {
-          _notificationChangeProvider.requestPermission();
+          //_notificationChangeProvider.requestPermission();
         }
       },
       onSkip: () {

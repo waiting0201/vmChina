@@ -4,9 +4,9 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+//import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../model/models.dart';
 import '../../model/repository.dart';
@@ -443,123 +443,6 @@ class AuthChangeProvider with ChangeNotifier {
         return false;
       }
     } catch (e) {
-      await setStatus(false);
-      await setLoading(false);
-
-      return false;
-    }
-  }
-
-  /// Google
-  Future<bool> signInWithGoogle() async {
-    try {
-      // // Trigger the authentication flow
-      final googleInUser = await GoogleSignIn(
-        scopes: [
-          'email',
-          'https://www.googleapis.com/auth/contacts.readonly',
-        ],
-      ).signIn();
-      if (googleInUser != null) {
-        // Obtain the auth details from the request
-        final googleAuth = await googleInUser.authentication;
-
-        // / Create a new credential
-        final OAuthCredential credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth.accessToken,
-          idToken: googleAuth.idToken,
-        );
-        //use google login with firebase
-        final UserCredential userCredential =
-            await FirebaseAuth.instance.signInWithCredential(credential);
-        String? socialid = userCredential.user!.uid;
-        String? socialemail = userCredential.user!.email;
-        String? socialname = userCredential.user!.displayName;
-        String socialvendor = "GOOGLE";
-
-        await setLoading(true);
-
-        HttpService httpService = HttpService();
-        SharedPreferences pres = await SharedPreferences.getInstance();
-        Response response = await httpService.sociallogin(
-            socialid, socialemail!, socialname!, socialvendor);
-
-        var data = json.decode(response.toString());
-
-        if (data["statusCode"] == 200) {
-          await pres.setString(
-              "access_token", data["data"]["token"]["access_token"]);
-          await pres.setString(
-              "refresh_token", data["data"]["token"]["refresh_token"]);
-
-          await setMember(data["data"]["member"]);
-          await setStatus(true);
-          await setLoading(false);
-          return true;
-        } else {
-          await setStatus(false);
-          await setLoading(false);
-          return false;
-        }
-      } else {
-        await setStatus(false);
-        await setLoading(false);
-
-        return false;
-      }
-    } on FirebaseAuthException catch (e) {
-      await setStatus(false);
-      await setLoading(false);
-
-      return false;
-    }
-  }
-
-  /// FB
-  Future<bool> signInWithFacebook() async {
-    // Trigger the sign-in flow
-    final LoginResult loginResult = await FacebookAuth.instance.login(
-      permissions: ['email', 'public_profile'],
-    );
-
-    if (loginResult.status == LoginStatus.success) {
-      // Create a credential from the access token
-      final OAuthCredential facebookAuthCredential =
-          FacebookAuthProvider.credential(loginResult.accessToken!.tokenString);
-
-      // Once signed in, return the UserCredential
-      final UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithCredential(facebookAuthCredential);
-      String? socialid = userCredential.user!.uid;
-      String? socialemail = userCredential.user!.email;
-      String? socialname = userCredential.user!.displayName;
-      String socialvendor = "FACEBOOK";
-
-      await setLoading(true);
-
-      HttpService httpService = HttpService();
-      SharedPreferences pres = await SharedPreferences.getInstance();
-      Response response = await httpService.sociallogin(
-          socialid, socialemail!, socialname!, socialvendor);
-
-      var data = json.decode(response.toString());
-
-      if (data["statusCode"] == 200) {
-        await pres.setString(
-            "access_token", data["data"]["token"]["access_token"]);
-        await pres.setString(
-            "refresh_token", data["data"]["token"]["refresh_token"]);
-
-        await setMember(data["data"]["member"]);
-        await setStatus(true);
-        await setLoading(false);
-        return true;
-      } else {
-        await setStatus(false);
-        await setLoading(false);
-        return false;
-      }
-    } else {
       await setStatus(false);
       await setLoading(false);
 

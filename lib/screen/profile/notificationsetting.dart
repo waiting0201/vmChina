@@ -18,18 +18,18 @@ class Notificationsetting extends StatefulWidget {
 }
 
 class _NotificationsettingState extends State<Notificationsetting> {
-  late NotificationChangeProvider _notificationChangeProvider;
+  //late NotificationChangeProvider _notificationChangeProvider;
   late bool _isOrder;
   late bool _isPromote;
 
   @override
   void initState() {
     super.initState();
-    _notificationChangeProvider =
-        Provider.of<NotificationChangeProvider>(context, listen: false);
+    //_notificationChangeProvider =
+    //Provider.of<NotificationChangeProvider>(context, listen: false);
     setState(() {
-      _isOrder = _notificationChangeProvider.isagree;
-      _isPromote = _notificationChangeProvider.isagree;
+      //_isOrder = _notificationChangeProvider.isagree;
+      //_isPromote = _notificationChangeProvider.isagree;
     });
   }
 
