@@ -525,6 +525,8 @@ class _HomebrandState extends State<Homebrand> {
               SizedBox(
                 height: 420,
                 child: ListView.builder(
+                  addAutomaticKeepAlives: false,
+                  addRepaintBoundaries: false,
                   padding: const EdgeInsets.only(
                     left: 13,
                     right: 13,

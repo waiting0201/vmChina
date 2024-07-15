@@ -24,8 +24,7 @@ import 'orderhistory.dart';
 import 'languagechange.dart';
 import 'faqdetail.dart';
 import 'legalstatement.dart';
-import 'terms.dart';
-import 'privacy.dart';
+import 'lawdetail.dart';
 import 'emailus.dart';
 import 'notificationsetting.dart';
 import 'privacysetting.dart';
@@ -39,13 +38,16 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   late bool _isFaqLoading = false;
+  late bool _isLawLoading = false;
 
   final List<Faq> _faqs = [];
+  final List<Law> _laws = [];
 
   @override
   void initState() {
     super.initState();
     getFaqs();
+    getLaws();
   }
 
   Future<void> getFaqs() async {
@@ -70,6 +72,34 @@ class _ProfileState extends State<Profile> {
           setState(() {
             log('getfaqs isloading');
             _isFaqLoading = false;
+          });
+        }
+      });
+    }
+  }
+
+  Future<void> getLaws() async {
+    if (!_isLawLoading && mounted) {
+      setState(() {
+        _isLawLoading = true;
+      });
+
+      HttpService httpService = HttpService();
+      await httpService.getlaws(null).then((value) {
+        var data = json.decode(value.toString());
+
+        log('getlaws code: ${data["statusCode"]}');
+
+        if (data["statusCode"] == 200 && mounted) {
+          setState(() {
+            _laws.addAll(
+                (data["data"] as List).map((e) => Law.fromMap(e)).toList());
+            _isLawLoading = false;
+          });
+        } else if (mounted) {
+          setState(() {
+            log('getlaws isloading');
+            _isLawLoading = false;
           });
         }
       });
@@ -522,6 +552,8 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
                 ListView.builder(
+                  addAutomaticKeepAlives: false,
+                  addRepaintBoundaries: false,
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
                   itemCount: _faqs.length,
@@ -592,57 +624,41 @@ class _ProfileState extends State<Profile> {
                     ),
                   ),
                 ),
-                Card(
-                  margin: const EdgeInsets.only(bottom: 4),
-                  color: whiteColor,
-                  surfaceTintColor: whiteColor,
-                  child: ListTile(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const Terms(),
+                ListView.builder(
+                  addAutomaticKeepAlives: false,
+                  addRepaintBoundaries: false,
+                  shrinkWrap: true,
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: _laws.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Card(
+                      margin: const EdgeInsets.only(bottom: 4),
+                      color: whiteColor,
+                      surfaceTintColor: whiteColor,
+                      child: ListTile(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  Lawdetail(law: _laws[index]),
+                            ),
+                          );
+                        },
+                        contentPadding:
+                            const EdgeInsets.only(left: 15.0, right: 10.0),
+                        horizontalTitleGap: 10.0,
+                        title: Text(
+                          _laws[index].title,
+                          style: textTheme.bodyMedium,
                         ),
-                      );
-                    },
-                    contentPadding:
-                        const EdgeInsets.only(left: 15.0, right: 10.0),
-                    horizontalTitleGap: 10.0,
-                    title: Text(
-                      lang.S.of(context).meTermCondition,
-                      style: textTheme.bodyMedium,
-                    ),
-                    trailing: const Icon(
-                      FeatherIcons.chevronRight,
-                      color: lightGreyTextColor,
-                    ),
-                  ),
-                ),
-                Card(
-                  margin: const EdgeInsets.only(bottom: 4),
-                  color: whiteColor,
-                  surfaceTintColor: whiteColor,
-                  child: ListTile(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const Privacy(),
+                        trailing: const Icon(
+                          FeatherIcons.chevronRight,
+                          color: lightGreyTextColor,
                         ),
-                      );
-                    },
-                    contentPadding:
-                        const EdgeInsets.only(left: 15.0, right: 10.0),
-                    horizontalTitleGap: 10.0,
-                    title: Text(
-                      lang.S.of(context).mePrivacyPolicy,
-                      style: textTheme.bodyMedium,
-                    ),
-                    trailing: const Icon(
-                      FeatherIcons.chevronRight,
-                      color: lightGreyTextColor,
-                    ),
-                  ),
+                      ),
+                    );
+                  },
                 ),
                 //_____________________________________________________Contact Us
                 Padding(

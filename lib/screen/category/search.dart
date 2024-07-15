@@ -304,6 +304,8 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                               ),
                               children: [
                                 ListView.builder(
+                                  addAutomaticKeepAlives: false,
+                                  addRepaintBoundaries: false,
                                   padding: EdgeInsets.zero,
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
@@ -347,6 +349,8 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                             ),
                           ),
                           ListView.builder(
+                            addAutomaticKeepAlives: false,
+                            addRepaintBoundaries: false,
                             shrinkWrap: true,
                             itemCount: e.subcategorys!.length,
                             physics: const NeverScrollableScrollPhysics(),

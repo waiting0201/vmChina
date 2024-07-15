@@ -211,6 +211,8 @@ class _CollectiondetailState extends State<Collectiondetail> {
                       right: horizonSpace,
                     ),
                     child: ListView.builder(
+                      addAutomaticKeepAlives: false,
+                      addRepaintBoundaries: false,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: _photos.where((e) => e.scaletype == 2).length,
@@ -280,6 +282,8 @@ class _CollectiondetailState extends State<Collectiondetail> {
               SizedBox(
                 height: 420,
                 child: ListView.builder(
+                  addAutomaticKeepAlives: false,
+                  addRepaintBoundaries: false,
                   padding: const EdgeInsets.only(
                     left: 13,
                     right: 13,

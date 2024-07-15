@@ -542,6 +542,37 @@ class HttpService {
     return response;
   }
 
+  Future<Response> getlaws(String? languageid) async {
+    String slanguageid = await getLanguage();
+    languageid = (languageid != null) ? languageid : slanguageid;
+    Response response = await _dio.post('/faq/getlaws', queryParameters: {
+      "languageid": languageid,
+    });
+
+    return response;
+  }
+
+  Future<Response> getlawbyid(int id, String? languageid) async {
+    String slanguageid = await getLanguage();
+    languageid = (languageid != null) ? languageid : slanguageid;
+    Response response = await _dio.post('/faq/getlawbyid', queryParameters: {
+      "id": id,
+      "languageid": languageid,
+    });
+
+    return response;
+  }
+
+  Future<Response> getlegals(String? languageid) async {
+    String slanguageid = await getLanguage();
+    languageid = (languageid != null) ? languageid : slanguageid;
+    Response response = await _dio.post('/faq/getlegals', queryParameters: {
+      "languageid": languageid,
+    });
+
+    return response;
+  }
+
   Future<Response> getlatesteventlists(String? languageid) async {
     String slanguageid = await getLanguage();
     languageid = (languageid != null) ? languageid : slanguageid;

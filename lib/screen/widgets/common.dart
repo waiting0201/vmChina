@@ -615,6 +615,8 @@ class _WhatsNewHorizonSlideListState extends State<WhatsNewHorizonSlideList> {
             : SizedBox(
                 height: 395,
                 child: ListView.builder(
+                  addAutomaticKeepAlives: false,
+                  addRepaintBoundaries: false,
                   padding: const EdgeInsets.only(
                     left: 13,
                     right: 13,
@@ -791,6 +793,8 @@ class _EventHorizonSlideListState extends State<EventHorizonSlideList> {
             : SizedBox(
                 height: 448,
                 child: ListView.builder(
+                  addAutomaticKeepAlives: false,
+                  addRepaintBoundaries: false,
                   padding: const EdgeInsets.only(
                     left: 13,
                     right: 13,
@@ -945,6 +949,8 @@ class _BrandMenuState extends State<BrandMenu> {
     return Column(
       children: [
         ListView.builder(
+          addAutomaticKeepAlives: false,
+          addRepaintBoundaries: false,
           shrinkWrap: true,
           itemCount: _categorys.length,
           physics: const NeverScrollableScrollPhysics(),
@@ -962,6 +968,8 @@ class _BrandMenuState extends State<BrandMenu> {
               ),
               children: [
                 ListView.builder(
+                  addAutomaticKeepAlives: false,
+                  addRepaintBoundaries: false,
                   shrinkWrap: true,
                   itemCount: _categorys[i].subcategorys!.length,
                   physics: const NeverScrollableScrollPhysics(),
@@ -1001,6 +1009,8 @@ class _BrandMenuState extends State<BrandMenu> {
                           },
                         ),
                         ListView.builder(
+                          addAutomaticKeepAlives: false,
+                          addRepaintBoundaries: false,
                           shrinkWrap: true,
                           itemCount: _categorys[i]
                               .subcategorys![j]
@@ -1199,6 +1209,8 @@ class CollectionsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      addAutomaticKeepAlives: false,
+      addRepaintBoundaries: false,
       shrinkWrap: true,
       physics: const BouncingScrollPhysics(),
       itemCount: collections.length,
@@ -1296,6 +1308,8 @@ class _PopularBrandsListState extends State<PopularBrandsList> {
     TextTheme textTheme = Theme.of(context).textTheme;
 
     return ListView.builder(
+      addAutomaticKeepAlives: false,
+      addRepaintBoundaries: false,
       shrinkWrap: true,
       itemCount: _brands.length,
       physics: const NeverScrollableScrollPhysics(),
@@ -1355,6 +1369,8 @@ class CategorysList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      addAutomaticKeepAlives: false,
+      addRepaintBoundaries: false,
       shrinkWrap: true,
       physics: const BouncingScrollPhysics(),
       itemCount: categorys.length,
@@ -1400,6 +1416,8 @@ class ProductsHorizonSlideList extends StatelessWidget {
             : SizedBox(
                 height: 420,
                 child: ListView.builder(
+                  addAutomaticKeepAlives: false,
+                  addRepaintBoundaries: false,
                   padding: const EdgeInsets.only(
                     left: 13,
                     right: 13,

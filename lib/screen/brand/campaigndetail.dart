@@ -288,6 +288,8 @@ class _CampaigndetailState extends State<Campaigndetail> {
                       right: horizonSpace,
                     ),
                     child: ListView.builder(
+                      addAutomaticKeepAlives: false,
+                      addRepaintBoundaries: false,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: _photos.where((e) => e.scaletype == 2).length,
@@ -358,6 +360,8 @@ class _CampaigndetailState extends State<Campaigndetail> {
               SizedBox(
                 height: 420,
                 child: ListView.builder(
+                  addAutomaticKeepAlives: false,
+                  addRepaintBoundaries: false,
                   padding: const EdgeInsets.only(
                     left: 13,
                     right: 13,
@@ -405,6 +409,8 @@ class _CampaigndetailState extends State<Campaigndetail> {
                   return false;
                 },
                 child: ListView.builder(
+                  addAutomaticKeepAlives: false,
+                  addRepaintBoundaries: false,
                   padding: const EdgeInsets.only(
                     top: 10,
                     left: horizonSpace,

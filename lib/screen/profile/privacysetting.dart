@@ -1,10 +1,15 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import '../../generated/l10n.dart' as lang;
+import '../../model/models.dart';
+import '../../model/repository.dart';
 import '../../theme/theme_constants.dart';
 import '../widgets/constant.dart';
 import '../widgets/partial.dart';
-import 'privacy.dart';
+import 'lawdetail.dart';
 
 class Privacysetting extends StatefulWidget {
   const Privacysetting({
@@ -18,6 +23,41 @@ class Privacysetting extends StatefulWidget {
 class _PrivacysettingState extends State<Privacysetting> {
   late bool _isOrder = true;
   late bool _isPromote = true;
+  late bool _isPrivacyLoading = false;
+  late Law _law;
+
+  @override
+  void initState() {
+    super.initState();
+    getPrivacy();
+  }
+
+  Future<void> getPrivacy() async {
+    if (!_isPrivacyLoading && mounted) {
+      setState(() {
+        _isPrivacyLoading = true;
+      });
+
+      HttpService httpService = HttpService();
+      await httpService.getlawbyid(1, null).then((value) {
+        var data = json.decode(value.toString());
+
+        log('getPrivacy code: ${data["statusCode"]}');
+
+        if (data["statusCode"] == 200 && mounted) {
+          setState(() {
+            _law = Law.fromMap(data["data"]);
+            _isPrivacyLoading = false;
+          });
+        } else if (mounted) {
+          setState(() {
+            log('getPrivacy isloading');
+            _isPrivacyLoading = false;
+          });
+        }
+      });
+    }
+  }
 
   @override
   //main檔MaterialApp的context
@@ -136,7 +176,7 @@ class _PrivacysettingState extends State<Privacysetting> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const Privacy(),
+                        builder: (context) => Lawdetail(law: _law),
                       ),
                     );
                   },

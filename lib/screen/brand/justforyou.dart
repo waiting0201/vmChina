@@ -167,6 +167,8 @@ class _JustforyousState extends State<Justforyous> {
                 return false;
               },
               child: ListView.builder(
+                addAutomaticKeepAlives: false,
+                addRepaintBoundaries: false,
                 padding: const EdgeInsets.only(
                   top: verticalSpace,
                   left: horizonSpace,
@@ -214,8 +216,9 @@ class _JustforyousState extends State<Justforyous> {
                               );
                             } else {
                               if (isbrandmember) {
-                                late MembershipFee membershipfee =
-                                    auth.member.membershipfees!.singleWhere((e) =>
+                                late MembershipFee membershipfee = auth
+                                    .member.membershipfees!
+                                    .singleWhere((e) =>
                                         e.brandmemberplan!.brandid ==
                                         widget.brand.brandid);
                                 if (membershipfee.brandmemberplan!.plantitle ==

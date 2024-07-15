@@ -223,6 +223,8 @@ class _FavoriteState extends State<Favorite>
                         return false;
                       },
                       child: GridView.count(
+                        addAutomaticKeepAlives: false,
+                        addRepaintBoundaries: false,
                         padding: const EdgeInsets.only(
                           left: 13,
                           right: 13,
@@ -421,6 +423,8 @@ class _FavoriteState extends State<Favorite>
                         return false;
                       },
                       child: GridView.count(
+                        addAutomaticKeepAlives: false,
+                        addRepaintBoundaries: false,
                         padding: const EdgeInsets.only(
                           left: 13,
                           right: 13,

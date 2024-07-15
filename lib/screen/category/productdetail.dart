@@ -749,14 +749,14 @@ class _ProductDetailState extends State<ProductDetail> {
                       style: textTheme.titleSmall,
                     ),
                   ),
-                  Padding(
+                  /*Padding(
                     padding: const EdgeInsets.only(
                       top: 3,
                       left: horizonSpace,
                       right: horizonSpace,
                     ),
                     child: ProductPrice(product: _product),
-                  ),
+                  ),*/
                   _isBrandLoading
                       ? Container()
                       : Padding(

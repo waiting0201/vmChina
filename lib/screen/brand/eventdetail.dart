@@ -222,6 +222,8 @@ class _EventdetailState extends State<Eventdetail> {
                       right: horizonSpace,
                     ),
                     child: ListView.builder(
+                      addAutomaticKeepAlives: false,
+                      addRepaintBoundaries: false,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: _photos.where((e) => e.scaletype == 2).length,

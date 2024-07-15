@@ -484,6 +484,8 @@ class _ProductlistState extends State<Productlist> {
               return !language.status
                   ? Container()
                   : GridView.count(
+                      addAutomaticKeepAlives: false,
+                      addRepaintBoundaries: false,
                       padding: const EdgeInsets.only(
                         left: 13,
                         right: 13,

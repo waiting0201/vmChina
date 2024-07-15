@@ -1,15 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
-import '../../generated/l10n.dart' as lang;
 import '../../theme/theme_constants.dart';
+import '../../model/models.dart';
 import '../widgets/constant.dart';
 import '../widgets/partial.dart';
 
-class Privacy extends StatelessWidget {
-  const Privacy({
+class Lawdetail extends StatefulWidget {
+  final Law law;
+  const Lawdetail({
     super.key,
+    required this.law,
   });
+
+  @override
+  State<Lawdetail> createState() => _LawdetailState();
+}
+
+class _LawdetailState extends State<Lawdetail> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   //main檔MaterialApp的context
@@ -25,18 +42,10 @@ class Privacy extends StatelessWidget {
         surfaceTintColor: whiteColor,
         centerTitle: true,
         title: Text(
-          lang.S.of(context).privacyTitle,
+          widget.law.title,
           style: textTheme.titleLarge?.copyWith(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-          ),
-        ),
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(
-            Icons.close_outlined,
           ),
         ),
         iconTheme: const IconThemeData(
@@ -55,7 +64,7 @@ class Privacy extends StatelessWidget {
             bottom: verticalSpace,
           ),
           child: Html(
-            data: '',
+            data: widget.law.content,
             style: {
               'html': Style(
                 textAlign: TextAlign.center,

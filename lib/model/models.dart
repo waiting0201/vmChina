@@ -1949,3 +1949,55 @@ class Setup {
         'stockwarnamount': stockwarnamount,
       };
 }
+
+class Law {
+  final int lawid;
+  final String title;
+  final String content;
+
+  Law({
+    required this.lawid,
+    required this.title,
+    required this.content,
+  });
+
+  factory Law.fromJson(String str) => Law.fromMap(json.decode(str));
+  String toJson() => json.encode(toMap());
+
+  Law.fromMap(Map<String, dynamic> json)
+      : lawid = json['lawid'],
+        title = json['title'],
+        content = json['content'];
+
+  Map<String, dynamic> toMap() => {
+        'lawid': lawid,
+        'title': title,
+        'content': content,
+      };
+}
+
+class Legal {
+  final String legalid;
+  final String title;
+  final String content;
+
+  Legal({
+    required this.legalid,
+    required this.title,
+    required this.content,
+  });
+
+  factory Legal.fromJson(String str) => Legal.fromMap(json.decode(str));
+  String toJson() => json.encode(toMap());
+
+  Legal.fromMap(Map<String, dynamic> json)
+      : legalid = json['legalid'],
+        title = json['title'],
+        content = json['content'];
+
+  Map<String, dynamic> toMap() => {
+        'legalid': legalid,
+        'title': title,
+        'content': content,
+      };
+}

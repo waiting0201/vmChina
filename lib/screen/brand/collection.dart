@@ -150,6 +150,8 @@ class _CollectionsState extends State<Collections> {
                 return false;
               },
               child: ListView.builder(
+                addAutomaticKeepAlives: false,
+                addRepaintBoundaries: false,
                 padding: const EdgeInsets.only(
                   top: verticalSpace,
                   left: horizonSpace,

@@ -154,6 +154,8 @@ class _OrderhistoryState extends State<Orderhistory> {
                 return false;
               },
               child: ListView.builder(
+                addAutomaticKeepAlives: false,
+                addRepaintBoundaries: false,
                 padding: const EdgeInsets.only(
                   left: horizonSpace,
                   right: horizonSpace,

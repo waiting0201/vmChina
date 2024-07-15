@@ -230,6 +230,8 @@ class _ClubinsiderState extends State<Clubinsider> {
                       ),
                     ),
                     ListView.builder(
+                      addAutomaticKeepAlives: false,
+                      addRepaintBoundaries: false,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       padding: const EdgeInsets.only(
