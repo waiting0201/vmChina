@@ -15,6 +15,7 @@ class Legalstatement extends StatefulWidget {
   const Legalstatement({
     super.key,
   });
+
   @override
   State<Legalstatement> createState() => _LegalstatementState();
 }

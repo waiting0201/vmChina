@@ -1047,6 +1047,8 @@ class _ProductDetailState extends State<ProductDetail> {
                     ),
                   ),
                   ListView.builder(
+                    addAutomaticKeepAlives: false,
+                    addRepaintBoundaries: false,
                     padding: const EdgeInsets.only(
                       top: 30,
                       left: horizonSpace,
@@ -1113,6 +1115,8 @@ class _ProductDetailState extends State<ProductDetail> {
                                 right: horizonSpace,
                               ),
                               child: ListView.builder(
+                                addAutomaticKeepAlives: false,
+                                addRepaintBoundaries: false,
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemCount: _messages.length,
