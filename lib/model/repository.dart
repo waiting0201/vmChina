@@ -9,6 +9,7 @@ class HttpService {
 
   final apiKey = "!@#qwe";
   final baseUrl = "https://api.vetrinamia.com.cn/api";
+  //final baseUrl = "https://vmhkdemo-api.azurewebsites.net/api";
 
   HttpService() {
     _dio = Dio(BaseOptions(
