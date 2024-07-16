@@ -11,7 +11,6 @@ import '../../model/repository.dart';
 import '../../model/models.dart';
 import '../../theme/theme_constants.dart';
 import '../authentication/auth_provider.dart';
-import '../widgets/constant.dart';
 import '../widgets/partial.dart';
 import 'complete.dart';
 
@@ -29,7 +28,10 @@ class Preorderpayment extends StatefulWidget {
 }
 
 class _PreorderpaymentState extends State<Preorderpayment> {
-  late final WebViewController _controller;
+  final String _shippingtype = "B";
+  final String _ispreorder = "y";
+
+  late WebViewController _controller;
   late Member _member;
   late double _subtotal;
   late String _orderid = "";
@@ -111,6 +113,16 @@ Page resource error:
                   _onAliButtonPressed(message.message);
                 },
               );
+            } else if (change.url!.contains('AsiapaySuccess') ||
+                change.url!.contains('AsiapayFail') ||
+                change.url!.contains('AsiapayCancel')) {
+              _controller.addJavaScriptChannel(
+                'WeChatresponse',
+                onMessageReceived: (JavaScriptMessage message) {
+                  log("WeChat:${message.message}");
+                  _onWeChatButtonPressed(message.message);
+                },
+              );
             }
           },
           onHttpAuthRequest: (HttpAuthRequest request) {},
@@ -123,21 +135,14 @@ Page resource error:
           _onCardButtonPressed(message.message);
         },
       )
-      ..addJavaScriptChannel(
-        'WeChatresponse',
-        onMessageReceived: (JavaScriptMessage message) {
-          log("WeChat:");
-          //_onButtonPressed(message.message);
-        },
-      )
       ..loadRequest(
         Uri.parse(
-            'https://vetrinamiahk-frontend.azurewebsites.net/paymentms/mobilecnpayment'),
+            'https://vmhkdemo-frontend.azurewebsites.net/paymentms/mobilecnpayment'),
         headers: {
           "memberid": _member.memberid,
           "shippinglocationid": widget.shippinglocationid,
-          "shippingtype": "B",
-          "ispreorder": "y",
+          "shippingtype": _shippingtype,
+          "ispreorder": _ispreorder,
           "carts": cartdata.toJson(),
         },
       );
@@ -171,8 +176,8 @@ Page resource error:
       _member.memberid,
       paymentmethodid,
       widget.shippinglocationid,
-      "B",
-      "y",
+      _shippingtype,
+      _ispreorder,
     );
 
     var data = json.decode(response.toString());
@@ -191,7 +196,7 @@ Page resource error:
         _orderid = or.orderid;
       });
 
-      return 'failed';
+      return 'fail';
     }
   }
 
@@ -226,6 +231,25 @@ Page resource error:
             orderid: orderid,
             status: status,
             redirectstatus: redirectstatus,
+          ),
+        ),
+        (route) => false,
+      );
+    }
+  }
+
+  void _onWeChatButtonPressed(String message) async {
+    if (mounted) {
+      final Map<String, dynamic> data = jsonDecode(message);
+      final String orderid = data['orderid'];
+      final String status = data['status'];
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Complete(
+            orderid: orderid,
+            status: status,
           ),
         ),
         (route) => false,

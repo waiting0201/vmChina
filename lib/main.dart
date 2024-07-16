@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
-//import 'package:firebase_core/firebase_core.dart';
 import 'package:fluwx/fluwx.dart';
 
 import 'screen/authentication/auth_provider.dart';
@@ -17,13 +16,9 @@ import 'screen/splash_screen/splashscreen.dart';
 import 'screen/widgets/library.dart';
 import 'theme/theme_constants.dart';
 import 'generated/l10n.dart';
-//import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  /*await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );*/
 
   //runApp(const MyApp());
   SystemChrome.setPreferredOrientations([

@@ -5,22 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:dio/dio.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:fluwx/fluwx.dart' as fluwx;
 
 import '../../generated/l10n.dart' as lang;
 import '../../model/repository.dart';
 import '../../model/models.dart';
 import '../../theme/theme_constants.dart';
 import '../authentication/auth_provider.dart';
-import '../widgets/constant.dart';
 import '../widgets/partial.dart';
 import 'cart_provider.dart';
 import 'complete.dart';
 
 class Payment extends StatefulWidget {
-  //final String shippinglocationid;
+  final String shippinglocationid;
   const Payment({
-    //required this.shippinglocationid,
+    required this.shippinglocationid,
     super.key,
   });
 
@@ -29,16 +27,15 @@ class Payment extends StatefulWidget {
 }
 
 class _PaymentState extends State<Payment> {
-  final _fluwx = fluwx.Fluwx();
+  final String _shippingtype = "B";
+  final String _ispreorder = "n";
 
-  late final WebViewController _controller;
+  late WebViewController _controller;
   late CartChangeProvider _cartChangeProvider;
   late Member _member;
   late double _subtotal;
   late String _orderid = "";
   late bool _isLoading = false;
-  late bool _isWeChatPaying = false;
-  late Function(fluwx.WeChatResponse) responseListener;
 
   @override
   void initState() {
@@ -53,7 +50,7 @@ class _PaymentState extends State<Payment> {
 
     _cartChangeProvider =
         Provider.of<CartChangeProvider>(context, listen: false);
-    //_member = Provider.of<AuthChangeProvider>(context, listen: false).member;
+    _member = Provider.of<AuthChangeProvider>(context, listen: false).member;
     _subtotal = _cartChangeProvider.getSubTotalPrice();
 
     CartData cartdata = CartData(
@@ -118,6 +115,16 @@ Page resource error:
                   _onAliButtonPressed(message.message);
                 },
               );
+            } else if (change.url!.contains('AsiapaySuccess') ||
+                change.url!.contains('AsiapayFail') ||
+                change.url!.contains('AsiapayCancel')) {
+              _controller.addJavaScriptChannel(
+                'WeChatresponse',
+                onMessageReceived: (JavaScriptMessage message) {
+                  log("WeChat:${message.message}");
+                  _onWeChatButtonPressed(message.message);
+                },
+              );
             }
           },
           onHttpAuthRequest: (HttpAuthRequest request) {},
@@ -127,32 +134,25 @@ Page resource error:
         'Cardresponse',
         onMessageReceived: (JavaScriptMessage message) {
           log("Card:${message.message}");
-          //_onCardButtonPressed(message.message);
-        },
-      )
-      ..addJavaScriptChannel(
-        'WeChatresponse',
-        onMessageReceived: (JavaScriptMessage message) {
-          log("WeChat:");
-          //_onWeChatButtonPressed(message.message);
+          _onCardButtonPressed(message.message);
         },
       )
       ..loadRequest(
         Uri.parse(
-            'https://vetrinamiahk-frontend.azurewebsites.net/paymentms/mobilecnpayment'),
+            'https://vmhkdemo-frontend.azurewebsites.net/paymentms/mobilecnpayment'),
         headers: {
-          //"memberid": _member.memberid,
-          //"shippinglocationid": widget.shippinglocationid,
-          //"shippingtype": "B",
-          //"ispreorder": "n",
-          //"carts": cartdata.toJson(),
+          "memberid": _member.memberid,
+          "shippinglocationid": widget.shippinglocationid,
+          "shippingtype": _shippingtype,
+          "ispreorder": _ispreorder,
+          "carts": cartdata.toJson(),
         },
       );
 
     _controller = controller;
   }
 
-  /*Future<String> cardprocess(String paymentmethodid) async {
+  Future<String> cardprocess(String paymentmethodid) async {
     OverlayEntry overlayEntry = OverlayEntry(
       builder: (context) => Positioned(
         top: 0,
@@ -178,8 +178,8 @@ Page resource error:
       _member.memberid,
       paymentmethodid,
       widget.shippinglocationid,
-      "B",
-      "n",
+      _shippingtype,
+      _ispreorder,
     );
 
     var data = json.decode(response.toString());
@@ -198,7 +198,7 @@ Page resource error:
         _orderid = or.orderid;
       });
 
-      return 'failed';
+      return 'fail';
     }
   }
 
@@ -217,7 +217,7 @@ Page resource error:
         (route) => false,
       );
     }
-  }*/
+  }
 
   void _onAliButtonPressed(String message) async {
     if (mounted) {
@@ -242,62 +242,26 @@ Page resource error:
 
   void _onWeChatButtonPressed(String message) async {
     if (mounted) {
-      setState(() {
-        _isWeChatPaying = true;
-      });
+      final Map<String, dynamic> data = jsonDecode(message);
+      final String orderid = data['orderid'];
+      final String status = data['status'];
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Complete(
+            orderid: orderid,
+            status: status,
+          ),
+        ),
+        (route) => false,
+      );
     }
-
-    responseListener = (res) {
-      if (res is fluwx.WeChatPaymentResponse) {
-        if (res.isSuccessful) {
-          setState(() {
-            _isWeChatPaying = false;
-          });
-
-          /*_authChangeProvider.wechatBinding(res.code!).then((value) {
-            if (value != null) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => WechatEmail(
-                    name: value.nickname,
-                    unionid: value.unionid,
-                  ),
-                ),
-              );
-            } else {
-              Navigator.pop(context);
-            }
-          });*/
-        } else {
-          setState(() {
-            _isWeChatPaying = false;
-          });
-        }
-      } else {
-        setState(() {
-          _isWeChatPaying = false;
-        });
-      }
-    };
-    _fluwx.addSubscriber(responseListener);
-
-    /*_fluwx.pay(
-        which: fluwx.Payment(
-      appId: result['appid'].toString(),
-      partnerId: result['partnerid'].toString(),
-      prepayId: result['prepayid'].toString(),
-      packageValue: result['package'].toString(),
-      nonceStr: result['noncestr'].toString(),
-      timestamp: result['timestamp'],
-      sign: result['sign'].toString(),
-    ));*/
   }
 
   @override
   void dispose() {
     super.dispose();
-    _fluwx.removeSubscriber(responseListener);
   }
 
   @override
