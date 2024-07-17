@@ -79,7 +79,7 @@ class _CategorydetailState extends State<Categorydetail> {
                       style: textTheme.titleSmall,
                     ),
                   )
-                : Container(),
+                : const SizedBox(),
             //________________________________________________________subcategorys
             Padding(
               padding: const EdgeInsets.only(
@@ -88,6 +88,8 @@ class _CategorydetailState extends State<Categorydetail> {
                 right: horizonSpace,
               ),
               child: ListView.builder(
+                addAutomaticKeepAlives: false,
+                addRepaintBoundaries: false,
                 shrinkWrap: true,
                 physics: const BouncingScrollPhysics(),
                 itemCount: widget.category.subcategorys!.length,

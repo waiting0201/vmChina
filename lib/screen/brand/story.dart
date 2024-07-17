@@ -447,6 +447,8 @@ class _StoryState extends State<Story> {
               ),
             ),
             ListView.builder(
+              addAutomaticKeepAlives: false,
+              addRepaintBoundaries: false,
               padding: const EdgeInsets.only(
                 top: 10,
                 left: horizonSpace,

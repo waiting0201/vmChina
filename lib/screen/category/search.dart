@@ -403,6 +403,8 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                                   color: lightbackgroundColor,
                                 ),
                                 ListView.builder(
+                                  addAutomaticKeepAlives: false,
+                                  addRepaintBoundaries: false,
                                   shrinkWrap: true,
                                   itemCount:
                                       e.subcategorys![j].thirdcategorys.length,

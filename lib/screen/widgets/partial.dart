@@ -2068,7 +2068,7 @@ class ImageStackCard extends StatelessWidget {
                             ? Image(
                                 image: NetworkImage(flagurl!),
                               )
-                            : Container(),
+                            : const SizedBox(),
                       ],
                     ),
                   ),

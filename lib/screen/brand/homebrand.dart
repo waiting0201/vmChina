@@ -618,7 +618,7 @@ class _HomebrandState extends State<Homebrand> {
                           ),
                         ),
                       )
-                    : Container(),
+                    : const SizedBox(),
             if (!_isDesignerLoading)
               Padding(
                 padding: const EdgeInsets.only(

@@ -789,7 +789,7 @@ class _EventHorizonSlideListState extends State<EventHorizonSlideList> {
     return Consumer<LanguageChangeProvider>(
       builder: (context, language, child) {
         return !language.status
-            ? Container()
+            ? const SizedBox()
             : SizedBox(
                 height: 448,
                 child: ListView.builder(

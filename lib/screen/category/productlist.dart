@@ -235,13 +235,13 @@ class _ProductlistState extends State<Productlist> {
                   isScrollable: true,
                   tabs: const [
                     Tab(
-                      text: 'SIZE',
+                      text: '尺寸',
                     ),
                     Tab(
-                      text: 'PRICE',
+                      text: '价格',
                     ),
                     Tab(
-                      text: 'COLOR',
+                      text: '颜色',
                     )
                   ],
                   labelPadding: const EdgeInsets.only(
@@ -482,7 +482,7 @@ class _ProductlistState extends State<Productlist> {
           child: Consumer<LanguageChangeProvider>(
             builder: (context, language, child) {
               return !language.status
-                  ? Container()
+                  ? const SizedBox()
                   : GridView.count(
                       addAutomaticKeepAlives: false,
                       addRepaintBoundaries: false,
@@ -516,7 +516,7 @@ class _ProductlistState extends State<Productlist> {
                               HttpService httpService = HttpService();
                               httpService
                                   .getproductbyid(
-                                      _products[index].productid, null)
+                                      filteredProducts[index].productid, null)
                                   .then((value) {
                                 var data = json.decode(value.toString());
                                 if (data["statusCode"] == 200) {

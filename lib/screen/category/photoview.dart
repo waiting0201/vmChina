@@ -137,7 +137,7 @@ class _PhotoviewState extends State<Photoview> {
                         .toList(),
                   ),
                 )
-              : Container(),
+              : const SizedBox(),
         ],
       ),
     );

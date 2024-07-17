@@ -98,7 +98,7 @@ class _BrandsState extends State<Brands> with SingleTickerProviderStateMixin {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(30),
           child: _isCategoryLoading
-              ? Container()
+              ? const SizedBox()
               : Column(
                   children: [
                     Container(
@@ -181,6 +181,8 @@ class _BrandsState extends State<Brands> with SingleTickerProviderStateMixin {
                       SizedBox(
                         height: 260,
                         child: ListView.builder(
+                          addAutomaticKeepAlives: false,
+                          addRepaintBoundaries: false,
                           padding: const EdgeInsets.only(
                             left: 13,
                             right: 13,

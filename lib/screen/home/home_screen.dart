@@ -768,31 +768,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                           ),
-                          /*Padding(
-                            padding: const EdgeInsets.only(
-                              top: 20,
-                              left: horizonSpace,
-                              right: horizonSpace,
-                            ),
-                            child: Center(
-                              child: OutlinedButton(
-                                onPressed: () {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const Payment(),
-                                    ),
-                                  );
-                                },
-                                child: Text(
-                                  'Pay',
-                                  style: textTheme.titleSmall?.copyWith(
-                                    color: darkColor,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),*/
                           const SizedBox(height: 10.0),
                         ],
                       ),

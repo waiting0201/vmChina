@@ -920,7 +920,7 @@ class _ProductDetailState extends State<ProductDetail> {
                           ),
                           children: [
                             _product.content == ''
-                                ? Container()
+                                ? const SizedBox()
                                 : Text(
                                     _product.content ?? '',
                                     style: textTheme.bodySmall,
@@ -1188,7 +1188,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                 },
                               ),
                             )
-                          : Container(),
+                          : const SizedBox(),
                   //________________________________________________________Shop the collection
                   _productsbycollection.isNotEmpty
                       ? Padding(
@@ -1203,7 +1203,7 @@ class _ProductDetailState extends State<ProductDetail> {
                             textAlign: TextAlign.center,
                           ),
                         )
-                      : Container(),
+                      : const SizedBox(),
                   _isProductByCollectionLoading
                       ? Padding(
                           padding: const EdgeInsets.only(
@@ -1228,7 +1228,7 @@ class _ProductDetailState extends State<ProductDetail> {
                               child: ProductsHorizonSlideList(
                                   products: _productsbycollection),
                             )
-                          : Container(),
+                          : const SizedBox(),
                   //________________________________________________________Shop the brand
                   _productsbybrand.isNotEmpty
                       ? Padding(
@@ -1243,7 +1243,7 @@ class _ProductDetailState extends State<ProductDetail> {
                             textAlign: TextAlign.center,
                           ),
                         )
-                      : Container(),
+                      : const SizedBox(),
                   _isProductByBrandLoading
                       ? Padding(
                           padding: const EdgeInsets.only(
@@ -1268,12 +1268,12 @@ class _ProductDetailState extends State<ProductDetail> {
                               child: ProductsHorizonSlideList(
                                   products: _productsbybrand),
                             )
-                          : Container(),
+                          : const SizedBox(),
                   //________________________________________________________brand
                   _isBrandLoading
-                      ? Container()
+                      ? const SizedBox()
                       : _brand.summary == null
-                          ? Container()
+                          ? const SizedBox()
                           : Padding(
                               padding: const EdgeInsets.only(
                                 top: verticalSpace,
@@ -1400,7 +1400,7 @@ class _ProductDetailState extends State<ProductDetail> {
                     ),
                   ),
                   _isDesignerLoading
-                      ? Container()
+                      ? const SizedBox()
                       : Padding(
                           padding: const EdgeInsets.only(
                             top: 10,
@@ -1514,6 +1514,8 @@ class _ProductDetailState extends State<ProductDetail> {
                           ),
                         ),
                   ListView.builder(
+                    addAutomaticKeepAlives: false,
+                    addRepaintBoundaries: false,
                     padding: const EdgeInsets.only(
                       top: verticalSpace,
                       left: horizonSpace,
