@@ -233,15 +233,15 @@ class _ProductlistState extends State<Productlist> {
                   tabAlignment: TabAlignment.start,
                   indicatorSize: TabBarIndicatorSize.tab,
                   isScrollable: true,
-                  tabs: const [
+                  tabs: [
                     Tab(
-                      text: '尺寸',
+                      text: lang.S.of(context).productlistSize,
                     ),
                     Tab(
-                      text: '价格',
+                      text: lang.S.of(context).productlistPrice,
                     ),
                     Tab(
-                      text: '颜色',
+                      text: lang.S.of(context).productlistColor,
                     )
                   ],
                   labelPadding: const EdgeInsets.only(
@@ -473,84 +473,102 @@ class _ProductlistState extends State<Productlist> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        controller: _scrollController,
-        child: Padding(
-          padding: const EdgeInsets.only(
-            bottom: verticalSpace,
-          ),
-          child: Consumer<LanguageChangeProvider>(
-            builder: (context, language, child) {
-              return !language.status
-                  ? const SizedBox()
-                  : GridView.count(
-                      addAutomaticKeepAlives: false,
-                      addRepaintBoundaries: false,
-                      padding: const EdgeInsets.only(
-                        left: 13,
-                        right: 13,
-                      ),
-                      crossAxisCount: 2,
-                      childAspectRatio: 1 / 2,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      children: List.generate(
-                        filteredProducts.length,
-                        (index) {
-                          return InkWell(
-                            onTap: () {
-                              OverlayEntry overlayEntry = OverlayEntry(
-                                builder: (context) => Positioned(
-                                  top: 0,
-                                  bottom: 0,
-                                  left: 0,
-                                  right: 0,
-                                  child: Container(
-                                    color: Colors.black.withOpacity(0.5),
-                                    child: const LoadingCircle(),
-                                  ),
+      body: _isLoading
+          ? const LoadingCircle()
+          : _products.isEmpty
+              ? Center(
+                  child: Text(
+                    'Coming Soon',
+                    style: textTheme.titleLarge,
+                    textAlign: TextAlign.justify,
+                  ),
+                )
+              : SingleChildScrollView(
+                  controller: _scrollController,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      bottom: verticalSpace,
+                    ),
+                    child: Consumer<LanguageChangeProvider>(
+                      builder: (context, language, child) {
+                        return !language.status
+                            ? const SizedBox()
+                            : GridView.count(
+                                addAutomaticKeepAlives: false,
+                                addRepaintBoundaries: false,
+                                padding: const EdgeInsets.only(
+                                  left: 13,
+                                  right: 13,
+                                ),
+                                crossAxisCount: 2,
+                                childAspectRatio: 1 / 2,
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                children: List.generate(
+                                  filteredProducts.length,
+                                  (index) {
+                                    return InkWell(
+                                      onTap: () {
+                                        OverlayEntry overlayEntry =
+                                            OverlayEntry(
+                                          builder: (context) => Positioned(
+                                            top: 0,
+                                            bottom: 0,
+                                            left: 0,
+                                            right: 0,
+                                            child: Container(
+                                              color:
+                                                  Colors.black.withOpacity(0.5),
+                                              child: const LoadingCircle(),
+                                            ),
+                                          ),
+                                        );
+                                        Overlay.of(context)
+                                            .insert(overlayEntry);
+
+                                        HttpService httpService = HttpService();
+                                        httpService
+                                            .getproductbyid(
+                                                filteredProducts[index]
+                                                    .productid,
+                                                null)
+                                            .then((value) {
+                                          var data =
+                                              json.decode(value.toString());
+                                          if (data["statusCode"] == 200) {
+                                            overlayEntry.remove();
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ProductDetail(
+                                                  product: Product.fromMap(
+                                                      data["data"]),
+                                                ),
+                                              ),
+                                            );
+                                          } else {
+                                            overlayEntry.remove();
+                                          }
+                                        });
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 2,
+                                          right: 2,
+                                        ),
+                                        child: ProductCard(
+                                          product: filteredProducts[index],
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
                               );
-                              Overlay.of(context).insert(overlayEntry);
-
-                              HttpService httpService = HttpService();
-                              httpService
-                                  .getproductbyid(
-                                      filteredProducts[index].productid, null)
-                                  .then((value) {
-                                var data = json.decode(value.toString());
-                                if (data["statusCode"] == 200) {
-                                  overlayEntry.remove();
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ProductDetail(
-                                        product: Product.fromMap(data["data"]),
-                                      ),
-                                    ),
-                                  );
-                                } else {
-                                  overlayEntry.remove();
-                                }
-                              });
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                left: 2,
-                                right: 2,
-                              ),
-                              child: ProductCard(
-                                product: filteredProducts[index],
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    );
-            },
-          ),
-        ),
-      ),
+                      },
+                    ),
+                  ),
+                ),
     );
   }
 }

@@ -788,7 +788,7 @@ class _EventHorizonSlideListState extends State<EventHorizonSlideList> {
   Widget build(BuildContext context) {
     return Consumer<LanguageChangeProvider>(
       builder: (context, language, child) {
-        return !language.status
+        return !language.status || _events.isEmpty
             ? const SizedBox()
             : SizedBox(
                 height: 448,
