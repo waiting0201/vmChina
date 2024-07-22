@@ -1564,7 +1564,7 @@ class _ProductDetailState extends State<ProductDetail> {
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    /*Expanded(
+                    Expanded(
                       child: ElevatedButton(
                         child: Text(
                           lang.S.of(context).commonPreOrder,
@@ -1627,7 +1627,7 @@ class _ProductDetailState extends State<ProductDetail> {
                         },
                       ),
                     ),
-                    const SizedBox(width: 5),*/
+                    const SizedBox(width: 5),
                     _isBrandLoading
                         ? Container()
                         : MemberPlanIcon(
@@ -1638,7 +1638,7 @@ class _ProductDetailState extends State<ProductDetail> {
               : Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    /*Expanded(
+                    Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: darkColor,
@@ -1872,7 +1872,7 @@ class _ProductDetailState extends State<ProductDetail> {
                         },
                       ),
                     ),
-                    const SizedBox(width: 5),*/
+                    const SizedBox(width: 5),
                     _isBrandLoading
                         ? Container()
                         : MemberPlanIcon(

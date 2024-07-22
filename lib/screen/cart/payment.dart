@@ -138,8 +138,7 @@ Page resource error:
         },
       )
       ..loadRequest(
-        Uri.parse(
-            'https://vmhkdemo-frontend.azurewebsites.net/paymentms/mobilecnpayment'),
+        Uri.parse('https://www.vetrinamia.com.cn/paymentms/mobilecnpayment'),
         headers: {
           "memberid": _member.memberid,
           "shippinglocationid": widget.shippinglocationid,
