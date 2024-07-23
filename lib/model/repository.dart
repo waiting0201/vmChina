@@ -1160,6 +1160,42 @@ class HttpService {
     return response;
   }
 
+  Future<Response> postchinapayorderdetail(
+    String carts,
+    String memberid,
+    String orderid,
+    String paymentmethodid,
+  ) async {
+    Response response = await _dio.post('/order/postchinapayorderdetail',
+        data: carts,
+        options: Options(
+          contentType: 'application/json',
+        ),
+        queryParameters: {
+          "memberid": memberid,
+          "orderid": orderid,
+          "paymentmethodid": paymentmethodid,
+        });
+
+    return response;
+  }
+
+  Future<Response> postorderdetail(
+    String carts,
+    String orderid,
+  ) async {
+    Response response = await _dio.post('/order/postorderdetail',
+        data: carts,
+        options: Options(
+          contentType: 'application/json',
+        ),
+        queryParameters: {
+          "orderid": orderid,
+        });
+
+    return response;
+  }
+
   Future<Response> postpaymentintent(
     String carts,
     String memberid,

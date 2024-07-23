@@ -136,20 +136,14 @@ Page resource error:
         },
       )
       ..loadRequest(
-        Uri.parse('https://www.vetrinamia.com.cn/paymentms/mobilecnpayment'),
-        headers: {
-          "memberid": _member.memberid,
-          "shippinglocationid": widget.shippinglocationid,
-          "shippingtype": _shippingtype,
-          "ispreorder": _ispreorder,
-          "carts": cartdata.toJson(),
-        },
+        Uri.parse(
+            'https://www.vetrinamia.com.cn/paymentms/mobilecnpayment?memberid=${_member.memberid}&shippinglocationid=${widget.shippinglocationid}&shippingtype=$_shippingtype&ispreorder=$_ispreorder&amt=$_subtotal'),
       );
 
     _controller = controller;
   }
 
-  Future<String> cardprocess(String paymentmethodid) async {
+  Future<String> cardprocess(String paymentmethodid, String orderid) async {
     OverlayEntry overlayEntry = OverlayEntry(
       builder: (context) => Positioned(
         top: 0,
@@ -170,13 +164,11 @@ Page resource error:
     );
 
     HttpService httpService = HttpService();
-    Response response = await httpService.postpaymentintent(
+    Response response = await httpService.postchinapayorderdetail(
       cartdata.toJson(),
       _member.memberid,
+      orderid,
       paymentmethodid,
-      widget.shippinglocationid,
-      _shippingtype,
-      _ispreorder,
     );
 
     var data = json.decode(response.toString());
@@ -199,8 +191,58 @@ Page resource error:
     }
   }
 
-  void _onCardButtonPressed(String paymentmethodid) async {
-    String result = await cardprocess(paymentmethodid);
+  Future<String> orderprocess(String orderid) async {
+    OverlayEntry overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        child: Container(
+          color: Colors.black.withOpacity(0.5),
+          child: const LoadingCircle(),
+        ),
+      ),
+    );
+    Overlay.of(context).insert(overlayEntry);
+
+    CartData cartdata = CartData(
+      items: widget.carts,
+      subtotal: _subtotal,
+    );
+
+    HttpService httpService = HttpService();
+    Response response = await httpService.postorderdetail(
+      cartdata.toJson(),
+      orderid,
+    );
+
+    var data = json.decode(response.toString());
+    OrderResponse or = OrderResponse.fromMap(data["data"]);
+
+    if (data["statusCode"] == 200) {
+      overlayEntry.remove();
+      setState(() {
+        _orderid = or.orderid;
+      });
+
+      return 'succeeded';
+    } else {
+      overlayEntry.remove();
+      setState(() {
+        _orderid = or.orderid;
+      });
+
+      return 'fail';
+    }
+  }
+
+  void _onCardButtonPressed(String message) async {
+    final Map<String, dynamic> data = jsonDecode(message);
+    final String orderid = data['orderid'];
+    final String paymentmethodid = data['paymentmethodid'];
+
+    String result = await cardprocess(paymentmethodid, orderid);
 
     if (mounted) {
       Navigator.pushAndRemoveUntil(
@@ -217,12 +259,14 @@ Page resource error:
   }
 
   void _onAliButtonPressed(String message) async {
-    if (mounted) {
-      final Map<String, dynamic> data = jsonDecode(message);
-      final String orderid = data['orderid'];
-      final String redirectstatus = data['redirectstatus'];
-      final String status = data['status'];
+    final Map<String, dynamic> data = jsonDecode(message);
+    final String orderid = data['orderid'];
+    final String redirectstatus = data['redirectstatus'];
+    final String status = data['status'];
 
+    await orderprocess(orderid);
+
+    if (mounted) {
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
@@ -238,11 +282,13 @@ Page resource error:
   }
 
   void _onWeChatButtonPressed(String message) async {
-    if (mounted) {
-      final Map<String, dynamic> data = jsonDecode(message);
-      final String orderid = data['orderid'];
-      final String status = data['status'];
+    final Map<String, dynamic> data = jsonDecode(message);
+    final String orderid = data['orderid'];
+    final String status = data['status'];
 
+    await orderprocess(orderid);
+
+    if (mounted) {
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
