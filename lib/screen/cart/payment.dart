@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:dio/dio.dart';
@@ -35,7 +33,6 @@ class _PaymentState extends State<Payment> {
   late CartChangeProvider _cartChangeProvider;
   late Member _member;
   late double _subtotal;
-  late String _orderid = "";
   late bool _isLoading = false;
 
   @override
@@ -177,20 +174,13 @@ Page resource error:
     );
 
     var data = json.decode(response.toString());
-    OrderResponse or = OrderResponse.fromMap(data["data"]);
 
     if (data["statusCode"] == 200) {
       overlayEntry.remove();
-      setState(() {
-        _orderid = or.orderid;
-      });
 
       return 'succeeded';
     } else {
       overlayEntry.remove();
-      setState(() {
-        _orderid = or.orderid;
-      });
 
       return 'fail';
     }
@@ -223,20 +213,13 @@ Page resource error:
     );
 
     var data = json.decode(response.toString());
-    OrderResponse or = OrderResponse.fromMap(data["data"]);
 
     if (data["statusCode"] == 200) {
       overlayEntry.remove();
-      setState(() {
-        _orderid = or.orderid;
-      });
 
       return 'succeeded';
     } else {
       overlayEntry.remove();
-      setState(() {
-        _orderid = or.orderid;
-      });
 
       return 'fail';
     }
