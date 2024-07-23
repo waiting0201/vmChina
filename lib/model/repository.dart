@@ -504,10 +504,14 @@ class HttpService {
     return response;
   }
 
-  Future<Response> getcategorypopularbrandlists(String categoryid) async {
+  Future<Response> getcategorypopularbrandlists(
+      String categoryid, String? languageid) async {
+    String slanguageid = await getLanguage();
+    languageid = (languageid != null) ? languageid : slanguageid;
     Response response = await _dio
         .post('/brand/getcategorypopularbrandlists', queryParameters: {
       "categoryid": categoryid,
+      "languageid": languageid,
     });
 
     return response;

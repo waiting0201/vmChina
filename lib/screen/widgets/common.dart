@@ -1276,7 +1276,7 @@ class _PopularBrandsListState extends State<PopularBrandsList> {
 
       HttpService httpService = HttpService();
       await httpService
-          .getcategorypopularbrandlists(widget.categoryid)
+          .getcategorypopularbrandlists(widget.categoryid, null)
           .then((value) {
         var data = json.decode(value.toString());
 
