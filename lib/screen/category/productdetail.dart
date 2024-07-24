@@ -539,6 +539,8 @@ class _ProductDetailState extends State<ProductDetail> {
       }
     }
 
+    //debugInvertOversizedImages = true;
+
     return SafeArea(
       top: false,
       left: false,
@@ -595,7 +597,7 @@ class _ProductDetailState extends State<ProductDetail> {
                           ),
                         )
                       : _photos.isEmpty
-                          ? Container()
+                          ? const SizedBox()
                           : Stack(
                               alignment: Alignment.center,
                               children: [

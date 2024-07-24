@@ -140,7 +140,7 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(80),
           child: _isCategoryLoading
-              ? Container()
+              ? const SizedBox()
               : Column(
                   children: [
                     Container(
@@ -388,7 +388,7 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                                       MaterialPageRoute(
                                         builder: (context) => Productlist(
                                           categorytitle:
-                                              'All ${capitalizeFirstLetter(e.subcategorys![j].title)}',
+                                              '${lang.S.of(context).shopSeeAll} ${capitalizeFirstLetter(e.subcategorys![j].title)}',
                                           categoryid:
                                               _categorys[_tabcontroller.index]
                                                   .categoryid,

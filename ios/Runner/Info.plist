@@ -48,7 +48,6 @@
 		<string>weixinULAPI</string>
 		<string>weixinURLParamsAPI</string>
 		<string>alipay</string>
-		<string>alipayshare</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

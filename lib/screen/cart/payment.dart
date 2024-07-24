@@ -107,6 +107,7 @@ Page resource error:
 
               return NavigationDecision.prevent;
             }
+
             debugPrint('allowing navigation to ${request.url}');
             return NavigationDecision.navigate;
           },

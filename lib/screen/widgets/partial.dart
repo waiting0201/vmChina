@@ -1233,13 +1233,19 @@ class ProductCard extends StatelessWidget {
         children: [
           Stack(
             children: [
-              AspectRatio(
+              /*AspectRatio(
                 aspectRatio: 3 / 4,
-                child: Image(
+                child: 
+                Image(
                   image: CachedNetworkImageProvider(
                     product.portraiturl!,
                   ),
                 ),
+              ),*/
+              Image.network(
+                product.portraiturl!,
+                cacheHeight: 800,
+                cacheWidth: 600,
               ),
               Positioned(
                 right: 0,

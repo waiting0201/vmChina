@@ -92,7 +92,9 @@ class _PhotoviewState extends State<Photoview> {
               maxScale: 10.0,
               child: Hero(
                 tag: widget.tag, // 每個圖像有唯一的tag
-                child: Image.network(widget.productmedias[index].url),
+                child: Image.network(
+                  widget.productmedias[index].url,
+                ),
               ),
             ),
             options: CarouselOptions(
