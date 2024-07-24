@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:dio/dio.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../generated/l10n.dart' as lang;
 import '../../model/repository.dart';
@@ -94,8 +95,16 @@ Page resource error:
           ''');
           },
           onNavigationRequest: (NavigationRequest request) {
-            if (request.url.startsWith('https://www.youtube.com/')) {
+            if (request.url.startsWith('weixin://wap/')) {
               debugPrint('blocking navigation to ${request.url}');
+              launchUrl(Uri.parse(request.url));
+
+              return NavigationDecision.prevent;
+            }
+            if (request.url.startsWith('alipay://alipayclient/')) {
+              debugPrint('blocking navigation to ${request.url}');
+              launchUrl(Uri.parse(request.url));
+
               return NavigationDecision.prevent;
             }
             debugPrint('allowing navigation to ${request.url}');
