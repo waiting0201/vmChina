@@ -89,13 +89,21 @@ Page resource error:
           onNavigationRequest: (NavigationRequest request) {
             if (request.url.startsWith('weixin://wap/')) {
               debugPrint('blocking navigation to ${request.url}');
-              launchUrl(Uri.parse(request.url));
+              launchUrl(
+                Uri.parse(request.url),
+                mode: LaunchMode.externalApplication,
+                webOnlyWindowName: "_self",
+              );
 
               return NavigationDecision.prevent;
             }
             if (request.url.startsWith('alipay://alipayclient/')) {
               debugPrint('blocking navigation to ${request.url}');
-              launchUrl(Uri.parse(request.url));
+              launchUrl(
+                Uri.parse(request.url),
+                mode: LaunchMode.externalApplication,
+                webOnlyWindowName: "_self",
+              );
 
               return NavigationDecision.prevent;
             }
