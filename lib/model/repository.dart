@@ -1149,6 +1149,15 @@ class HttpService {
     return response;
   }
 
+  Future<Response> getorderbyordercode(String ordercode) async {
+    Response response =
+        await _dio.post('/order/getorderbyordercode', queryParameters: {
+      "ordercode": ordercode,
+    });
+
+    return response;
+  }
+
   Future<Response> gettotalspendbybrandidandmemberid(
       String brandid, String memberid) async {
     Response response = await _dio

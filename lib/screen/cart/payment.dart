@@ -116,6 +116,18 @@ Page resource error:
               return NavigationDecision.prevent;
             }
 
+            if (request.url
+                .startsWith('https://www.vetrinamia.com.cn/app/complete')) {
+              debugPrint('blocking navigation to ${request.url}');
+              launchUrl(
+                Uri.parse(request.url),
+                mode: LaunchMode.externalApplication,
+                webOnlyWindowName: "_self",
+              );
+
+              return NavigationDecision.prevent;
+            }
+
             debugPrint('allowing navigation to ${request.url}');
             return NavigationDecision.navigate;
           },
@@ -273,7 +285,7 @@ Page resource error:
     await orderprocess(orderid);
 
     if (mounted) {
-      Navigator.pushAndRemoveUntil(
+      /*Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
           builder: (context) => Complete(
@@ -283,7 +295,7 @@ Page resource error:
           ),
         ),
         (route) => false,
-      );
+      );*/
     }
   }
 
@@ -295,7 +307,7 @@ Page resource error:
     await orderprocess(orderid);
 
     if (mounted) {
-      Navigator.pushAndRemoveUntil(
+      /*Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
           builder: (context) => Complete(
@@ -304,7 +316,7 @@ Page resource error:
           ),
         ),
         (route) => false,
-      );
+      );*/
     }
   }
 

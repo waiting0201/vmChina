@@ -150,11 +150,9 @@ class _CartState extends State<Cart> {
                               }
                             });
                           },
-                          child: Image(
-                            width: 90,
-                            image: CachedNetworkImageProvider(
-                              _carts[i].productphoto!,
-                            ),
+                          child: CachedNetworkImage(
+                            memCacheWidth: 90,
+                            imageUrl: _carts[i].productphoto!,
                           ),
                         ),
                       ),

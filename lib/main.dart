@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -5,7 +6,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 import 'package:fluwx/fluwx.dart';
+import 'package:app_links/app_links.dart';
 
+import 'model/repository.dart';
+import 'model/models.dart';
 import 'screen/authentication/auth_provider.dart';
 import 'screen/language/language_provider.dart';
 import 'screen/cart/cart_provider.dart';
@@ -14,6 +18,8 @@ import 'screen/home/notification_provider.dart';
 import 'screen/splash_screen/splashscreen.dart';
 //import 'screen/splash_screen/introscreen.dart';
 import 'screen/widgets/library.dart';
+import 'screen/home/home.dart';
+import 'screen/cart/complete.dart';
 import 'theme/theme_constants.dart';
 import 'generated/l10n.dart';
 
@@ -35,12 +41,24 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final _navigatorKey = GlobalKey<NavigatorState>();
   final Fluwx _fluwx = Fluwx();
+
+  late AppLinks _appLinks;
+  late StreamSubscription<Uri>? _linkSubscription;
 
   @override
   void initState() {
     super.initState();
     _initFluwx();
+    initDeepLinks();
+  }
+
+  @override
+  void dispose() {
+    _linkSubscription?.cancel();
+
+    super.dispose();
   }
 
   _initFluwx() async {
@@ -50,6 +68,21 @@ class _MyAppState extends State<MyApp> {
       doOnIOS: true,
       universalLink: 'https://www.vetrinamia.com.cn/app/',
     );
+  }
+
+  Future<void> initDeepLinks() async {
+    _appLinks = AppLinks();
+
+    // Handle links
+    _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
+      debugPrint('onAppLink: $uri');
+      if (uri.pathSegments[0] == 'app') {
+        _navigatorKey.currentState!.pushNamedAndRemoveUntil(
+          uri.toString(),
+          (route) => false,
+        );
+      }
+    });
   }
 
   @override
@@ -87,6 +120,7 @@ class _MyAppState extends State<MyApp> {
         builder: (context, lang, child) {
           log("main locale : ${lang.currentLocale}");
           return MaterialApp(
+            navigatorKey: _navigatorKey,
             //設定現在手機的語言
             locale: lang.currentLocale,
             //委託確保加載正確語言的本地化數據
@@ -107,6 +141,31 @@ class _MyAppState extends State<MyApp> {
             theme: lightTheme,
             home: const SplashScreen(),
             //home: const IntroScreen(),
+            initialRoute: "/",
+            onGenerateRoute: (settings) {
+              Uri uri = Uri.parse(settings.name!);
+
+              if (uri.pathSegments.length == 1 &&
+                  uri.pathSegments[0] == 'app') {
+                return MaterialPageRoute(
+                  builder: (context) => const Home(),
+                );
+              }
+
+              // payment /app/complete
+              if (uri.pathSegments[0] == 'app' &&
+                  uri.pathSegments[1] == 'complete') {
+                String orderid = uri.queryParameters['orderid'] ?? '';
+                String status = uri.queryParameters['status'] ?? '';
+
+                return MaterialPageRoute(
+                  builder: (context) => Complete(
+                    orderid: orderid,
+                    status: status,
+                  ),
+                );
+              }
+            },
           );
         },
       ),

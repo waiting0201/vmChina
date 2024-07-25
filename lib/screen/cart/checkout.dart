@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../generated/l10n.dart' as lang;
 import '../../model/repository.dart';
@@ -31,10 +32,13 @@ class _CheckoutState extends State<Checkout> {
   final _firstname = TextEditingController();
   final _lastname = TextEditingController();
   final List<ShippingLocation> _shippinglocations = [];
+  final String _shippingtype = "B";
+  final String _ispreorder = "n";
 
   late CartChangeProvider _cartChangeProvider;
   late List<Carts> _carts = [];
   late Member _member;
+  late double _subtotal;
   late String _selected = '';
   late bool _isLoading = false;
 
@@ -47,6 +51,7 @@ class _CheckoutState extends State<Checkout> {
     _firstname.text = _member.firstname!;
     _lastname.text = _member.lastname!;
     _carts = _cartChangeProvider.carts;
+    _subtotal = _cartChangeProvider.getSubTotalPrice();
     getShippingLocations();
   }
 
@@ -89,6 +94,8 @@ class _CheckoutState extends State<Checkout> {
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
 
+    //debugInvertOversizedImages = true;
+
     return Scaffold(
       backgroundColor: whiteColor,
       appBar: AppBar(
@@ -130,8 +137,10 @@ class _CheckoutState extends State<Checkout> {
                     ),
                   ),
                   _shippinglocations.isEmpty
-                      ? Container()
+                      ? const SizedBox()
                       : ListView.separated(
+                          addAutomaticKeepAlives: false,
+                          addRepaintBoundaries: false,
                           padding: const EdgeInsets.only(
                             top: 20,
                             left: horizonSpace,
@@ -418,12 +427,16 @@ class _CheckoutState extends State<Checkout> {
                                           }
                                         });
                                       },
-                                      child: Image(
+                                      child: CachedNetworkImage(
+                                        memCacheWidth: 90,
+                                        imageUrl: _carts[i].productphoto!,
+                                      ),
+                                      /*Image(
                                         width: 90,
                                         image: CachedNetworkImageProvider(
                                           _carts[i].productphoto!,
                                         ),
-                                      ),
+                                      ),*/
                                     ),
                                   ),
                                   Expanded(
@@ -543,14 +556,19 @@ class _CheckoutState extends State<Checkout> {
                   );
                 });
               } else {
-                Navigator.push(
+                launchUrl(
+                  Uri.parse(
+                      'https://www.vetrinamia.com.cn/paymentms/mobilecnpayment?memberid=${_member.memberid}&shippinglocationid=$_selected&shippingtype=$_shippingtype&ispreorder=$_ispreorder&amt=$_subtotal'),
+                  mode: LaunchMode.externalApplication,
+                );
+                /*Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => Payment(
                       shippinglocationid: _selected,
                     ),
                   ),
-                );
+                );*/
               }
             }
           },

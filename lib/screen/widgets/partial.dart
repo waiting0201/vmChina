@@ -1242,10 +1242,10 @@ class ProductCard extends StatelessWidget {
                   ),
                 ),
               ),*/
-              Image.network(
-                product.portraiturl!,
-                cacheHeight: 800,
-                cacheWidth: 600,
+              CachedNetworkImage(
+                imageUrl: product.portraiturl!,
+                memCacheWidth: 591,
+                memCacheHeight: 787,
               ),
               Positioned(
                 right: 0,
