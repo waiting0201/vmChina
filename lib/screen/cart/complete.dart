@@ -105,7 +105,7 @@ class _CompleteState extends State<Complete> {
       ),
       body: SingleChildScrollView(
         child: _isLoading
-            ? Container()
+            ? const SizedBox()
             : Center(
                 child: Padding(
                   padding: const EdgeInsets.only(
@@ -118,7 +118,7 @@ class _CompleteState extends State<Complete> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       _isLoading
-                          ? Container()
+                          ? const SizedBox()
                           : widget.status == 'succeeded'
                               ? const Icon(
                                   Icons.check_circle,

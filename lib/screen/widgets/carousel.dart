@@ -74,6 +74,8 @@ class _CurrentBrandsCarouselState extends State<CurrentBrandsCarousel> {
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
 
+    //debugInvertOversizedImages = true;
+
     return _isBrandLoading
         ? Shimmer.fromColors(
             baseColor: shimmerbaseColor,
@@ -84,7 +86,7 @@ class _CurrentBrandsCarouselState extends State<CurrentBrandsCarousel> {
             ),
           )
         : _brands.isEmpty
-            ? Container()
+            ? const SizedBox()
             : Stack(
                 alignment: Alignment.center,
                 children: [
@@ -144,6 +146,7 @@ class _CurrentBrandsCarouselState extends State<CurrentBrandsCarousel> {
                         title: _brands[index].title,
                         subtitle: 'Discover',
                         flagurl: _brands[index].flagurl!,
+                        width: 948,
                       ),
                     ),
                   ),
@@ -265,7 +268,7 @@ class _ComingBrandsCarouselState extends State<ComingBrandsCarousel> {
             ),
           )
         : _brands.isEmpty
-            ? Container()
+            ? const SizedBox()
             : Stack(
                 alignment: Alignment.center,
                 children: [
@@ -289,6 +292,7 @@ class _ComingBrandsCarouselState extends State<ComingBrandsCarousel> {
                       title: _brands[index].title,
                       subtitle: 'Discover',
                       flagurl: _brands[index].flagurl!,
+                      width: 948,
                     ),
                   ),
                   Positioned(

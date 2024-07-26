@@ -1087,14 +1087,18 @@ class SubCategoryCard extends StatelessWidget {
         children: [
           Stack(
             children: [
-              AspectRatio(
+              CachedNetworkImage(
+                memCacheWidth: 462,
+                imageUrl: subcategory.portraiturl!,
+              ),
+              /*AspectRatio(
                 aspectRatio: 3 / 4,
                 child: Image(
                   image: CachedNetworkImageProvider(
                     subcategory.portraiturl!,
                   ),
                 ),
-              ),
+              ),*/
             ],
           ),
           Padding(
@@ -1137,10 +1141,9 @@ class WhatsNewCard extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(6.0),
-            child: Image(
-              image: CachedNetworkImageProvider(
-                whatsnew.portraiturl!,
-              ),
+            child: CachedNetworkImage(
+              memCacheWidth: 948,
+              imageUrl: whatsnew.portraiturl!,
             ),
           ),
           Padding(
@@ -1207,6 +1210,7 @@ class EventCard extends StatelessWidget {
             title: event.subtitle,
             subtitle: event.title,
             flagurl: event.flagurl!,
+            width: 948,
           ),
         ],
       ),
@@ -2026,11 +2030,9 @@ class ImageStackCard extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          Image(
-            image: CachedNetworkImageProvider(
-              url,
-            ),
-            width: width,
+          CachedNetworkImage(
+            memCacheWidth: width?.toInt(),
+            imageUrl: url,
           ),
           Positioned(
             left: 0,

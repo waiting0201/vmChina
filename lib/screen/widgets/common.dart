@@ -611,7 +611,7 @@ class _WhatsNewHorizonSlideListState extends State<WhatsNewHorizonSlideList> {
     return Consumer<LanguageChangeProvider>(
       builder: (context, language, child) {
         return !language.status
-            ? Container()
+            ? const SizedBox()
             : SizedBox(
                 height: 395,
                 child: ListView.builder(
@@ -730,6 +730,7 @@ class _WhatsNewLatestState extends State<WhatsNewLatest> {
               },
               child: ImageStackCard(
                 url: _whatsnew.portraiturl!,
+                width: 948,
               ),
             ),
     );
@@ -1234,6 +1235,7 @@ class CollectionsList extends StatelessWidget {
             title: collections[index].subtitle,
             subtitle: collections[index].title,
             flagurl: collections[index].flagurl!,
+            width: 948,
           ),
         ),
       ),
@@ -1336,7 +1338,7 @@ class _PopularBrandsListState extends State<PopularBrandsList> {
                   ? Image(
                       image: NetworkImage(_brands[k].flagurl!),
                     )
-                  : Container(),
+                  : const SizedBox(),
             ],
           ),
           trailing: ImageStackCard(
@@ -1392,6 +1394,7 @@ class CategorysList extends StatelessWidget {
           child: ImageStackCard(
             url: categorys[index].landscapeurl!,
             title: categorys[index].title,
+            width: 1001,
           ),
         ),
       ),
@@ -1412,7 +1415,7 @@ class ProductsHorizonSlideList extends StatelessWidget {
     return Consumer<LanguageChangeProvider>(
       builder: (context, language, child) {
         return !language.status
-            ? Container()
+            ? const SizedBox()
             : SizedBox(
                 height: 420,
                 child: ListView.builder(
@@ -1585,8 +1588,10 @@ class _ProductVerticalListsState extends State<ProductVerticalLists> {
     return Consumer<LanguageChangeProvider>(
       builder: (context, language, child) {
         return !language.status
-            ? Container()
+            ? const SizedBox()
             : GridView.count(
+                addAutomaticKeepAlives: false,
+                addRepaintBoundaries: false,
                 padding: const EdgeInsets.only(
                   left: 13,
                   right: 13,

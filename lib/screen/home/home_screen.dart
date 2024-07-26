@@ -307,7 +307,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     baseColor: shimmerbaseColor,
                                     highlightColor: shimmerhilightColor,
                                     child: AspectRatio(
-                                      aspectRatio: 3 / 4, // 16:9 aspect ratio
+                                      aspectRatio: 3 / 4,
                                       child: Container(
                                         color: whiteColor,
                                       ),
