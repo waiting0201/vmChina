@@ -16,13 +16,11 @@ import '../widgets/partial.dart';
 import 'cart_provider.dart';
 
 class Complete extends StatefulWidget {
-  final String orderid;
+  final String ordercode;
   final String status;
-  final String? redirectstatus;
   const Complete({
-    required this.orderid,
+    required this.ordercode,
     required this.status,
-    this.redirectstatus,
     super.key,
   });
 
@@ -43,7 +41,7 @@ class _CompleteState extends State<Complete> {
         Provider.of<CartChangeProvider>(context, listen: false);
     _member = Provider.of<AuthChangeProvider>(context, listen: false).member;
 
-    CartData cartdata = CartData(
+    /*CartData cartdata = CartData(
       items: _cartChangeProvider.carts,
       subtotal: _cartChangeProvider.getSubTotalPrice(),
     );
@@ -52,7 +50,7 @@ class _CompleteState extends State<Complete> {
     httpService.postorderdetail(
       cartdata.toJson(),
       widget.orderid,
-    );
+    );*/
 
     getorder();
   }
@@ -63,7 +61,7 @@ class _CompleteState extends State<Complete> {
     }
 
     HttpService httpService = HttpService();
-    Response response = await httpService.getorderbyorderid(widget.orderid);
+    Response response = await httpService.getorderbyordercode(widget.ordercode);
     var data = json.decode(response.toString());
     if (data["statusCode"] == 200) {
       setState(() {

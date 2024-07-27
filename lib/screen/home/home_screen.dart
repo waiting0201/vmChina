@@ -770,7 +770,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           const SizedBox(height: 10.0),
-                          Padding(
+                          /*Padding(
                             padding: const EdgeInsets.only(
                               left: horizonSpace,
                               right: horizonSpace,
@@ -794,7 +794,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                             ),
-                          ),
+                          ),*/
                         ],
                       ),
                     ),

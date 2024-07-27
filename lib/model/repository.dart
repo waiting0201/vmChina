@@ -1206,6 +1206,28 @@ class HttpService {
     return response;
   }
 
+  Future<Response> postasiapayorder(
+    String carts,
+    String memberid,
+    String shippinglocationid,
+    String shippingtype,
+    String ispreorder,
+  ) async {
+    Response response = await _dio.post('/order/postasiapayorder',
+        data: carts,
+        options: Options(
+          contentType: 'application/json',
+        ),
+        queryParameters: {
+          "memberid": memberid,
+          "shippinglocationid": shippinglocationid,
+          "shippingtype": shippingtype,
+          "ispreorder": ispreorder,
+        });
+
+    return response;
+  }
+
   Future<Response> postpaymentintent(
     String carts,
     String memberid,

@@ -152,15 +152,43 @@ class _MyAppState extends State<MyApp> {
                 );
               }
 
-              // payment /app/complete
+              // payment /app/asiapaysuccess
               if (uri.pathSegments[0] == 'app' &&
-                  uri.pathSegments[1] == 'complete') {
-                String orderid = uri.queryParameters['orderid'] ?? '';
-                String status = uri.queryParameters['status'] ?? '';
+                  uri.pathSegments[1] == 'asiapaysuccess') {
+                String ordercode = uri.queryParameters['Ref'] ?? '';
+                String status = 'succeeded';
 
                 return MaterialPageRoute(
                   builder: (context) => Complete(
-                    orderid: orderid,
+                    ordercode: ordercode,
+                    status: status,
+                  ),
+                );
+              }
+
+              // payment /app/asiapayfail
+              if (uri.pathSegments[0] == 'app' &&
+                  uri.pathSegments[1] == 'asiapayfail') {
+                String ordercode = uri.queryParameters['Ref'] ?? '';
+                String status = 'fail';
+
+                return MaterialPageRoute(
+                  builder: (context) => Complete(
+                    ordercode: ordercode,
+                    status: status,
+                  ),
+                );
+              }
+
+              // payment /app/asiapaycancel
+              if (uri.pathSegments[0] == 'app' &&
+                  uri.pathSegments[1] == 'asiapaycancel') {
+                String ordercode = uri.queryParameters['Ref'] ?? '';
+                String status = 'cancel';
+
+                return MaterialPageRoute(
+                  builder: (context) => Complete(
+                    ordercode: ordercode,
                     status: status,
                   ),
                 );

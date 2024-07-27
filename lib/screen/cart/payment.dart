@@ -263,7 +263,7 @@ Page resource error:
     String result = await cardprocess(paymentmethodid, orderid);
 
     if (mounted) {
-      Navigator.pushAndRemoveUntil(
+      /*Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
           builder: (context) => Complete(
@@ -272,7 +272,7 @@ Page resource error:
           ),
         ),
         (route) => false,
-      );
+      );*/
     }
   }
 

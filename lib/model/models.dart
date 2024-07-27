@@ -2001,3 +2001,53 @@ class Legal {
         'content': content,
       };
 }
+
+class Asiapay {
+  final String merchantid;
+  final String ordercode;
+  final String asiapayurl;
+  final String securehash;
+  final String amt;
+  final String currcode;
+  final String successurl;
+  final String failurl;
+  final String cancelurl;
+
+  Asiapay({
+    required this.merchantid,
+    required this.ordercode,
+    required this.asiapayurl,
+    required this.securehash,
+    required this.amt,
+    required this.currcode,
+    required this.successurl,
+    required this.failurl,
+    required this.cancelurl,
+  });
+
+  factory Asiapay.fromJson(String str) => Asiapay.fromMap(json.decode(str));
+  String toJson() => json.encode(toMap());
+
+  Asiapay.fromMap(Map<String, dynamic> json)
+      : merchantid = json['merchantid'],
+        ordercode = json['ordercode'],
+        asiapayurl = json['asiapayurl'],
+        securehash = json['securehash'],
+        amt = json['amt'],
+        currcode = json['currcode'],
+        successurl = json['successurl'],
+        failurl = json['failurl'],
+        cancelurl = json['cancelurl'];
+
+  Map<String, dynamic> toMap() => {
+        'merchantid': merchantid,
+        'ordercode': ordercode,
+        'asiapayurl': asiapayurl,
+        'securehash': securehash,
+        'amt': amt,
+        'currcode': currcode,
+        'successurl': successurl,
+        'failurl': failurl,
+        'cancelurl': cancelurl,
+      };
+}

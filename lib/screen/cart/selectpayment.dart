@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -13,10 +15,14 @@ import '../widgets/partial.dart';
 import 'cart_provider.dart';
 
 class SelectPayment extends StatefulWidget {
-  final String? refer;
+  final String shippinglocationid;
+  final String shippingtype;
+  final String ispreorder;
   const SelectPayment({
     super.key,
-    this.refer,
+    required this.shippinglocationid,
+    required this.shippingtype,
+    required this.ispreorder,
   });
 
   @override
@@ -177,11 +183,50 @@ class _SelectPaymentState extends State<SelectPayment> {
                         );
                       });
                     } else {
-                      /*launchUrl(
-                        Uri.parse(
-                            'https://www.vetrinamia.com.cn/paymentms/mobilecnpayment?memberid=${_member.memberid}&shippinglocationid=$_selected&shippingtype=$_shippingtype&ispreorder=$_ispreorder&amt=$_subtotal'),
-                        mode: LaunchMode.externalApplication,
-                      );*/
+                      OverlayEntry overlayEntry = OverlayEntry(
+                        builder: (context) => Positioned(
+                          top: 0,
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            color: Colors.black.withOpacity(0.5),
+                            child: const LoadingCircle(),
+                          ),
+                        ),
+                      );
+                      Overlay.of(context).insert(overlayEntry);
+
+                      CartData cartdata = CartData(
+                        items: _cartChangeProvider.carts,
+                        subtotal: _subtotal,
+                      );
+
+                      HttpService httpService = HttpService();
+                      httpService
+                          .postasiapayorder(
+                        cartdata.toJson(),
+                        _member.memberid,
+                        widget.shippinglocationid,
+                        widget.shippingtype,
+                        widget.ispreorder,
+                      )
+                          .then((value) {
+                        var data = json.decode(value.toString());
+                        if (data["statusCode"] == 200) {
+                          overlayEntry.remove();
+                          Asiapay pay = Asiapay.fromMap(data["data"]);
+
+                          Uri uri = Uri.parse(
+                              '${pay.asiapayurl}?merchantId=${pay.merchantid}&amount=${pay.amt}&orderRef=${pay.ordercode}&currCode=${pay.currcode}&successUrl=${pay.successurl}&failUrl=${pay.failurl}&cancelUrl=${pay.cancelurl}&payType=N&lang=X&payMethod=$_selected&secureHash=${pay.securehash}');
+                          launchUrl(
+                            uri,
+                            mode: LaunchMode.inAppWebView,
+                          );
+                        } else {
+                          overlayEntry.remove();
+                        }
+                      });
                     }
                   },
                   label: Text(

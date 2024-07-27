@@ -17,6 +17,7 @@ import '../category/productdetail.dart';
 import '../profile/addaddress.dart';
 import 'cart_provider.dart';
 import 'payment.dart';
+import 'selectpayment.dart';
 
 class Checkout extends StatefulWidget {
   const Checkout({
@@ -556,11 +557,11 @@ class _CheckoutState extends State<Checkout> {
                   );
                 });
               } else {
-                launchUrl(
+                /*launchUrl(
                   Uri.parse(
                       'https://www.vetrinamia.com.cn/paymentms/mobilecnpayment?memberid=${_member.memberid}&shippinglocationid=$_selected&shippingtype=$_shippingtype&ispreorder=$_ispreorder&amt=$_subtotal'),
                   mode: LaunchMode.externalApplication,
-                );
+                );*/
                 /*Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -569,6 +570,16 @@ class _CheckoutState extends State<Checkout> {
                     ),
                   ),
                 );*/
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SelectPayment(
+                      shippinglocationid: _selected,
+                      shippingtype: "B",
+                      ispreorder: "n",
+                    ),
+                  ),
+                );
               }
             }
           },
