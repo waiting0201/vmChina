@@ -16,8 +16,7 @@ import '../widgets/carousel.dart';
 import '../widgets/partial.dart';
 import 'whatsnew.dart';
 import 'home.dart';
-
-import '../cart/payment.dart';
+import '../cart/selectpayment.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
@@ -771,6 +770,31 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           const SizedBox(height: 10.0),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: horizonSpace,
+                              right: horizonSpace,
+                            ),
+                            child: Center(
+                              child: OutlinedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const SelectPayment(),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  "Payment",
+                                  style: textTheme.titleSmall?.copyWith(
+                                    color: darkColor,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
