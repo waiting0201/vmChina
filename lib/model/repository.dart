@@ -8,8 +8,8 @@ class HttpService {
   late String? accessToken = "";
 
   final apiKey = "!@#qwe";
-  //final baseUrl = "https://api.vetrinamia.com.cn/api";
-  final baseUrl = "https://vmhkdemo-api.azurewebsites.net/api";
+  final baseUrl = "https://api.vetrinamia.com.cn/api";
+  //final baseUrl = "https://vmhkdemo-api.azurewebsites.net/api";
 
   HttpService() {
     _dio = Dio(BaseOptions(
@@ -1111,14 +1111,24 @@ class HttpService {
     return response;
   }
 
-  Future<Response> getcountrylists() async {
-    Response response = await _dio.post('/country/getcountrylists');
+  Future<Response> getcountrylists(String? languageid) async {
+    String slanguageid = await getLanguage();
+    languageid = (languageid != null) ? languageid : slanguageid;
+    Response response =
+        await _dio.post('/country/getcountrylists', queryParameters: {
+      "languageid": languageid,
+    });
 
     return response;
   }
 
-  Future<Response> getcncountrylists() async {
-    Response response = await _dio.post('/country/getcncountrylists');
+  Future<Response> getcncountrylists(String? languageid) async {
+    String slanguageid = await getLanguage();
+    languageid = (languageid != null) ? languageid : slanguageid;
+    Response response =
+        await _dio.post('/country/getcncountrylists', queryParameters: {
+      "languageid": languageid,
+    });
 
     return response;
   }

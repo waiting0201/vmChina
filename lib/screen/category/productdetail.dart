@@ -1424,18 +1424,22 @@ class _ProductDetailState extends State<ProductDetail> {
                                   child: Column(
                                     children: [
                                       Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 10.0),
+                                        padding: const EdgeInsets.only(
+                                            left: 10, bottom: 10.0),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            Text(
-                                              _designers[0].title,
-                                              style: textTheme.bodySmall
-                                                  ?.copyWith(
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                            Flexible(
+                                              child: Text(
+                                                _designers[0].title,
+                                                maxLines: 2,
+                                                softWrap: true,
+                                                style: textTheme.bodySmall
+                                                    ?.copyWith(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                              ),
                                             ),
                                             const SizedBox(width: 5),
                                             Image(

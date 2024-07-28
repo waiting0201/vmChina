@@ -661,39 +661,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           //________________________________________________________Fashion shows
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: verticalSpace,
-                              left: horizonSpace,
-                            ),
-                            child: Text(
-                              lang.S.of(context).homeTuneIn,
-                              style: textTheme.titleSmall,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: 5,
-                              left: horizonSpace,
-                              right: horizonSpace,
-                            ),
-                            child: Text(
-                              lang.S.of(context).homeFashionShowTitle,
-                              style: textTheme.titleLarge,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: 5,
-                              left: horizonSpace,
-                              right: horizonSpace,
-                              bottom: 10,
-                            ),
-                            child: Text(
-                              lang.S.of(context).homeFashionShowCaption,
-                              style: textTheme.bodySmall,
-                            ),
-                          ),
                           const EventHorizonSlideList(),
                           //________________________________________________________Sign or register
                           authchangeprovider.status
@@ -770,31 +737,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           const SizedBox(height: 10.0),
-                          /*Padding(
-                            padding: const EdgeInsets.only(
-                              left: horizonSpace,
-                              right: horizonSpace,
-                            ),
-                            child: Center(
-                              child: OutlinedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const SelectPayment(),
-                                    ),
-                                  );
-                                },
-                                child: Text(
-                                  "Payment",
-                                  style: textTheme.titleSmall?.copyWith(
-                                    color: darkColor,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),*/
                         ],
                       ),
                     ),

@@ -64,7 +64,7 @@ class _AddaddressState extends State<Addaddress> {
 
   Future<void> getCountrys() async {
     HttpService httpService = HttpService();
-    await httpService.getcountrylists().then((value) {
+    await httpService.getcountrylists(null).then((value) {
       var data = json.decode(value.toString());
 
       if (data["statusCode"] == 200) {

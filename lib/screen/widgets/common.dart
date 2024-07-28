@@ -787,44 +787,84 @@ class _EventHorizonSlideListState extends State<EventHorizonSlideList> {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme textTheme = Theme.of(context).textTheme;
+
     return Consumer<LanguageChangeProvider>(
       builder: (context, language, child) {
         return !language.status || _events.isEmpty
             ? const SizedBox()
-            : SizedBox(
-                height: 448,
-                child: ListView.builder(
-                  addAutomaticKeepAlives: false,
-                  addRepaintBoundaries: false,
-                  padding: const EdgeInsets.only(
-                    left: 13,
-                    right: 13,
-                  ),
-                  physics: const BouncingScrollPhysics(),
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemExtent: 340,
-                  itemCount: _events.length,
-                  itemBuilder: (BuildContext context, int index) => InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Eventdetail(
-                            event: _events[index],
-                          ),
-                        ),
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 2,
-                        right: 2,
-                      ),
-                      child: EventCard(event: _events[index]),
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: verticalSpace,
+                      left: horizonSpace,
+                    ),
+                    child: Text(
+                      lang.S.of(context).homeTuneIn,
+                      style: textTheme.titleSmall,
                     ),
                   ),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 5,
+                      left: horizonSpace,
+                      right: horizonSpace,
+                    ),
+                    child: Text(
+                      lang.S.of(context).homeFashionShowTitle,
+                      style: textTheme.titleLarge,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 5,
+                      left: horizonSpace,
+                      right: horizonSpace,
+                      bottom: 10,
+                    ),
+                    child: Text(
+                      lang.S.of(context).homeFashionShowCaption,
+                      style: textTheme.bodySmall,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 448,
+                    child: ListView.builder(
+                      addAutomaticKeepAlives: false,
+                      addRepaintBoundaries: false,
+                      padding: const EdgeInsets.only(
+                        left: 13,
+                        right: 13,
+                      ),
+                      physics: const BouncingScrollPhysics(),
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemExtent: 340,
+                      itemCount: _events.length,
+                      itemBuilder: (BuildContext context, int index) => InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Eventdetail(
+                                event: _events[index],
+                              ),
+                            ),
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            left: 2,
+                            right: 2,
+                          ),
+                          child: EventCard(event: _events[index]),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
               );
       },
     );
@@ -1336,14 +1376,15 @@ class _PopularBrandsListState extends State<PopularBrandsList> {
               const SizedBox(width: 5),
               _brands[k].flagurl != null
                   ? Image(
+                      width: 15,
                       image: NetworkImage(_brands[k].flagurl!),
                     )
                   : const SizedBox(),
             ],
           ),
-          trailing: ImageStackCard(
-            url: _brands[k].iconurl!,
+          trailing: Image(
             width: 40,
+            image: NetworkImage(_brands[k].iconurl!),
           ),
           childrenPadding: const EdgeInsets.only(
             left: horizonSpace,

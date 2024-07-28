@@ -41,17 +41,6 @@ class _CompleteState extends State<Complete> {
         Provider.of<CartChangeProvider>(context, listen: false);
     _member = Provider.of<AuthChangeProvider>(context, listen: false).member;
 
-    /*CartData cartdata = CartData(
-      items: _cartChangeProvider.carts,
-      subtotal: _cartChangeProvider.getSubTotalPrice(),
-    );
-
-    HttpService httpService = HttpService();
-    httpService.postorderdetail(
-      cartdata.toJson(),
-      widget.orderid,
-    );*/
-
     getorder();
   }
 

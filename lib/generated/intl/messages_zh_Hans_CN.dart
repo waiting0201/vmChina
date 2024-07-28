@@ -56,7 +56,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "按下“确认”，即表示您同意支付总计 ${currencySign}${price} 以订阅 ${brandtitle} 成为 ${plantitle} 会员。";
 
   static String m16(days) =>
-      "您的卡将在 ${days} 天试用期结束时才会被扣款。在到期日前，您可以随时取消自动续订，您的卡将不会被扣款。";
+      "您将在 ${days} 天试用期结束时才会收到付款通知。在到期日前，您可以随时取消自动续订，您将不会被收费。";
 
   static String m17(brandtitle, plantitle) =>
       "欢迎加入 ${brandtitle}！从现在开始，您将享受作为 ${plantitle} 俱乐部会员的所有福利。";

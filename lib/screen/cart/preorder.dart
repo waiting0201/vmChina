@@ -14,7 +14,7 @@ import '../profile/addaddress.dart';
 import '../widgets/constant.dart';
 import '../widgets/partial.dart';
 import '../widgets/common.dart';
-import 'preorderpayment.dart';
+import 'preorderselectpayment.dart';
 
 class Preorder extends StatefulWidget {
   final List<Carts> carts;
@@ -545,12 +545,22 @@ class _PreorderState extends State<Preorder> {
                   );
                 });
               } else {
-                Navigator.push(
+                /*Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => Preorderpayment(
                       carts: widget.carts,
                       shippinglocationid: _selected,
+                    ),
+                  ),
+                );*/
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PreorderSelectPayment(
+                      carts: widget.carts,
+                      shippinglocationid: _selected,
+                      shippingtype: "B",
                     ),
                   ),
                 );

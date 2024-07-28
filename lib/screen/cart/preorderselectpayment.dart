@@ -12,24 +12,23 @@ import '../authentication/auth_provider.dart';
 import '../widgets/constant.dart';
 import '../widgets/common.dart';
 import '../widgets/partial.dart';
-import 'cart_provider.dart';
 
-class SelectPayment extends StatefulWidget {
+class PreorderSelectPayment extends StatefulWidget {
+  final List<Carts> carts;
   final String shippinglocationid;
   final String shippingtype;
-  const SelectPayment({
+  const PreorderSelectPayment({
     super.key,
+    required this.carts,
     required this.shippinglocationid,
     required this.shippingtype,
   });
 
   @override
-  State<SelectPayment> createState() => _SelectPaymentState();
+  State<PreorderSelectPayment> createState() => _PreorderSelectPaymentState();
 }
 
-class _SelectPaymentState extends State<SelectPayment> {
-  late CartChangeProvider _cartChangeProvider;
-  late List<Carts> _carts = [];
+class _PreorderSelectPaymentState extends State<PreorderSelectPayment> {
   late Member _member;
   late double _subtotal;
   late String _selected = '';
@@ -37,11 +36,8 @@ class _SelectPaymentState extends State<SelectPayment> {
   @override
   void initState() {
     super.initState();
-    _cartChangeProvider =
-        Provider.of<CartChangeProvider>(context, listen: false);
     _member = Provider.of<AuthChangeProvider>(context, listen: false).member;
-    _carts = _cartChangeProvider.carts;
-    _subtotal = _cartChangeProvider.getSubTotalPrice();
+    _subtotal = widget.carts.fold(0, (sum, e) => sum + e.total);
   }
 
   @override
@@ -199,7 +195,7 @@ class _SelectPaymentState extends State<SelectPayment> {
                       Overlay.of(context).insert(overlayEntry);
 
                       CartData cartdata = CartData(
-                        items: _cartChangeProvider.carts,
+                        items: widget.carts,
                         subtotal: _subtotal,
                       );
 
@@ -210,7 +206,7 @@ class _SelectPaymentState extends State<SelectPayment> {
                         _member.memberid,
                         widget.shippinglocationid,
                         widget.shippingtype,
-                        "n",
+                        "y",
                       )
                           .then((value) {
                         var data = json.decode(value.toString());

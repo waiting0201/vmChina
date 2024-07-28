@@ -484,6 +484,7 @@ class _HomebannerCarouselState extends State<HomebannerCarousel> {
                         ),
                         const SizedBox(width: 5),
                         Image(
+                          width: 15,
                           image:
                               NetworkImage(widget.homebanners[index].flagurl),
                         ),

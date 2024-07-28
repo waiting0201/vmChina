@@ -576,7 +576,6 @@ class _CheckoutState extends State<Checkout> {
                     builder: (context) => SelectPayment(
                       shippinglocationid: _selected,
                       shippingtype: "B",
-                      ispreorder: "n",
                     ),
                   ),
                 );

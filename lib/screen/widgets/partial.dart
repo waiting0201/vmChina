@@ -1002,9 +1002,9 @@ class BrandExpendCard extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 10),
-            child: ImageStackCard(
-              url: brand.portraiturl!,
+            child: Image(
               width: 140,
+              image: NetworkImage(brand.portraiturl!),
             ),
           ),
           Expanded(
@@ -1018,47 +1018,50 @@ class BrandExpendCard extends StatelessWidget {
                     style: textTheme.bodySmall,
                   ),
                 ),
-                OutlinedButton(
-                  onPressed: () {
-                    OverlayEntry overlayEntry = OverlayEntry(
-                      builder: (context) => Positioned(
-                        top: 0,
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: Container(
-                          color: Colors.black.withOpacity(0.5),
-                          child: const LoadingCircle(),
-                        ),
-                      ),
-                    );
-                    Overlay.of(context).insert(overlayEntry);
-
-                    HttpService httpService = HttpService();
-                    httpService.getbrandbyid(brand.brandid, null).then((value) {
-                      var data = json.decode(value.toString());
-                      if (data["statusCode"] == 200) {
-                        overlayEntry.remove();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Homebrand(
-                              brand: Brand.fromMap(data["data"]),
-                            ),
+                if (brand.publishstatus != 2)
+                  OutlinedButton(
+                    onPressed: () {
+                      OverlayEntry overlayEntry = OverlayEntry(
+                        builder: (context) => Positioned(
+                          top: 0,
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            color: Colors.black.withOpacity(0.5),
+                            child: const LoadingCircle(),
                           ),
-                        );
-                      } else {
-                        overlayEntry.remove();
-                      }
-                    });
-                  },
-                  child: Text(
-                    lang.S.of(context).commonSeeMore,
-                    style: textTheme.titleSmall?.copyWith(
-                      color: darkColor,
+                        ),
+                      );
+                      Overlay.of(context).insert(overlayEntry);
+
+                      HttpService httpService = HttpService();
+                      httpService
+                          .getbrandbyid(brand.brandid, null)
+                          .then((value) {
+                        var data = json.decode(value.toString());
+                        if (data["statusCode"] == 200) {
+                          overlayEntry.remove();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Homebrand(
+                                brand: Brand.fromMap(data["data"]),
+                              ),
+                            ),
+                          );
+                        } else {
+                          overlayEntry.remove();
+                        }
+                      });
+                    },
+                    child: Text(
+                      lang.S.of(context).commonSeeMore,
+                      style: textTheme.titleSmall?.copyWith(
+                        color: darkColor,
+                      ),
                     ),
                   ),
-                ),
               ],
             ),
           ),
@@ -1087,9 +1090,9 @@ class SubCategoryCard extends StatelessWidget {
         children: [
           Stack(
             children: [
-              CachedNetworkImage(
-                memCacheWidth: 462,
-                imageUrl: subcategory.portraiturl!,
+              Image(
+                width: 462,
+                image: NetworkImage(subcategory.portraiturl!),
               ),
               /*AspectRatio(
                 aspectRatio: 3 / 4,
@@ -1141,9 +1144,9 @@ class WhatsNewCard extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(6.0),
-            child: CachedNetworkImage(
-              memCacheWidth: 948,
-              imageUrl: whatsnew.portraiturl!,
+            child: Image(
+              width: 948,
+              image: NetworkImage(whatsnew.portraiturl!),
             ),
           ),
           Padding(
@@ -2030,9 +2033,9 @@ class ImageStackCard extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          CachedNetworkImage(
-            memCacheWidth: width?.toInt(),
-            imageUrl: url,
+          Image(
+            width: width,
+            image: NetworkImage(url),
           ),
           Positioned(
             left: 0,
@@ -2074,6 +2077,7 @@ class ImageStackCard extends StatelessWidget {
                         const SizedBox(width: 5),
                         flagurl != null
                             ? Image(
+                                width: 15,
                                 image: NetworkImage(flagurl!),
                               )
                             : const SizedBox(),

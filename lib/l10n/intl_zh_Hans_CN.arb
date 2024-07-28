@@ -88,7 +88,7 @@
     "memberplanpaymentEmptyCaption": "添加更多支付方式，使未来的购物结账更容易、更快捷。",
     "memberplanpaymentPayment": "选择您的首选支付方式",
     "memberplanpaymentConfirmCaption": "按下“确认”，即表示您同意支付总计 {currencySign}{price} 以订阅 {brandtitle} 成为 {plantitle} 会员。",
-    "memberplanpaymentTrialCaption": "您的卡将在 {days} 天试用期结束时才会被扣款。在到期日前，您可以随时取消自动续订，您的卡将不会被扣款。",
+    "memberplanpaymentTrialCaption": "您将在 {days} 天试用期结束时才会收到付款通知。在到期日前，您可以随时取消自动续订，您将不会被收费。",
     "memberplanpaymentCNTrialCaption": "试用期{days}天，您可以免费加入品牌俱乐部。",
     "memberplanpaymentCNCaption": "收费方式将寄送至您的邮件：{email}，请在期限内付款才会开通",
     "memberplanpaymentcompleteTitle": "完成",
