@@ -278,6 +278,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "commonApprox": MessageLookupByLibrary.simpleMessage("approx."),
         "commonBack": MessageLookupByLibrary.simpleMessage("Back"),
         "commonCancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "commonComingSoon": MessageLookupByLibrary.simpleMessage("COMING SOON"),
         "commonConfirm": MessageLookupByLibrary.simpleMessage("Confirm"),
         "commonContinue": MessageLookupByLibrary.simpleMessage("Continue"),
         "commonContinueBrowsing":
@@ -285,6 +286,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "commonCurrentPlan":
             MessageLookupByLibrary.simpleMessage("CURRENT PLAN"),
         "commonDelete": MessageLookupByLibrary.simpleMessage("Delete"),
+        "commonDiscover": MessageLookupByLibrary.simpleMessage("Discover"),
         "commonDiscoverMore":
             MessageLookupByLibrary.simpleMessage("Discover More"),
         "commonEnterYourAccount":

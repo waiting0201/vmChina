@@ -480,6 +480,7 @@
     "commonNotQualified": "不符合条件",
     "commonSubscribe": "订阅",
     "commonMore": "更多",
+    "commonDiscover": "发现",
     "commonDiscoverMore": "发现更多",
     "commonPerMonth": "每月",
     "commonSubmit": "提交",
@@ -489,5 +490,6 @@
     "commonOk": "确定",
     "commonPreOrder": "预订",
     "commonAddtoCart": "加入购物车",
-    "commonGotoCart": "前往购物车"
+    "commonGotoCart": "前往购物车",
+    "commonComingSoon": "即将推出"
 }

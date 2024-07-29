@@ -1023,9 +1023,9 @@ class BrandExpendCard extends StatelessWidget {
                     style: textTheme.bodySmall,
                   ),
                 ),
-                if (brand.publishstatus != 2)
-                  OutlinedButton(
-                    onPressed: () {
+                OutlinedButton(
+                  onPressed: () {
+                    if (brand.publishstatus != 2) {
                       OverlayEntry overlayEntry = OverlayEntry(
                         builder: (context) => Positioned(
                           top: 0,
@@ -1059,14 +1059,17 @@ class BrandExpendCard extends StatelessWidget {
                           overlayEntry.remove();
                         }
                       });
-                    },
-                    child: Text(
-                      lang.S.of(context).commonSeeMore,
-                      style: textTheme.titleSmall?.copyWith(
-                        color: darkColor,
-                      ),
+                    }
+                  },
+                  child: Text(
+                    brand.publishstatus == 2
+                        ? lang.S.of(context).commonComingSoon
+                        : lang.S.of(context).commonSeeMore,
+                    style: textTheme.titleSmall?.copyWith(
+                      color: darkColor,
                     ),
                   ),
+                ),
               ],
             ),
           ),

@@ -4862,6 +4862,16 @@ class S {
     );
   }
 
+  /// `Discover`
+  String get commonDiscover {
+    return Intl.message(
+      'Discover',
+      name: 'commonDiscover',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Discover More`
   String get commonDiscoverMore {
     return Intl.message(
@@ -4957,6 +4967,16 @@ class S {
     return Intl.message(
       'Go to Cart',
       name: 'commonGotoCart',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `COMING SOON`
+  String get commonComingSoon {
+    return Intl.message(
+      'COMING SOON',
+      name: 'commonComingSoon',
       desc: '',
       args: [],
     );

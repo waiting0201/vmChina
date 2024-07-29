@@ -480,6 +480,7 @@
   "commonNotQualified": "NOT QUALIFIED",
   "commonSubscribe": "SUBSCRIBE",
   "commonMore": "More",
+  "commonDiscover": "Discover",
   "commonDiscoverMore": "Discover More",
   "commonPerMonth": "per month",
   "commonSubmit": "Submit",
@@ -489,5 +490,6 @@
   "commonOk": "OK",
   "commonPreOrder": "Pre Order",
   "commonAddtoCart": "Add to Cart",
-  "commonGotoCart": "Go to Cart"
+  "commonGotoCart": "Go to Cart",
+  "commonComingSoon": "COMING SOON"
 }

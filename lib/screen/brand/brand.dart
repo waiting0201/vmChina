@@ -98,7 +98,7 @@ class _BrandsState extends State<Brands> with SingleTickerProviderStateMixin {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(30),
           child: _isCategoryLoading
-              ? Container()
+              ? const SizedBox()
               : Column(
                   children: [
                     Container(

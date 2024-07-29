@@ -1816,6 +1816,7 @@ class WhatsNew {
   final String? portraiturl;
   final String? summary;
   final String? content;
+  final List<Product>? products;
 
   WhatsNew({
     required this.whatsnewid,
@@ -1825,6 +1826,7 @@ class WhatsNew {
     this.portraiturl,
     this.summary,
     this.content,
+    this.products,
   });
 
   factory WhatsNew.fromJson(String str) => WhatsNew.fromMap(json.decode(str));
@@ -1837,7 +1839,9 @@ class WhatsNew {
         landscapeurl = json['landscapeurl'],
         portraiturl = json['portraiturl'],
         summary = json['summary'],
-        content = json['content'];
+        content = json['content'],
+        products =
+            List<Product>.from(json['products'].map((x) => Product.fromMap(x)));
 
   Map<String, dynamic> toMap() => {
         'whatsnewid': whatsnewid,
@@ -1847,6 +1851,7 @@ class WhatsNew {
         'portraiturl': portraiturl,
         'summary': summary,
         'content': content,
+        'products': List<dynamic>.from(products!.map((x) => x.toMap())),
       };
 }
 

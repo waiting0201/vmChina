@@ -172,7 +172,7 @@ class _MemberPlanPaymentState extends State<MemberPlanPayment> {
                   children: [
                     Text(
                       _trialdays > 0
-                          ? '${lang.S.of(context).memberplanpaymentConfirmCaption(currencySign, widget.brandmemberplan.price.toStringAsFixed(2), widget.brandmemberplan.plantitle, widget.brandmemberplan.brandtitle!)}\n\n${lang.S.of(context).memberplanpaymentTrialCaption(_trialdays)}'
+                          ? '${lang.S.of(context).memberplanpaymentConfirmCaption(currencySign, 0, widget.brandmemberplan.plantitle, widget.brandmemberplan.brandtitle!)}\n\n${lang.S.of(context).memberplanpaymentTrialCaption(_trialdays)}'
                           : lang.S.of(context).memberplanpaymentConfirmCaption(
                               currencySign,
                               widget.brandmemberplan.price.toStringAsFixed(2),

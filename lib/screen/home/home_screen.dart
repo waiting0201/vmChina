@@ -33,12 +33,14 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Product> _products = [];
   final List<Category> _categorys = [];
 
+  late WhatsNew _whatsnew;
   late bool status = false;
   late bool _isHomebannerLoading = false;
   late bool _isDesignervideoLoading = false;
   late bool _isCollectionLoading = false;
   late bool _isProductLoading = false;
   late bool _isCategoryLoading = false;
+  late bool _isWhatsnewLoading = false;
 
   @override
   void initState() {
@@ -53,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
     getCollections();
     getProducts();
     getCategorys();
+    getWhatsnew();
   }
 
   void _showAlertDialog() {
@@ -239,6 +242,30 @@ class _HomeScreenState extends State<HomeScreen> {
               _isCategoryLoading = false;
             });
           }
+        }
+      });
+    }
+  }
+
+  Future<void> getWhatsnew() async {
+    if (!_isWhatsnewLoading && mounted) {
+      setState(() {
+        _isWhatsnewLoading = true;
+      });
+
+      HttpService httpService = HttpService();
+      await httpService.getlatestwhatsnew(null).then((value) {
+        var data = json.decode(value.toString());
+
+        if (data["statusCode"] == 200 && mounted) {
+          setState(() {
+            _whatsnew = WhatsNew.fromMap(data["data"]);
+            _isWhatsnewLoading = false;
+          });
+        } else if (mounted) {
+          setState(() {
+            _isWhatsnewLoading = false;
+          });
         }
       });
     }
@@ -600,37 +627,46 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                           //________________________________________________________whats new
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: verticalSpace,
-                              left: horizonSpace,
-                              right: horizonSpace,
-                            ),
-                            child: Container(
-                              padding: const EdgeInsets.all(50.0),
-                              width: double.infinity,
-                              color: bggray100,
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.only(bottom: 30.0),
-                                    child: Text(
-                                      lang.S.of(context).homeBehindTheScenes,
-                                      style: textTheme.titleLarge,
+                          _isWhatsnewLoading
+                              ? const SizedBox()
+                              : Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: verticalSpace,
+                                    left: horizonSpace,
+                                    right: horizonSpace,
+                                  ),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(50.0),
+                                    width: double.infinity,
+                                    color: bggray100,
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              bottom: 10.0),
+                                          child: Text(
+                                            _whatsnew.title,
+                                            style: textTheme.titleLarge,
+                                          ),
+                                        ),
+                                        Text(
+                                          _whatsnew.summary!,
+                                          style: textTheme.bodyMedium,
+                                          textAlign: TextAlign.center,
+                                        )
+                                      ],
                                     ),
                                   ),
-                                  Text(
-                                    lang.S
-                                        .of(context)
-                                        .homeBehindTheScenesCaption,
-                                    style: textTheme.bodyMedium,
-                                    textAlign: TextAlign.center,
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
+                                ),
+                          _isWhatsnewLoading
+                              ? const SizedBox()
+                              : Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: horizonSpace),
+                                  child: ProductsHorizonSlideList(
+                                    products: _whatsnew.products!,
+                                  ),
+                                ),
                           /*Padding(
                             padding: const EdgeInsets.only(
                               top: verticalSpace,

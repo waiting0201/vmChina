@@ -1423,14 +1423,16 @@ class CategorysList extends StatelessWidget {
         ),
         child: InkWell(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Categorydetail(
-                  category: categorys[index],
+            if (index == 0) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Categorydetail(
+                    category: categorys[index],
+                  ),
                 ),
-              ),
-            );
+              );
+            }
           },
           child: ImageStackCard(
             url: categorys[index].landscapeurl!,

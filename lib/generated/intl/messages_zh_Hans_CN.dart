@@ -235,11 +235,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "commonApprox": MessageLookupByLibrary.simpleMessage("约"),
         "commonBack": MessageLookupByLibrary.simpleMessage("返回"),
         "commonCancel": MessageLookupByLibrary.simpleMessage("取消"),
+        "commonComingSoon": MessageLookupByLibrary.simpleMessage("即将推出"),
         "commonConfirm": MessageLookupByLibrary.simpleMessage("确认"),
         "commonContinue": MessageLookupByLibrary.simpleMessage("继续"),
         "commonContinueBrowsing": MessageLookupByLibrary.simpleMessage("继续浏览"),
         "commonCurrentPlan": MessageLookupByLibrary.simpleMessage("当前计划"),
         "commonDelete": MessageLookupByLibrary.simpleMessage("删除"),
+        "commonDiscover": MessageLookupByLibrary.simpleMessage("发现"),
         "commonDiscoverMore": MessageLookupByLibrary.simpleMessage("发现更多"),
         "commonEnterYourAccount":
             MessageLookupByLibrary.simpleMessage("输入您的账号"),

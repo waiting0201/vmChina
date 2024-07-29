@@ -6,6 +6,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../generated/l10n.dart' as lang;
 import '../../model/models.dart';
 import '../../model/repository.dart';
 import '../../theme/theme_constants.dart';
@@ -144,7 +145,7 @@ class _CurrentBrandsCarouselState extends State<CurrentBrandsCarousel> {
                       child: ImageStackCard(
                         url: _brands[index].portraiturl!,
                         title: _brands[index].title,
-                        subtitle: 'Discover',
+                        subtitle: lang.S.of(context).commonDiscover,
                         flagurl: _brands[index].flagurl!,
                         width: 948,
                       ),
@@ -290,7 +291,7 @@ class _ComingBrandsCarouselState extends State<ComingBrandsCarousel> {
                             ImageStackCard(
                       url: _brands[index].portraiturl!,
                       title: _brands[index].title,
-                      subtitle: 'Discover',
+                      subtitle: lang.S.of(context).commonDiscover,
                       flagurl: _brands[index].flagurl!,
                       width: 948,
                     ),
