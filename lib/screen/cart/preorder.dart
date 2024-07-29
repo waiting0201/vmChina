@@ -14,7 +14,7 @@ import '../profile/addaddress.dart';
 import '../widgets/constant.dart';
 import '../widgets/partial.dart';
 import '../widgets/common.dart';
-import 'preorderselectpayment.dart';
+import 'preordercomplete.dart';
 
 class Preorder extends StatefulWidget {
   final List<Carts> carts;
@@ -31,6 +31,7 @@ class _PreorderState extends State<Preorder> {
   final _formKey = GlobalKey<FormState>();
   final _firstname = TextEditingController();
   final _lastname = TextEditingController();
+  final _mobile = TextEditingController();
   final List<ShippingLocation> _shippinglocations = [];
 
   late Member _member;
@@ -43,6 +44,7 @@ class _PreorderState extends State<Preorder> {
     _member = Provider.of<AuthChangeProvider>(context, listen: false).member;
     _firstname.text = _member.firstname!;
     _lastname.text = _member.lastname!;
+    _mobile.text = _member.mobile!;
     getShippingLocations();
   }
 
@@ -336,6 +338,37 @@ class _PreorderState extends State<Preorder> {
                                   },
                                 ),
                               ),
+                              const SizedBox(width: 10.0),
+                              Expanded(
+                                child: TextFormField(
+                                  controller: _mobile,
+                                  style: textTheme.bodyMedium,
+                                  decoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 2,
+                                    ),
+                                    fillColor: whiteColor,
+                                    labelText:
+                                        lang.S.of(context).preorderMobile,
+                                    hintText: lang.S
+                                        .of(context)
+                                        .preorderMobilePlaceholder,
+                                    hintStyle: textTheme.bodySmall?.copyWith(
+                                      color: lightGreyTextColor,
+                                    ),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return lang.S
+                                          .of(context)
+                                          .preorderMobileRequired;
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
                             ],
                           ),
                           const SizedBox(height: 20.0),
@@ -524,12 +557,12 @@ class _PreorderState extends State<Preorder> {
             backgroundColor: darkColor,
           ),
           child: Text(
-            lang.S.of(context).commonPayment,
+            lang.S.of(context).commonSubmit,
             style: textTheme.titleSmall?.copyWith(
               color: whiteColor,
             ),
           ),
-          onPressed: () {
+          onPressed: () async {
             if (_formKey.currentState!.validate()) {
               if (_selected.isEmpty) {
                 setState(() {
@@ -554,7 +587,7 @@ class _PreorderState extends State<Preorder> {
                     ),
                   ),
                 );*/
-                Navigator.push(
+                /*Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => PreorderSelectPayment(
@@ -563,7 +596,56 @@ class _PreorderState extends State<Preorder> {
                       shippingtype: "B",
                     ),
                   ),
+                );*/
+                OverlayEntry overlayEntry = OverlayEntry(
+                  builder: (context) => Positioned(
+                    top: 0,
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      color: Colors.black.withOpacity(0.5),
+                      child: const LoadingCircle(),
+                    ),
+                  ),
                 );
+                Overlay.of(context).insert(overlayEntry);
+
+                CartData cartdata = CartData(
+                  items: widget.carts,
+                  subtotal: widget.carts.fold(0, (sum, e) => sum + e.total),
+                );
+
+                HttpService httpService = HttpService();
+                await httpService
+                    .postpreorder(
+                  cartdata.toJson(),
+                  _member.memberid,
+                  _firstname.text,
+                  _lastname.text,
+                  _mobile.text,
+                  _selected,
+                  "B",
+                )
+                    .then((value) {
+                  var data = json.decode(value.toString());
+
+                  if (data["statusCode"] == 200) {
+                    overlayEntry.remove();
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PreorderComplete(
+                          orderid: data["data"],
+                          name: _firstname.text,
+                        ),
+                      ),
+                      (route) => false,
+                    );
+                  } else {
+                    overlayEntry.remove();
+                  }
+                });
               }
             }
           },

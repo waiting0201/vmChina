@@ -81,97 +81,102 @@ class _CartSummaryState extends State<CartSummary> {
     TextTheme textTheme = Theme.of(context).textTheme;
 
     return Consumer<CartChangeProvider>(
-      builder: (context, cart, child) => Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 10,
-          horizontal: horizonSpace,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                bottom: 2,
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    lang.S.of(context).cartSubtotal,
-                    style: textTheme.bodyMedium,
-                  ),
-                  const Spacer(),
-                  ExchangePrice(
-                    price: cart.getSubTotalPrice(),
-                    style: textTheme.bodyMedium,
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 2,
-                bottom: 2,
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    lang.S.of(context).cartShippingHandling,
-                    style: textTheme.bodyMedium,
-                  ),
-                  const Spacer(),
-                  ExchangePrice(
-                    price: _freight,
-                    style: textTheme.bodyMedium,
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 2,
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    lang.S.of(context).cartTotal,
-                    style: textTheme.bodyLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
+      builder: (context, cart, child) {
+        double shipping =
+            cart.getSubTotalPrice() > _setup.freeshippingreach ? 0 : _freight;
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 10,
+            horizontal: horizonSpace,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 2,
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      lang.S.of(context).cartSubtotal,
+                      style: textTheme.bodyMedium,
                     ),
-                  ),
-                  const Spacer(),
-                  ExchangePrice(
-                    price: cart.getSubTotalPrice() + _freight,
-                    style: textTheme.bodyLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
+                    const Spacer(),
+                    ExchangePrice(
+                      price: cart.getSubTotalPrice(),
+                      style: textTheme.bodyMedium,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 0,
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 2,
+                  bottom: 2,
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      lang.S.of(context).cartShippingHandling,
+                      style: textTheme.bodyMedium,
+                    ),
+                    const Spacer(),
+                    ExchangePrice(
+                      price: shipping,
+                      style: textTheme.bodyMedium,
+                    ),
+                  ],
+                ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    '(${lang.S.of(context).cartDuty})',
-                    style: textTheme.bodySmall,
-                  ),
-                ],
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 2,
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      lang.S.of(context).cartTotal,
+                      style: textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const Spacer(),
+                    ExchangePrice(
+                      price: cart.getSubTotalPrice() + shipping,
+                      style: textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
-      ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 0,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      '(${lang.S.of(context).cartDuty})',
+                      style: textTheme.bodySmall,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
@@ -203,7 +208,7 @@ class _PreorderSummaryState extends State<PreorderSummary> {
     if (!_setupChangeProvider.isloading) {
       setState(() {
         _setup = _setupChangeProvider.setup;
-        _freight = _setup.freight;
+        _freight = _total > _setup.freeshippingreach ? 0 : _setup.freight;
       });
     }
   }
@@ -1408,53 +1413,70 @@ class ProductPrice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextTheme textTheme = Theme.of(context).textTheme;
-    LanguageChangeProvider languageChangeProvider =
+    final TextTheme textTheme = Theme.of(context).textTheme;
+    final LanguageChangeProvider languageChangeProvider =
         Provider.of<LanguageChangeProvider>(context, listen: true);
-    double discountprice = 0;
+    final SetupChangeProvider setupChangeProvider =
+        Provider.of<SetupChangeProvider>(context, listen: true);
+
+    late Setup setup;
+    late double discountprice = product.discountprice;
+    late bool isbrandmember = false;
 
     return Consumer<AuthChangeProvider>(
       builder: (context, auth, child) {
-        bool isbrandmember = auth.status &&
-            auth.member.membershipfees!.isNotEmpty &&
-            auth.member.membershipfees!
-                .any((e) => e.brandmemberplan!.brandid == product.brandid);
+        if (!setupChangeProvider.isloading) {
+          setup = setupChangeProvider.setup;
+          if (setup.discounttype == 0) {
+            if (auth.status &&
+                auth.member.membershipfees!.isNotEmpty &&
+                auth.member.membershipfees!.any(
+                    (e) => e.brandmemberplan!.brandid == product.brandid)) {
+              isbrandmember = true;
+            }
+          } else if (setup.discounttype == 1) {
+            if (auth.status &&
+                auth.member.membershipfees!.isNotEmpty &&
+                auth.member.membershipfees!.any(
+                    (e) => e.brandmemberplan!.brandid == product.brandid)) {
+              isbrandmember = true;
+              MembershipFee membershipfee = auth.member.membershipfees!
+                  .singleWhere(
+                      (e) => e.brandmemberplan!.brandid == product.brandid);
 
-        //club insider price
-        if (isbrandmember) {
-          MembershipFee membershipfee = auth.member.membershipfees!.singleWhere(
-              (e) => e.brandmemberplan!.brandid == product.brandid);
-
-          discountprice =
-              product.price * membershipfee.brandmemberplan!.promote;
-          discountprice = discountprice.roundToDouble();
+              discountprice =
+                  product.price * membershipfee.brandmemberplan!.promote;
+              discountprice = discountprice.roundToDouble();
+            }
+          }
         }
 
         bool isChangeCurr = currencySign != languageChangeProvider.currsymbol;
 
-        return isbrandmember
-            ? Column(
-                children: [
-                  Row(
+        return setupChangeProvider.isloading
+            ? const SizedBox()
+            : isbrandmember
+                ? Column(
                     children: [
-                      Text(
-                        '$currencySign${discountprice.toStringAsFixed(0)}',
-                        style: textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w500,
-                        ),
+                      Row(
+                        children: [
+                          Text(
+                            '$currencySign${discountprice.toStringAsFixed(0)}',
+                            style: textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(width: 3),
+                          Text(
+                            '$currencySign${product.price.toStringAsFixed(0)}',
+                            style: textTheme.bodySmall?.copyWith(
+                              decoration: TextDecoration.lineThrough,
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: 6),
-                      Text(
-                        '$currencySign${product.price.toStringAsFixed(0)}',
-                        style: textTheme.bodySmall?.copyWith(
-                          decoration: TextDecoration.lineThrough,
-                        ),
-                      ),
-                    ],
-                  ),
-                  if (isChangeCurr)
-                    Row(
-                      children: [
+                      if (isChangeCurr) ...[
+                        const SizedBox(width: 3),
                         Text('${lang.S.of(context).commonApprox} ',
                             style: textTheme.bodySmall),
                         ExchangePrice(
@@ -1463,34 +1485,58 @@ class ProductPrice extends StatelessWidget {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                      ],
-                    )
-                ],
-              )
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '$currencySign${product.price.toStringAsFixed(0)}',
-                    style: textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  if (isChangeCurr)
-                    Row(
-                      children: [
-                        Text('${lang.S.of(context).commonApprox} ',
-                            style: textTheme.bodySmall),
-                        ExchangePrice(
-                          price: product.price,
-                          style: textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w500,
+                      ]
+                    ],
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            '$currencySign${product.price.toStringAsFixed(0)}',
+                            style: textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
+                          if (isChangeCurr) ...[
+                            const SizedBox(width: 3),
+                            Text('${lang.S.of(context).commonApprox} ',
+                                style: textTheme.bodySmall),
+                            ExchangePrice(
+                              price: product.price,
+                              style: textTheme.bodyMedium?.copyWith(
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ]
+                        ],
+                      ),
+                      if (setup.discounttype != 1) ...[
+                        Row(
+                          children: [
+                            Text(
+                              '${lang.S.of(context).productMember} $currencySign${discountprice.toStringAsFixed(0)}',
+                              style: textTheme.bodyMedium?.copyWith(
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            if (isChangeCurr) ...[
+                              const SizedBox(width: 3),
+                              Text('${lang.S.of(context).commonApprox} ',
+                                  style: textTheme.bodySmall),
+                              ExchangePrice(
+                                price: discountprice,
+                                style: textTheme.bodyMedium?.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ]
+                          ],
                         ),
-                      ],
-                    )
-                ],
-              );
+                      ]
+                    ],
+                  );
       },
     );
   }

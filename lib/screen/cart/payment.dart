@@ -216,7 +216,7 @@ Page resource error:
     }
   }
 
-  Future<String> orderprocess(String orderid) async {
+  /*Future<String> orderprocess(String orderid) async {
     OverlayEntry overlayEntry = OverlayEntry(
       builder: (context) => Positioned(
         top: 0,
@@ -253,7 +253,7 @@ Page resource error:
 
       return 'fail';
     }
-  }
+  }*/
 
   void _onCardButtonPressed(String message) async {
     final Map<String, dynamic> data = jsonDecode(message);
@@ -282,7 +282,7 @@ Page resource error:
     final String redirectstatus = data['redirectstatus'];
     final String status = data['status'];
 
-    await orderprocess(orderid);
+    //await orderprocess(orderid);
 
     if (mounted) {
       /*Navigator.pushAndRemoveUntil(
@@ -304,7 +304,7 @@ Page resource error:
     final String orderid = data['orderid'];
     final String status = data['status'];
 
-    await orderprocess(orderid);
+    //await orderprocess(orderid);
 
     if (mounted) {
       /*Navigator.pushAndRemoveUntil(

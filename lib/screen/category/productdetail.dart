@@ -523,19 +523,26 @@ class _ProductDetailState extends State<ProductDetail> {
 
     _price = _product.price;
 
-    if (_authChangeProvider.status) {
-      Member member = _authChangeProvider.member;
-      bool isbrandmember = member.membershipfees!.isNotEmpty &&
-          member.membershipfees!
-              .any((e) => e.brandmemberplan!.brandid == _product.brandid);
+    if (!_isSetupLoading) {
+      if (_setup.discounttype == 0) {
+        if (_authChangeProvider.status &&
+            _authChangeProvider.member.membershipfees!.isNotEmpty &&
+            _authChangeProvider.member.membershipfees!
+                .any((e) => e.brandmemberplan!.brandid == _product.brandid)) {
+          _price = _product.discountprice;
+        }
+      } else if (_setup.discounttype == 1) {
+        if (_authChangeProvider.status &&
+            _authChangeProvider.member.membershipfees!.isNotEmpty &&
+            _authChangeProvider.member.membershipfees!
+                .any((e) => e.brandmemberplan!.brandid == _product.brandid)) {
+          MembershipFee membershipfee =
+              _authChangeProvider.member.membershipfees!.singleWhere(
+                  (e) => e.brandmemberplan!.brandid == _product.brandid);
 
-      //club insider price
-      if (isbrandmember) {
-        MembershipFee membershipfee = member.membershipfees!
-            .singleWhere((e) => e.brandmemberplan!.brandid == _product.brandid);
-
-        _price = _product.price * membershipfee.brandmemberplan!.promote;
-        _price = _price.roundToDouble();
+          _price = _product.price * membershipfee.brandmemberplan!.promote;
+          _price = _price.roundToDouble();
+        }
       }
     }
 
@@ -639,7 +646,8 @@ class _ProductDetailState extends State<ProductDetail> {
                                       child: Hero(
                                         tag: _photos[index].productmediaid,
                                         child: Image(
-                                          image: CachedNetworkImageProvider(
+                                          width: 480,
+                                          image: NetworkImage(
                                             _photos[index].url,
                                           ),
                                         ),
@@ -751,16 +759,16 @@ class _ProductDetailState extends State<ProductDetail> {
                       style: textTheme.titleSmall,
                     ),
                   ),
-                  /*Padding(
+                  Padding(
                     padding: const EdgeInsets.only(
                       top: 3,
                       left: horizonSpace,
                       right: horizonSpace,
                     ),
                     child: ProductPrice(product: _product),
-                  ),*/
+                  ),
                   _isBrandLoading
-                      ? Container()
+                      ? const SizedBox()
                       : Padding(
                           padding: const EdgeInsets.only(
                             top: 0,
@@ -1284,7 +1292,10 @@ class _ProductDetailState extends State<ProductDetail> {
                               ),
                               child: Column(
                                 children: [
-                                  ImageStackCard(url: _brand.landscapeurl!),
+                                  ImageStackCard(
+                                    url: _brand.landscapeurl!,
+                                    width: 1194,
+                                  ),
                                   Container(
                                     padding: const EdgeInsets.all(50.0),
                                     width: double.infinity,
@@ -1566,326 +1577,296 @@ class _ProductDetailState extends State<ProductDetail> {
             horizontal: horizonSpace,
           ),
           width: MediaQuery.of(context).size.width,
-          child: !isStock
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        child: Text(
-                          lang.S.of(context).commonPreOrder,
-                          style: textTheme.titleSmall?.copyWith(
-                            color: whiteColor,
-                          ),
-                        ),
-                        onPressed: () {
-                          Carts cart = Carts(
-                            productid: _product.productid,
-                            brandtitle: _product.brandtitle,
-                            producttitle: _product.title,
-                            productphoto:
-                                _photos.isNotEmpty ? _photos[0].url : '',
-                            sizetitle: _size.text,
-                            productsizeid: selectedSize,
-                            quantity: buyamount,
-                            price: _price,
-                            total: buyamount * _price,
-                          );
-
-                          _carts.clear();
-                          _carts.add(cart);
-
-                          if (_authChangeProvider.status) {
-                            bool isbrandmember = _authChangeProvider
-                                    .member.membershipfees!.isNotEmpty &&
-                                _authChangeProvider.member.membershipfees!.any(
-                                    (e) =>
-                                        e.brandmemberplan!.brandid ==
-                                        _product.brandid);
-
-                            if (isbrandmember) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Preorder(
-                                    carts: _carts,
-                                  ),
-                                ),
-                              );
-                            } else {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => MemberPlan(
-                                    brand: _brand,
-                                  ),
-                                ),
-                              );
-                            }
-                          } else {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const LogIn(),
+          child: _isSetupLoading
+              ? const SizedBox()
+              : !isStock
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            child: Text(
+                              lang.S.of(context).commonPreOrder,
+                              style: textTheme.titleSmall?.copyWith(
+                                color: whiteColor,
                               ),
-                            );
-                          }
-                        },
-                      ),
-                    ),
-                    const SizedBox(width: 5),
-                    _isBrandLoading
-                        ? Container()
-                        : MemberPlanIcon(
-                            brand: _brand,
-                          ),
-                  ],
-                )
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: darkColor,
-                        ),
-                        child: Text(
-                          lang.S.of(context).commonAddtoCart,
-                          style: textTheme.titleSmall?.copyWith(
-                            color: whiteColor,
-                          ),
-                        ),
-                        onPressed: () {
-                          if (selectedSize == "") {
-                            sizeselect();
-                          } else {
-                            Carts cart = Carts(
-                              productid: _product.productid,
-                              brandtitle: _product.brandtitle,
-                              producttitle: _product.title,
-                              productphoto:
-                                  _photos.isNotEmpty ? _photos[0].url : '',
-                              sizetitle: _size.text,
-                              productsizeid: selectedSize,
-                              quantity: buyamount,
-                              price: _price,
-                              total: buyamount * _price,
-                            );
+                            ),
+                            onPressed: () {
+                              Carts cart = Carts(
+                                productid: _product.productid,
+                                brandtitle: _product.brandtitle,
+                                producttitle: _product.title,
+                                productphoto:
+                                    _photos.isNotEmpty ? _photos[0].url : '',
+                                sizetitle: _size.text,
+                                productsizeid: selectedSize,
+                                quantity: buyamount,
+                                price: _price,
+                                total: buyamount * _price,
+                              );
 
-                            if (_authChangeProvider.status) {
-                              bool isbrandmember = _authChangeProvider
-                                      .member.membershipfees!.isNotEmpty &&
-                                  _authChangeProvider.member.membershipfees!
-                                      .any((e) =>
-                                          e.brandmemberplan!.brandid ==
-                                          _product.brandid);
+                              _carts.clear();
+                              _carts.add(cart);
 
-                              if (isbrandmember) {
-                                if (_cartChangeProvider.addCart(cart)) {
-                                  showModalBottomSheet(
-                                    context: context,
-                                    builder: (context) => SafeArea(
-                                      top: false,
-                                      left: false,
-                                      right: false,
-                                      bottom: true,
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        padding: const EdgeInsets.only(
-                                          top: 20,
-                                          left: horizonSpace,
-                                          right: horizonSpace,
-                                        ),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                bottom: 10,
-                                              ),
-                                              child: Text(
-                                                lang.S
-                                                    .of(context)
-                                                    .productdetailAddSuccess,
-                                                style: textTheme.bodyMedium,
-                                              ),
-                                            ),
-                                            Row(
-                                              children: [
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                    horizontal: 20,
-                                                  ),
-                                                  child: Image(
-                                                    width: 90,
-                                                    image:
-                                                        CachedNetworkImageProvider(
-                                                      cart.productphoto!,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  flex: 3,
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Text(
-                                                        cart.brandtitle
-                                                            .toUpperCase(),
-                                                        maxLines: 2,
-                                                        softWrap: true,
-                                                        style: textTheme
-                                                            .displaySmall
-                                                            ?.copyWith(
-                                                          color: darkColor,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      ),
-                                                      const SizedBox(height: 5),
-                                                      Text(
-                                                        cart.producttitle,
-                                                        style: textTheme
-                                                            .displaySmall,
-                                                      ),
-                                                      const SizedBox(
-                                                          height: 10),
-                                                      Text(
-                                                        '${lang.S.of(context).productdetailSize}: ${cart.sizetitle}',
-                                                        style: textTheme
-                                                            .bodySmall
-                                                            ?.copyWith(
-                                                          color: darkColor,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Align(
-                                              alignment: Alignment.centerRight,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                  right: 20,
-                                                ),
-                                                child: ExchangePrice(
-                                                  price: cart.price,
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: textTheme.bodyMedium
-                                                      ?.copyWith(
-                                                    color: redColor,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              padding: const EdgeInsets.only(
-                                                top: 15,
-                                                bottom: 15,
-                                              ),
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              child: ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor: darkColor,
-                                                ),
-                                                child: Text(
-                                                  lang.S
-                                                      .of(context)
-                                                      .commonGotoCart,
-                                                  style: textTheme.titleSmall
-                                                      ?.copyWith(
-                                                    color: whiteColor,
-                                                  ),
-                                                ),
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          const Cart(),
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
+                              if (_authChangeProvider.status) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Preorder(
+                                      carts: _carts,
                                     ),
-                                  );
-                                } else {
-                                  setState(() {
-                                    showDialog(
-                                      barrierDismissible: false,
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          backgroundColor: whiteColor,
-                                          title: const Text('Message'),
-                                          content: Text(lang.S
-                                              .of(context)
-                                              .productdetailMessage),
-                                          actions: [
-                                            OutlinedButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text(
-                                                lang.S.of(context).commonExit,
-                                                style: textTheme.titleSmall
-                                                    ?.copyWith(
-                                                        color: darkColor),
-                                              ),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  });
-                                }
+                                  ),
+                                );
                               } else {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => MemberPlan(
-                                      brand: _brand,
-                                    ),
+                                    builder: (context) => const LogIn(),
                                   ),
                                 );
                               }
-                            } else {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const LogIn(),
-                                ),
-                              );
-                            }
-                          }
-                        },
-                      ),
-                    ),
-                    const SizedBox(width: 5),
-                    _isBrandLoading
-                        ? Container()
-                        : MemberPlanIcon(
-                            brand: _brand,
+                            },
                           ),
-                  ],
-                ),
+                        ),
+                        const SizedBox(width: 5),
+                        _isBrandLoading
+                            ? const SizedBox()
+                            : MemberPlanIcon(
+                                brand: _brand,
+                              ),
+                      ],
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: darkColor,
+                            ),
+                            child: Text(
+                              lang.S.of(context).commonAddtoCart,
+                              style: textTheme.titleSmall?.copyWith(
+                                color: whiteColor,
+                              ),
+                            ),
+                            onPressed: () {
+                              if (selectedSize == "") {
+                                sizeselect();
+                              } else {
+                                Carts cart = Carts(
+                                  productid: _product.productid,
+                                  brandtitle: _product.brandtitle,
+                                  producttitle: _product.title,
+                                  productphoto:
+                                      _photos.isNotEmpty ? _photos[0].url : '',
+                                  sizetitle: _size.text,
+                                  productsizeid: selectedSize,
+                                  quantity: buyamount,
+                                  price: _price,
+                                  total: buyamount * _price,
+                                );
+
+                                if (_authChangeProvider.status) {
+                                  if (_cartChangeProvider.addCart(cart)) {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      builder: (context) => SafeArea(
+                                        top: false,
+                                        left: false,
+                                        right: false,
+                                        bottom: true,
+                                        child: Container(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          padding: const EdgeInsets.only(
+                                            top: 20,
+                                            left: horizonSpace,
+                                            right: horizonSpace,
+                                          ),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                  bottom: 10,
+                                                ),
+                                                child: Text(
+                                                  lang.S
+                                                      .of(context)
+                                                      .productdetailAddSuccess,
+                                                  style: textTheme.bodyMedium,
+                                                ),
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                      horizontal: 20,
+                                                    ),
+                                                    child: Image(
+                                                      width: 90,
+                                                      image:
+                                                          CachedNetworkImageProvider(
+                                                        cart.productphoto!,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    flex: 3,
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Text(
+                                                          cart.brandtitle
+                                                              .toUpperCase(),
+                                                          maxLines: 2,
+                                                          softWrap: true,
+                                                          style: textTheme
+                                                              .displaySmall
+                                                              ?.copyWith(
+                                                            color: darkColor,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                            height: 5),
+                                                        Text(
+                                                          cart.producttitle,
+                                                          style: textTheme
+                                                              .displaySmall,
+                                                        ),
+                                                        const SizedBox(
+                                                            height: 10),
+                                                        Text(
+                                                          '${lang.S.of(context).productdetailSize}: ${cart.sizetitle}',
+                                                          style: textTheme
+                                                              .bodySmall
+                                                              ?.copyWith(
+                                                            color: darkColor,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Align(
+                                                alignment:
+                                                    Alignment.centerRight,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                    right: 20,
+                                                  ),
+                                                  child: ExchangePrice(
+                                                    price: cart.price,
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: textTheme.bodyMedium
+                                                        ?.copyWith(
+                                                      color: redColor,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                padding: const EdgeInsets.only(
+                                                  top: 15,
+                                                  bottom: 15,
+                                                ),
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                child: ElevatedButton(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor: darkColor,
+                                                  ),
+                                                  child: Text(
+                                                    lang.S
+                                                        .of(context)
+                                                        .commonGotoCart,
+                                                    style: textTheme.titleSmall
+                                                        ?.copyWith(
+                                                      color: whiteColor,
+                                                    ),
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const Cart(),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    setState(() {
+                                      showDialog(
+                                        barrierDismissible: false,
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            backgroundColor: whiteColor,
+                                            title: const Text('Message'),
+                                            content: Text(lang.S
+                                                .of(context)
+                                                .productdetailMessage),
+                                            actions: [
+                                              OutlinedButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text(
+                                                  lang.S.of(context).commonExit,
+                                                  style: textTheme.titleSmall
+                                                      ?.copyWith(
+                                                          color: darkColor),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    });
+                                  }
+                                } else {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const LogIn(),
+                                    ),
+                                  );
+                                }
+                              }
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        _isBrandLoading
+                            ? const SizedBox()
+                            : MemberPlanIcon(
+                                brand: _brand,
+                              ),
+                      ],
+                    ),
         ),
       ),
     );

@@ -1200,17 +1200,27 @@ class HttpService {
     return response;
   }
 
-  Future<Response> postorderdetail(
+  Future<Response> postpreorder(
     String carts,
-    String orderid,
+    String memberid,
+    String firstname,
+    String lastname,
+    String mobile,
+    String shippinglocationid,
+    String shippingtype,
   ) async {
-    Response response = await _dio.post('/order/postorderdetail',
+    Response response = await _dio.post('/order/postpreorder',
         data: carts,
         options: Options(
           contentType: 'application/json',
         ),
         queryParameters: {
-          "orderid": orderid,
+          "memberid": memberid,
+          "firstname": firstname,
+          "lastname": lastname,
+          "mobile": mobile,
+          "shippinglocationid": shippinglocationid,
+          "shippingtype": shippingtype,
         });
 
     return response;

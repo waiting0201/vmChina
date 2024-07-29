@@ -21,6 +21,7 @@ class SetupChangeProvider with ChangeNotifier {
   Future<void> setLoading(bool value) async {
     _isLoading = value;
     notifyListeners();
+    log(_isLoading.toString());
   }
 
   Future<void> setSetup(dynamic value) async {

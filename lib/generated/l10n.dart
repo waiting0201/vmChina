@@ -200,6 +200,16 @@ class S {
     );
   }
 
+  /// `Only here, can you consume Made in Italy luxury products with the comfort and ease of a billionaire, regardless of your income or social status!\n\nDear Visitor,\n\nExplore exquisite collections from over 200 talented designer brands from Italy, France, Spain, and all over Europe. At Vetrina Mia, we exclusively bring these unique and luxurious creations to the Asia-Pacific market, including China.\n\nAll of the fashion products created by each brand are meticulously crafted by experienced Italian artisans who have spent generations making high-end products for the world’s top-tier luxury brands.\n\nWe eliminate middlemen, advertising costs and reduce profits to make our prices more accessible while still collaborating with luxury material suppliers from Italy and Europe.\n\nAt Vetrina Mia, we believe that the right to enjoy fashion belongs to everyone, regardless of wealth or status. Fashion is a beautifully designed and meticulously crafted artistic creation that everyone should be able to enjoy as a testament to human ingenuity.\n\nShowroom:\n\nLocation: Our inaugural showroom is located at Shop T6-105, Changning International, 1398 Kaixuan Road, Changning District, Shanghai, China.\n\nFrom 1 August, you will be able to sign up and indicate your products of interest, and without making any pre-payment queue to purchase when the product becomes available.\n\nFrom 1 September, we will kick off our online retail sales, all sales will be through our platform and mobile app.\n\nDue to the lengthy crafting process by the artisans, there may be waiting times, or some delays or even situations where the products are unavailable, for which we apologise. The best you can do is to queue early. If you do not want to wait, you can cancel your order at any time. We operate on a first-come, first-served basis.\n\nPurchasing Conditions:\n\n• Brand Membership: Each brand has its own membership.\n• Free Trial: Membership is complimentary for the first three months after you make your first purchase from each brand.\n\nMembership Benefits: Prices and services differ for non-members and members. As a member, you will enjoy a 40% discount. Initially, we will launch the bag series, followed by clothing, shoes, children's wear, etc.\n\n• Sponsorship Fee: After three months from the first purchase, you can continue enjoying membership benefits for a small sponsorship fee of 10 RMB per brand per month, the cost of an espresso. Of course, You can also sponsor a bigger amount to support your favorite brands and their operations.\n• Flexible Membership: Membership is charged every 6 months, but you can cancel at any time without any conditions. We reserve the right to deny rejoining.\n\nWe greatly appreciate your understanding and patience during our launch period. We may encounter some service errors or issues, but we will strive to bring you a diverse and enchanting fashion experience and warm and thoughtful service.\n\nEvery member is always part of the Vetrina Mia family, and your thoughts and opinions are always our motivation for improvement.`
+  String get homeStatement {
+    return Intl.message(
+      'Only here, can you consume Made in Italy luxury products with the comfort and ease of a billionaire, regardless of your income or social status!\n\nDear Visitor,\n\nExplore exquisite collections from over 200 talented designer brands from Italy, France, Spain, and all over Europe. At Vetrina Mia, we exclusively bring these unique and luxurious creations to the Asia-Pacific market, including China.\n\nAll of the fashion products created by each brand are meticulously crafted by experienced Italian artisans who have spent generations making high-end products for the world’s top-tier luxury brands.\n\nWe eliminate middlemen, advertising costs and reduce profits to make our prices more accessible while still collaborating with luxury material suppliers from Italy and Europe.\n\nAt Vetrina Mia, we believe that the right to enjoy fashion belongs to everyone, regardless of wealth or status. Fashion is a beautifully designed and meticulously crafted artistic creation that everyone should be able to enjoy as a testament to human ingenuity.\n\nShowroom:\n\nLocation: Our inaugural showroom is located at Shop T6-105, Changning International, 1398 Kaixuan Road, Changning District, Shanghai, China.\n\nFrom 1 August, you will be able to sign up and indicate your products of interest, and without making any pre-payment queue to purchase when the product becomes available.\n\nFrom 1 September, we will kick off our online retail sales, all sales will be through our platform and mobile app.\n\nDue to the lengthy crafting process by the artisans, there may be waiting times, or some delays or even situations where the products are unavailable, for which we apologise. The best you can do is to queue early. If you do not want to wait, you can cancel your order at any time. We operate on a first-come, first-served basis.\n\nPurchasing Conditions:\n\n• Brand Membership: Each brand has its own membership.\n• Free Trial: Membership is complimentary for the first three months after you make your first purchase from each brand.\n\nMembership Benefits: Prices and services differ for non-members and members. As a member, you will enjoy a 40% discount. Initially, we will launch the bag series, followed by clothing, shoes, children\'s wear, etc.\n\n• Sponsorship Fee: After three months from the first purchase, you can continue enjoying membership benefits for a small sponsorship fee of 10 RMB per brand per month, the cost of an espresso. Of course, You can also sponsor a bigger amount to support your favorite brands and their operations.\n• Flexible Membership: Membership is charged every 6 months, but you can cancel at any time without any conditions. We reserve the right to deny rejoining.\n\nWe greatly appreciate your understanding and patience during our launch period. We may encounter some service errors or issues, but we will strive to bring you a diverse and enchanting fashion experience and warm and thoughtful service.\n\nEvery member is always part of the Vetrina Mia family, and your thoughts and opinions are always our motivation for improvement.',
+      name: 'homeStatement',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Here, you can consume Made in Italy luxury products with the comfort and ease of a billionaire!`
   String get homeMainCaption {
     return Intl.message(
@@ -3372,6 +3382,36 @@ class S {
     );
   }
 
+  /// `Mobile*`
+  String get preorderMobile {
+    return Intl.message(
+      'Mobile*',
+      name: 'preorderMobile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your mobile`
+  String get preorderMobilePlaceholder {
+    return Intl.message(
+      'Enter your mobile',
+      name: 'preorderMobilePlaceholder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mobile required`
+  String get preorderMobileRequired {
+    return Intl.message(
+      'Mobile required',
+      name: 'preorderMobileRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Your shopping list`
   String get preorderShopping {
     return Intl.message(
@@ -3439,6 +3479,26 @@ class S {
       name: 'preorderpaymentPayment',
       desc: '',
       args: [],
+    );
+  }
+
+  /// `Pre order completed`
+  String get preordercompleteTitle {
+    return Intl.message(
+      'Pre order completed',
+      name: 'preordercompleteTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Thank you, {Name}. Your pre order has been successful.\nYour product has not been shipped yet. When the product arrives, we will notify you by email. Please go to the system to pay at that time and we will arrange shipment.`
+  String preordercompleteCaption(Object Name) {
+    return Intl.message(
+      'Thank you, $Name. Your pre order has been successful.\nYour product has not been shipped yet. When the product arrives, we will notify you by email. Please go to the system to pay at that time and we will arrange shipment.',
+      name: 'preordercompleteCaption',
+      desc: '',
+      args: [Name],
     );
   }
 
@@ -4312,10 +4372,10 @@ class S {
     );
   }
 
-  /// `In the first six months of launch, we're offering free membership to all those who register for that brand's club. You'll be able to enjoy all the benefits as if you were a standard member! At the end of the first six months, you may choose to resubscribe for another six month period or to opt out of the club insider benefits at your discretion.`
+  /// `Starting from the date of your first purchase, you will receive 3 months of free membership, enjoying all the benefits available to subscribing members! At the end of the initial 3 months, you can decide whether to become a full member or opt out. Once you become a full member, each brand will request a monthly sponsorship fee of 10 RMB, equivalent to the cost of a cup of coffee. Of course, you can also choose to pay a higher amount to support your favorite brands and their operations. If you choose to opt out, there will be no penalties.`
   String get productdetailNoDiscountCaption {
     return Intl.message(
-      'In the first six months of launch, we\'re offering free membership to all those who register for that brand\'s club. You\'ll be able to enjoy all the benefits as if you were a standard member! At the end of the first six months, you may choose to resubscribe for another six month period or to opt out of the club insider benefits at your discretion.',
+      'Starting from the date of your first purchase, you will receive 3 months of free membership, enjoying all the benefits available to subscribing members! At the end of the initial 3 months, you can decide whether to become a full member or opt out. Once you become a full member, each brand will request a monthly sponsorship fee of 10 RMB, equivalent to the cost of a cup of coffee. Of course, you can also choose to pay a higher amount to support your favorite brands and their operations. If you choose to opt out, there will be no penalties.',
       name: 'productdetailNoDiscountCaption',
       desc: '',
       args: [],
@@ -4417,6 +4477,16 @@ class S {
     return Intl.message(
       'Size Guides',
       name: 'productlistSizeGuide',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Member`
+  String get productMember {
+    return Intl.message(
+      'Member',
+      name: 'productMember',
       desc: '',
       args: [],
     );
