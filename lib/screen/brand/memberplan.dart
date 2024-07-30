@@ -10,6 +10,7 @@ import '../../model/repository.dart';
 import '../authentication/auth_provider.dart';
 import '../widgets/constant.dart';
 import '../widgets/partial.dart';
+import '../widgets/extension.dart';
 
 class MemberPlan extends StatefulWidget {
   final Brand brand;
@@ -210,7 +211,7 @@ class _MemberPlanState extends State<MemberPlan> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              '${currencySign}0',
+                              0.0.toCNY(),
                               style: textTheme.bodyLarge?.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -378,7 +379,7 @@ class _MemberPlanState extends State<MemberPlan> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              '$currencySign${_plan1.price}',
+                              _plan1.price.toCNY(),
                               style: textTheme.bodyLarge?.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -545,7 +546,7 @@ class _MemberPlanState extends State<MemberPlan> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              '$currencySign${_plan2.price}',
+                              _plan2.price.toCNY(),
                               style: textTheme.bodyLarge?.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -773,7 +774,7 @@ class _MemberPlanState extends State<MemberPlan> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              '$currencySign${_plan3.price}',
+                              _plan3.price.toCNY(),
                               style: textTheme.bodyLarge?.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),

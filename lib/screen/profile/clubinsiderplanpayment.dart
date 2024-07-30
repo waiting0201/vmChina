@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vetrinamia_cn/screen/widgets/extension.dart';
 
 import '../../generated/l10n.dart' as lang;
 import '../../model/models.dart';
@@ -244,9 +245,7 @@ class _ClubinsiderPlanPaymentState extends State<ClubinsiderPlanPayment> {
                                   lang.S
                                       .of(context)
                                       .memberplanpaymentConfirmCaption(
-                                        currencySign,
-                                        widget.brandmemberplan.price
-                                            .toStringAsFixed(2),
+                                        widget.brandmemberplan.price.toCNY(),
                                         widget.brandmemberplan.plantitle,
                                         widget.brandmemberplan.brandtitle!,
                                       ),

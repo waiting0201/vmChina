@@ -57,8 +57,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m14(days) =>
       "There is a ${days}-day trial period and you can join the brand club for free.";
 
-  static String m15(currencySign, price, brandtitle, plantitle) =>
-      "By pressing \'Confirm\', you agree to pay a total of ${currencySign}${price} to subscribe to ${brandtitle} as a ${plantitle} Insider.";
+  static String m15(price, brandtitle, plantitle) =>
+      "By pressing \'Confirm\', you agree to pay a total of ${price} to subscribe to ${brandtitle} as a ${plantitle} Insider.";
 
   static String m16(days) =>
       "Your card will only be charged at the end of the ${days} days trial periol. Before the expiration date, you are free to cancel the auto-renew any time and your card will not be charged.";

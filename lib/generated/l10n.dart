@@ -940,14 +940,14 @@ class S {
     );
   }
 
-  /// `By pressing 'Confirm', you agree to pay a total of {currencySign}{price} to subscribe to {brandtitle} as a {plantitle} Insider.`
+  /// `By pressing 'Confirm', you agree to pay a total of {price} to subscribe to {brandtitle} as a {plantitle} Insider.`
   String memberplanpaymentConfirmCaption(
-      Object currencySign, Object price, Object brandtitle, Object plantitle) {
+      Object price, Object brandtitle, Object plantitle) {
     return Intl.message(
-      'By pressing \'Confirm\', you agree to pay a total of $currencySign$price to subscribe to $brandtitle as a $plantitle Insider.',
+      'By pressing \'Confirm\', you agree to pay a total of $price to subscribe to $brandtitle as a $plantitle Insider.',
       name: 'memberplanpaymentConfirmCaption',
       desc: '',
-      args: [currencySign, price, brandtitle, plantitle],
+      args: [price, brandtitle, plantitle],
     );
   }
 

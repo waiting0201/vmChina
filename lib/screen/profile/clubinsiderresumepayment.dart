@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vetrinamia_cn/screen/widgets/extension.dart';
 
 import '../../generated/l10n.dart' as lang;
 import '../../model/models.dart';
@@ -253,13 +254,12 @@ class _ClubinsiderResumePaymentState extends State<ClubinsiderResumePayment> {
                               children: [
                                 Text(
                                   _trial > 0
-                                      ? '${lang.S.of(context).memberplanpaymentConfirmCaption(currencySign, widget.brandmemberplan.price.toStringAsFixed(2), widget.brandmemberplan.plantitle, widget.brandmemberplan.brandtitle!)}\n\n${lang.S.of(context).memberplanpaymentTrialCaption(_trial)}'
+                                      ? '${lang.S.of(context).memberplanpaymentConfirmCaption(widget.brandmemberplan.price.toCNY(), widget.brandmemberplan.plantitle, widget.brandmemberplan.brandtitle!)}\n\n${lang.S.of(context).memberplanpaymentTrialCaption(_trial)}'
                                       : lang.S
                                           .of(context)
                                           .memberplanpaymentConfirmCaption(
-                                            currencySign,
                                             widget.brandmemberplan.price
-                                                .toStringAsFixed(2),
+                                                .toCNY(),
                                             widget.brandmemberplan.plantitle,
                                             widget.brandmemberplan.brandtitle!,
                                           ),

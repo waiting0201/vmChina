@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:dio/dio.dart';
+import 'package:vetrinamia_cn/screen/widgets/extension.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../generated/l10n.dart' as lang;
@@ -173,10 +174,9 @@ Page resource error:
             Text(
               widget.brandmemberplan.trialday != null &&
                       widget.brandmemberplan.trialday! > 0
-                  ? '${lang.S.of(context).memberplanpaymentConfirmCaption(currencySign, widget.brandmemberplan.price.toStringAsFixed(2), widget.brandmemberplan.plantitle, widget.brandmemberplan.brandtitle!)}\n\n${lang.S.of(context).memberplanpaymentTrialCaption(widget.brandmemberplan.trialday!)}'
+                  ? '${lang.S.of(context).memberplanpaymentConfirmCaption(widget.brandmemberplan.price.toCNY(), widget.brandmemberplan.plantitle, widget.brandmemberplan.brandtitle!)}\n\n${lang.S.of(context).memberplanpaymentTrialCaption(widget.brandmemberplan.trialday!)}'
                   : lang.S.of(context).memberplanpaymentConfirmCaption(
-                        currencySign,
-                        widget.brandmemberplan.price.toStringAsFixed(2),
+                        widget.brandmemberplan.price.toCNY(),
                         widget.brandmemberplan.plantitle,
                         widget.brandmemberplan.brandtitle!,
                       ),
