@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../generated/l10n.dart' as lang;
 import '../../model/models.dart';
@@ -41,14 +42,11 @@ class _HomeScreenState extends State<HomeScreen> {
   late bool _isProductLoading = false;
   late bool _isCategoryLoading = false;
   late bool _isWhatsnewLoading = false;
+  late String isfirsttime = "y";
 
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _showAlertDialog();
-    });
 
     getHomebanners();
     getDesignervideos();
@@ -56,6 +54,8 @@ class _HomeScreenState extends State<HomeScreen> {
     getProducts();
     getCategorys();
     getWhatsnew();
+
+    init();
   }
 
   void _showAlertDialog() {
@@ -94,6 +94,23 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
+  }
+
+  Future<void> init() async {
+    SharedPreferences pres = await SharedPreferences.getInstance();
+    isfirsttime = pres.getString("isfirsttime") ?? "y";
+
+    setState(() {
+      isfirsttime = isfirsttime;
+    });
+
+    if (isfirsttime == "y") {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _showAlertDialog();
+      });
+    }
+
+    pres.setString("isfirsttime", "n");
   }
 
   @override

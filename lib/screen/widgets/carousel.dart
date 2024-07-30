@@ -317,7 +317,7 @@ class _ComingBrandsCarouselState extends State<ComingBrandsCarousel> {
                   ),
                   Positioned(
                     child: Text(
-                      'COMING SOON',
+                      lang.S.of(context).commonComingSoon,
                       style: textTheme.titleLarge?.copyWith(color: whiteColor),
                     ),
                   ),
@@ -382,12 +382,12 @@ class _HomebannerCarouselState extends State<HomebannerCarousel> {
 
     _videoControllers[0].initialize().whenComplete(() {
       _videoControllers[0].play();
-      _videoControllers[0].addListener(() {
+      /*_videoControllers[0].addListener(() {
         if (_videoControllers[0].value.isCompleted) {
           _videoControllers[0].removeListener(() {});
           _carouselController.nextPage();
         }
-      });
+      });*/
 
       log('homebanner start $_currentIndex');
     });
@@ -396,7 +396,9 @@ class _HomebannerCarouselState extends State<HomebannerCarousel> {
   @override
   void dispose() {
     for (VideoPlayerController controller in _videoControllers) {
-      controller.dispose();
+      if (controller.value.isInitialized) {
+        controller.dispose();
+      }
     }
     super.dispose();
   }
@@ -505,7 +507,7 @@ class _HomebannerCarouselState extends State<HomebannerCarousel> {
           log('homebanner onchange $index');
 
           log('homebanner change on playing $_currentIndex and pause');
-          _videoControllers[_currentIndex].removeListener(() {});
+          //_videoControllers[_currentIndex].removeListener(() {});
           _videoControllers[_currentIndex].pause();
 
           log('homebanner change to $index');
@@ -515,7 +517,7 @@ class _HomebannerCarouselState extends State<HomebannerCarousel> {
 
           if (_videoControllers[index].value.isInitialized) {
             _videoControllers[index].play();
-            _videoControllers[index].addListener(() {
+            /*_videoControllers[index].addListener(() {
               if (_videoControllers[index].value.isCompleted) {
                 _videoControllers[index].removeListener(() {});
                 setState(() {
@@ -524,14 +526,14 @@ class _HomebannerCarouselState extends State<HomebannerCarousel> {
 
                 _carouselController.nextPage();
               }
-            });
+            });*/
 
             log('homebanner changed and play $index');
           } else {
             //開始load
             _videoControllers[index].initialize().whenComplete(() {
               _videoControllers[index].play();
-              _videoControllers[index].addListener(() {
+              /*_videoControllers[index].addListener(() {
                 if (_videoControllers[index].value.isCompleted) {
                   _videoControllers[index].removeListener(() {});
                   setState(() {
@@ -540,7 +542,7 @@ class _HomebannerCarouselState extends State<HomebannerCarousel> {
 
                   _carouselController.nextPage();
                 }
-              });
+              });*/
 
               log('homebanner init changed and play $index');
             });
@@ -581,19 +583,21 @@ class _DesignervideoCarouselState extends State<DesignervideoCarousel> {
 
     _videoControllers[0].initialize().whenComplete(() {
       _videoControllers[0].play();
-      _videoControllers[0].addListener(() {
+      /*_videoControllers[0].addListener(() {
         if (_videoControllers[0].value.isCompleted) {
           _videoControllers[0].removeListener(() {});
           _carouselController.nextPage();
         }
-      });
+      });*/
     });
   }
 
   @override
   void dispose() {
     for (VideoPlayerController controller in _videoControllers) {
-      controller.dispose();
+      if (controller.value.isInitialized) {
+        controller.dispose();
+      }
     }
 
     super.dispose();
@@ -649,7 +653,7 @@ class _DesignervideoCarouselState extends State<DesignervideoCarousel> {
         viewportFraction: 1,
         aspectRatio: 16 / 9,
         onPageChanged: (index, reason) {
-          _videoControllers[_currentIndex].removeListener(() {});
+          //_videoControllers[_currentIndex].removeListener(() {});
           _videoControllers[_currentIndex].pause();
 
           setState(() {
@@ -658,7 +662,7 @@ class _DesignervideoCarouselState extends State<DesignervideoCarousel> {
 
           if (_videoControllers[index].value.isInitialized) {
             _videoControllers[index].play();
-            _videoControllers[index].addListener(() {
+            /*_videoControllers[index].addListener(() {
               if (_videoControllers[index].value.isCompleted) {
                 _videoControllers[index].removeListener(() {});
                 setState(() {
@@ -667,11 +671,11 @@ class _DesignervideoCarouselState extends State<DesignervideoCarousel> {
 
                 _carouselController.nextPage();
               }
-            });
+            });*/
           } else {
             _videoControllers[index].initialize().whenComplete(() {
               _videoControllers[index].play();
-              _videoControllers[index].addListener(() {
+              /*_videoControllers[index].addListener(() {
                 if (_videoControllers[index].value.isCompleted) {
                   _videoControllers[index].removeListener(() {});
                   setState(() {
@@ -680,7 +684,7 @@ class _DesignervideoCarouselState extends State<DesignervideoCarousel> {
 
                   _carouselController.nextPage();
                 }
-              });
+              });*/
             });
           }
         },
@@ -720,19 +724,21 @@ class _CollectionvideoCarouselState extends State<CollectionvideoCarousel> {
 
     _videoControllers[0].initialize().whenComplete(() {
       _videoControllers[0].play();
-      _videoControllers[0].addListener(() {
+      /*_videoControllers[0].addListener(() {
         if (_videoControllers[0].value.isCompleted) {
           _videoControllers[0].removeListener(() {});
           _carouselController.nextPage();
         }
-      });
+      });*/
     });
   }
 
   @override
   void dispose() {
     for (VideoPlayerController controller in _videoControllers) {
-      controller.dispose();
+      if (controller.value.isInitialized) {
+        controller.dispose();
+      }
     }
 
     super.dispose();
@@ -761,9 +767,9 @@ class _CollectionvideoCarouselState extends State<CollectionvideoCarousel> {
       ),
       options: CarouselOptions(
         viewportFraction: 1,
-        aspectRatio: 16 / 9,
+        aspectRatio: 3 / 4,
         onPageChanged: (index, reason) {
-          _videoControllers[_currentIndex].removeListener(() {});
+          //_videoControllers[_currentIndex].removeListener(() {});
           _videoControllers[_currentIndex].pause();
 
           setState(() {
@@ -772,7 +778,7 @@ class _CollectionvideoCarouselState extends State<CollectionvideoCarousel> {
 
           if (_videoControllers[index].value.isInitialized) {
             _videoControllers[index].play();
-            _videoControllers[index].addListener(() {
+            /*_videoControllers[index].addListener(() {
               if (_videoControllers[index].value.isCompleted) {
                 _videoControllers[index].removeListener(() {});
                 setState(() {
@@ -781,11 +787,11 @@ class _CollectionvideoCarouselState extends State<CollectionvideoCarousel> {
 
                 _carouselController.nextPage();
               }
-            });
+            });*/
           } else {
             _videoControllers[index].initialize().whenComplete(() {
               _videoControllers[index].play();
-              _videoControllers[index].addListener(() {
+              /*_videoControllers[index].addListener(() {
                 if (_videoControllers[index].value.isCompleted) {
                   _videoControllers[index].removeListener(() {});
                   setState(() {
@@ -794,7 +800,7 @@ class _CollectionvideoCarouselState extends State<CollectionvideoCarousel> {
 
                   _carouselController.nextPage();
                 }
-              });
+              });*/
             });
           }
         },

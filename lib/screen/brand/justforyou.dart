@@ -62,7 +62,7 @@ class _JustforyousState extends State<Justforyous> {
 
         log('getjustforyous code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200) {
+        if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _justforyous.addAll((data["data"] as List)
                 .map((e) => Justforyou.fromMap(e))
@@ -74,7 +74,7 @@ class _JustforyousState extends State<Justforyous> {
             log('getjustforyous isloading: $_isJustforyouLoading');
             log('getjustforyous skip: $_skip');
           });
-        } else {
+        } else if (mounted) {
           setState(() {
             _isJustforyouLoading = false;
             _hasMore = false;

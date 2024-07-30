@@ -54,14 +54,14 @@ class _EventdetailState extends State<Eventdetail> {
 
         log('getphotos code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200) {
+        if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _photos.addAll((data["data"] as List)
                 .map((e) => EventMedia.fromMap(e))
                 .toList());
             _isPhotoLoading = false;
           });
-        } else {
+        } else if (mounted) {
           setState(() {
             log('getphotos isloading');
             _isPhotoLoading = false;

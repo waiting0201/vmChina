@@ -275,14 +275,14 @@ class _EmailUsState extends State<EmailUs> {
                                       color: whiteColor,
                                     ),
                                   ),
-                                  onPressed: () {
+                                  onPressed: () async {
                                     if (_formKey.currentState!.validate()) {
                                       setState(() {
                                         _isLoging = true;
                                       });
 
                                       HttpService httpservice = HttpService();
-                                      httpservice
+                                      await httpservice
                                           .postmessage(
                                         _name.text,
                                         _phone.text,

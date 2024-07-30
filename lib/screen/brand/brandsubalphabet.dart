@@ -61,7 +61,7 @@ class _BrandsubalphabetsState extends State<Brandsubalphabets> {
 
       HttpService httpService = HttpService();
       await httpService
-          .getsubcategoryallbrandlists(widget.subcategoryid)
+          .getsubcategoryallbrandlists(widget.subcategoryid, null)
           .then((value) {
         var data = json.decode(value.toString());
 

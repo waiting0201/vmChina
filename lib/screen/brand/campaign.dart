@@ -57,7 +57,7 @@ class _CampaignsState extends State<Campaigns> {
 
         log('getcampaigns code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200) {
+        if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _campaigns.addAll((data["data"] as List)
                 .map((e) => Campaign.fromMap(e))
@@ -69,7 +69,7 @@ class _CampaignsState extends State<Campaigns> {
             log('getcampaigns isloading: $_isCampaignLoading');
             log('getcampaigns skip: $_skip');
           });
-        } else {
+        } else if (mounted) {
           setState(() {
             _isCampaignLoading = false;
             _hasMore = false;
@@ -194,6 +194,7 @@ class _CampaignsState extends State<Campaigns> {
                         url: _campaigns[index].portraiturl!,
                         title: _campaigns[index].title,
                         subtitle: _campaigns[index].subtitle,
+                        width: 948,
                       ),
                     ),
                   );

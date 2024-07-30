@@ -57,7 +57,7 @@ class _CollectionsState extends State<Collections> {
 
         log('getcollections code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200) {
+        if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _collections.addAll((data["data"] as List)
                 .map((e) => Collection.fromMap(e))
@@ -69,7 +69,7 @@ class _CollectionsState extends State<Collections> {
             log('getcollections isloading: $_isCollectionLoading');
             log('getcollections skip: $_skip');
           });
-        } else {
+        } else if (mounted) {
           setState(() {
             _isCollectionLoading = false;
             _hasMore = false;
@@ -195,6 +195,7 @@ class _CollectionsState extends State<Collections> {
                         url: _collections[index].portraiturl!,
                         title: _collections[index].title,
                         subtitle: _collections[index].subtitle,
+                        width: 948,
                       ),
                     ),
                   );

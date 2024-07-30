@@ -52,7 +52,7 @@ class _CampaigndetailState extends State<Campaigndetail> {
   }
 
   Future<void> getPhotos() async {
-    if (!_isPhotoLoading) {
+    if (!_isPhotoLoading && mounted) {
       setState(() {
         _isPhotoLoading = true;
       });
@@ -65,14 +65,14 @@ class _CampaigndetailState extends State<Campaigndetail> {
 
         log('getphotos code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200) {
+        if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _photos.addAll((data["data"] as List)
                 .map((e) => CampaignMedia.fromMap(e))
                 .toList());
             _isPhotoLoading = false;
           });
-        } else {
+        } else if (mounted) {
           setState(() {
             log('getphotos isloading');
             _isPhotoLoading = false;
@@ -97,7 +97,7 @@ class _CampaigndetailState extends State<Campaigndetail> {
 
         log('getcampaigns code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200) {
+        if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _campaigns.addAll((data["data"] as List)
                 .map((e) => Campaign.fromMap(e))
@@ -110,7 +110,7 @@ class _CampaigndetailState extends State<Campaigndetail> {
             log('getcampaigns isloading: $_isCampaignLoading');
             log('getcampaigns skip: $_skip');
           });
-        } else {
+        } else if (mounted) {
           setState(() {
             _isCampaignLoading = false;
             _hasMore = false;

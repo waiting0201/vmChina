@@ -100,8 +100,8 @@ class _SplashScreenState extends State<SplashScreen>
       isfirsttime = isfirsttime;
     });
 
-    pres.setString("isfirsttime", "n");
-    log("check isfirsttime : $isfirsttime");
+    //pres.setString("isfirsttime", "n");
+    //log("check isfirsttime : $isfirsttime");
 
     await _startBackgroundAnimation().then(
       (value) => _startLogoAnimation().then((value) {

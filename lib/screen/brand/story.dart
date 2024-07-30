@@ -53,7 +53,7 @@ class _StoryState extends State<Story> {
   }
 
   Future<void> getBrandPhotos() async {
-    if (!_isBrandPhotoLoading) {
+    if (!_isBrandPhotoLoading && mounted) {
       setState(() {
         _isBrandPhotoLoading = true;
       });
@@ -62,14 +62,14 @@ class _StoryState extends State<Story> {
       await httpService.getbrandmediasbyid(widget.brand.brandid).then((value) {
         var data = json.decode(value.toString());
 
-        if (data["statusCode"] == 200) {
+        if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _brandphotos.addAll((data["data"] as List)
                 .map((e) => BrandMedia.fromMap(e))
                 .toList());
             _isBrandPhotoLoading = false;
           });
-        } else {
+        } else if (mounted) {
           setState(() {
             _isBrandPhotoLoading = false;
           });
@@ -79,7 +79,7 @@ class _StoryState extends State<Story> {
   }
 
   Future<void> getStoryPhotos() async {
-    if (!_isStoryPhotoLoading) {
+    if (!_isStoryPhotoLoading && mounted) {
       setState(() {
         _isStoryPhotoLoading = true;
       });
@@ -88,14 +88,14 @@ class _StoryState extends State<Story> {
       await httpService.getstorymediasbyid(widget.brand.brandid).then((value) {
         var data = json.decode(value.toString());
 
-        if (data["statusCode"] == 200) {
+        if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _storyphotos.addAll((data["data"] as List)
                 .map((e) => StoryMedia.fromMap(e))
                 .toList());
             _isStoryPhotoLoading = false;
           });
-        } else {
+        } else if (mounted) {
           setState(() {
             _isStoryPhotoLoading = false;
           });
@@ -105,7 +105,7 @@ class _StoryState extends State<Story> {
   }
 
   Future<void> getDesigners() async {
-    if (!_isDesignerLoading) {
+    if (!_isDesignerLoading && mounted) {
       setState(() {
         _isDesignerLoading = true;
       });
@@ -118,7 +118,7 @@ class _StoryState extends State<Story> {
 
         log('getdesigners code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200) {
+        if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _designers.addAll((data["data"] as List)
                 .map((e) => Designer.fromMap(e))
@@ -128,7 +128,7 @@ class _StoryState extends State<Story> {
 
             log('getdesigners isloading: $_isDesignerLoading');
           });
-        } else {
+        } else if (mounted) {
           setState(() {
             _isDesignerLoading = false;
 

@@ -43,7 +43,7 @@ class _CollectiondetailState extends State<Collectiondetail> {
   }
 
   Future<void> getPhotos() async {
-    if (!_isPhotoLoading) {
+    if (!_isPhotoLoading && mounted) {
       setState(() {
         _isPhotoLoading = true;
       });
@@ -56,14 +56,14 @@ class _CollectiondetailState extends State<Collectiondetail> {
 
         log('getphotos code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200) {
+        if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _photos.addAll((data["data"] as List)
                 .map((e) => CollectionMedia.fromMap(e))
                 .toList());
             _isPhotoLoading = false;
           });
-        } else {
+        } else if (mounted) {
           setState(() {
             log('getphotos isloading');
             _isPhotoLoading = false;

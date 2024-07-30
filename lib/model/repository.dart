@@ -518,19 +518,27 @@ class HttpService {
     return response;
   }
 
-  Future<Response> getcategoryallbrandlists(String categoryid) async {
+  Future<Response> getcategoryallbrandlists(
+      String categoryid, String? languageid) async {
+    String slanguageid = await getLanguage();
+    languageid = (languageid != null) ? languageid : slanguageid;
     Response response =
         await _dio.post('/brand/getcategorybrandlists', queryParameters: {
       "categoryid": categoryid,
+      "languageid": languageid,
     });
 
     return response;
   }
 
-  Future<Response> getsubcategoryallbrandlists(String subcategoryid) async {
+  Future<Response> getsubcategoryallbrandlists(
+      String subcategoryid, String? languageid) async {
+    String slanguageid = await getLanguage();
+    languageid = (languageid != null) ? languageid : slanguageid;
     Response response =
         await _dio.post('/brand/getsubcategorybrandlists', queryParameters: {
       "subcategoryid": subcategoryid,
+      "languageid": languageid,
     });
 
     return response;

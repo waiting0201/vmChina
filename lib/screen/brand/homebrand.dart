@@ -145,7 +145,7 @@ class _HomebrandState extends State<Homebrand> {
   }
 
   Future<void> getBrandPhotos() async {
-    if (!_isBrandPhotoLoading) {
+    if (!_isBrandPhotoLoading && mounted) {
       setState(() {
         _isBrandPhotoLoading = true;
       });
@@ -154,14 +154,14 @@ class _HomebrandState extends State<Homebrand> {
       await httpService.getbrandmediasbyid(widget.brand.brandid).then((value) {
         var data = json.decode(value.toString());
 
-        if (data["statusCode"] == 200) {
+        if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _brandphotos.addAll((data["data"] as List)
                 .map((e) => BrandMedia.fromMap(e))
                 .toList());
             _isBrandPhotoLoading = false;
           });
-        } else {
+        } else if (mounted) {
           setState(() {
             _isBrandPhotoLoading = false;
           });
@@ -171,7 +171,7 @@ class _HomebrandState extends State<Homebrand> {
   }
 
   Future<void> getDesigners() async {
-    if (!_isDesignerLoading) {
+    if (!_isDesignerLoading && mounted) {
       setState(() {
         _isDesignerLoading = true;
       });
@@ -184,7 +184,7 @@ class _HomebrandState extends State<Homebrand> {
 
         log('getdesigners code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200) {
+        if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _designers.addAll((data["data"] as List)
                 .map((e) => Designer.fromMap(e))
@@ -194,7 +194,7 @@ class _HomebrandState extends State<Homebrand> {
 
             log('getdesigners isloading: $_isDesignerLoading');
           });
-        } else {
+        } else if (mounted) {
           setState(() {
             _isDesignerLoading = false;
 

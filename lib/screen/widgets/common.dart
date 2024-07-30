@@ -1438,6 +1438,7 @@ class CategorysList extends StatelessWidget {
             url: categorys[index].landscapeurl!,
             title: categorys[index].title,
             width: 1001,
+            iscomingsoon: (index != 0) ? true : null,
           ),
         ),
       ),

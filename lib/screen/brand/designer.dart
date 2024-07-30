@@ -45,7 +45,7 @@ class _DesignersState extends State<Designers> {
   }
 
   Future<void> getDesigners() async {
-    if (!_isDesignerLoading) {
+    if (!_isDesignerLoading && mounted) {
       setState(() {
         _isDesignerLoading = true;
       });
@@ -58,7 +58,7 @@ class _DesignersState extends State<Designers> {
 
         log('getdesigners code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200) {
+        if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _designers.addAll((data["data"] as List)
                 .map((e) => Designer.fromMap(e))
@@ -67,7 +67,7 @@ class _DesignersState extends State<Designers> {
 
             log('getdesigners isloading: $_isDesignerLoading');
           });
-        } else {
+        } else if (mounted) {
           setState(() {
             _isDesignerLoading = false;
 

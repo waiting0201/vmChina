@@ -55,7 +55,7 @@ class _DesignerdetailState extends State<Designerdetail> {
   }
 
   Future<void> getPhotos() async {
-    if (!_isPhotoLoading) {
+    if (!_isPhotoLoading && mounted) {
       setState(() {
         _isPhotoLoading = true;
       });
@@ -68,14 +68,14 @@ class _DesignerdetailState extends State<Designerdetail> {
 
         log('getphotos code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200) {
+        if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _photos.addAll((data["data"] as List)
                 .map((e) => DesignerMedia.fromMap(e))
                 .toList());
             _isPhotoLoading = false;
           });
-        } else {
+        } else if (mounted) {
           setState(() {
             log('getphotos isloading');
             _isPhotoLoading = false;
@@ -99,7 +99,7 @@ class _DesignerdetailState extends State<Designerdetail> {
 
         log('getcollections code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200) {
+        if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _collections.addAll((data["data"] as List)
                 .map((e) => Collection.fromMap(e))
@@ -111,7 +111,7 @@ class _DesignerdetailState extends State<Designerdetail> {
             log('getcollections isloading: $_isCollectionLoading');
             log('getcollections skip: $_skip');
           });
-        } else {
+        } else if (mounted) {
           setState(() {
             _isCollectionLoading = false;
             _hasMore = false;

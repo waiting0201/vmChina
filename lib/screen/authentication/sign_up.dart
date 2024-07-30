@@ -37,6 +37,7 @@ class _SignUpState extends State<SignUp> {
   late bool hidePassword = true;
   late bool hideConfirmPassword = true;
   late bool _isLoging = false;
+  late bool _isCountryLoading = false;
   late Country _selectedcountry;
 
   @override
@@ -46,19 +47,28 @@ class _SignUpState extends State<SignUp> {
   }
 
   Future<void> getCountrys() async {
-    HttpService httpService = HttpService();
-    await httpService.getcountrylists(null).then((value) {
-      var data = json.decode(value.toString());
+    if (!_isCountryLoading && mounted) {
+      setState(() {
+        _isCountryLoading = true;
+      });
 
-      if (data["statusCode"] == 200) {
-        setState(() {
-          _countrys.addAll(
-              (data["data"] as List).map((e) => Country.fromMap(e)).toList());
-        });
-      } else {
-        setState(() {});
-      }
-    });
+      HttpService httpService = HttpService();
+      await httpService.getcountrylists(null).then((value) {
+        var data = json.decode(value.toString());
+
+        if (data["statusCode"] == 200 && mounted) {
+          setState(() {
+            _countrys.addAll(
+                (data["data"] as List).map((e) => Country.fromMap(e)).toList());
+            _isCountryLoading = false;
+          });
+        } else if (mounted) {
+          setState(() {
+            _isCountryLoading = false;
+          });
+        }
+      });
+    }
   }
 
   @override
@@ -389,37 +399,42 @@ class _SignUpState extends State<SignUp> {
                                     IconlyLight.arrowDown2,
                                   ),
                                 ),
-                                onTap: () => showCupertinoModalPopup(
-                                  context: context,
-                                  builder: (_) => SizedBox(
-                                    width: MediaQuery.of(context).size.width,
-                                    height: 350,
-                                    child: CupertinoPicker(
-                                      backgroundColor:
-                                          colorScheme.secondaryContainer,
-                                      itemExtent: 40,
-                                      scrollController:
-                                          FixedExtentScrollController(
-                                        initialItem: 0,
-                                      ),
-                                      children: List<Widget>.generate(
-                                          _countrys.length, (int index) {
-                                        return Center(
-                                          child: Text(
-                                            '${_countrys[index].nickname} (+${_countrys[index].phonecode})',
+                                onTap: () {
+                                  if (!_isCountryLoading) {
+                                    showCupertinoModalPopup(
+                                      context: context,
+                                      builder: (_) => SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        height: 350,
+                                        child: CupertinoPicker(
+                                          backgroundColor:
+                                              colorScheme.secondaryContainer,
+                                          itemExtent: 40,
+                                          scrollController:
+                                              FixedExtentScrollController(
+                                            initialItem: 0,
                                           ),
-                                        );
-                                      }),
-                                      onSelectedItemChanged:
-                                          (int selectedItem) {
-                                        _country.text =
-                                            '+${_countrys[selectedItem].phonecode}';
-                                        _selectedcountry =
-                                            _countrys[selectedItem];
-                                      },
-                                    ),
-                                  ),
-                                ),
+                                          children: List<Widget>.generate(
+                                              _countrys.length, (int index) {
+                                            return Center(
+                                              child: Text(
+                                                '${_countrys[index].nickname} (+${_countrys[index].phonecode})',
+                                              ),
+                                            );
+                                          }),
+                                          onSelectedItemChanged:
+                                              (int selectedItem) {
+                                            _country.text =
+                                                '+${_countrys[selectedItem].phonecode}';
+                                            _selectedcountry =
+                                                _countrys[selectedItem];
+                                          },
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                },
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return lang.S
@@ -502,8 +517,7 @@ class _SignUpState extends State<SignUp> {
                                               builder: (BuildContext context) {
                                                 return AlertDialog(
                                                   backgroundColor: whiteColor,
-                                                  title: const Text(
-                                                      'Congratulations!'),
+                                                  title: const Text('恭喜！'),
                                                   content: Text(lang.S
                                                       .of(context)
                                                       .signupSuccessmessage),

@@ -2079,6 +2079,7 @@ class ImageStackCard extends StatelessWidget {
   final String? subtitle;
   final String? flagurl;
   final double? width;
+  final bool? iscomingsoon;
 
   const ImageStackCard({
     super.key,
@@ -2087,6 +2088,7 @@ class ImageStackCard extends StatelessWidget {
     this.subtitle,
     this.flagurl,
     this.width,
+    this.iscomingsoon,
   });
 
   @override
@@ -2103,6 +2105,13 @@ class ImageStackCard extends StatelessWidget {
             width: width,
             image: NetworkImage(url),
           ),
+          if (iscomingsoon != null && iscomingsoon == true)
+            Positioned(
+              child: Text(
+                lang.S.of(context).commonComingSoon,
+                style: textTheme.titleLarge?.copyWith(color: whiteColor),
+              ),
+            ),
           Positioned(
             left: 0,
             bottom: 20,

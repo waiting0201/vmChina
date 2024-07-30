@@ -31,8 +31,8 @@ class _FavoriteState extends State<Favorite>
   final int _producttake = 10;
   final int _brandtake = 10;
   final List<String> _types = [
-    "Product",
-    "Brand",
+    "商品",
+    "品牌",
   ];
 
   late TabController _tabcontroller;

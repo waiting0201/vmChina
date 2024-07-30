@@ -49,7 +49,7 @@ class _QRScan extends State<QRScan> {
   }
 
   Future<void> getproduct(String sku) async {
-    if (!_isLoading) {
+    if (!_isLoading && mounted) {
       setState(() {
         _isLoading = true;
       });
@@ -59,13 +59,13 @@ class _QRScan extends State<QRScan> {
 
     Response response = await httpService.getproductbysku(sku, null);
     var data = json.decode(response.toString());
-    if (data["statusCode"] == 200) {
+    if (data["statusCode"] == 200 && mounted) {
       setState(() {
         _product = Product.fromMap(data["data"]);
         _isLoading = false;
         _isCorrect = true;
       });
-    } else {
+    } else if (mounted) {
       setState(() {
         _isLoading = false;
         _isCorrect = false;
@@ -111,6 +111,7 @@ class _QRScan extends State<QRScan> {
                   child: QRView(
                     key: qrKey,
                     onQRViewCreated: (ctr) {
+                      controller = ctr;
                       ctr.scannedDataStream.listen((scanData) async {
                         if (scanData.code != null &&
                             _lastResult != scanData.code) {
@@ -175,6 +176,7 @@ class _QRScan extends State<QRScan> {
     log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
 
     if (!p) {
+      ctrl.dispose();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('no Permission')),
       );
