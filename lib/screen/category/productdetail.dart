@@ -741,6 +741,7 @@ class _ProductDetailState extends State<ProductDetail> {
                               ),
                               const SizedBox(width: 5),
                               Image(
+                                width: 15,
                                 image: NetworkImage(_manufactures[0].flagurl!),
                               ),
                             ],
@@ -754,9 +755,17 @@ class _ProductDetailState extends State<ProductDetail> {
                       left: horizonSpace,
                       right: horizonSpace,
                     ),
-                    child: Text(
-                      _product.title,
-                      style: textTheme.titleSmall,
+                    child: Row(
+                      children: [
+                        Text(
+                          _product.title,
+                          style: textTheme.titleSmall,
+                        ),
+                        const Spacer(),
+                        Text(
+                          lang.S.of(context).productdetailItaly,
+                        ),
+                      ],
                     ),
                   ),
                   Padding(
@@ -805,24 +814,10 @@ class _ProductDetailState extends State<ProductDetail> {
                             ),
                             children: [
                               if (!_isSetupLoading) ...[
-                                _isMembershipFree
-                                    ? Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 0, left: 0, right: 0),
-                                        child: Text(
-                                          lang.S
-                                              .of(context)
-                                              .productdetailNoDiscountCaption,
-                                          style: textTheme.titleSmall?.copyWith(
-                                            color: darkColor,
-                                          ),
-                                        ),
-                                      )
-                                    : ClubInsiderPrice(
-                                        brandmemberplans:
-                                            _brand.brandmemberplans,
-                                        product: _product,
-                                      ),
+                                ClubInsiderPrice(
+                                  brandmemberplans: _brand.brandmemberplans,
+                                  product: _product,
+                                ),
                               ]
                             ],
                           ),

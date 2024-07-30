@@ -4382,6 +4382,16 @@ class S {
     );
   }
 
+  /// `Made In Italy`
+  String get productdetailItaly {
+    return Intl.message(
+      'Made In Italy',
+      name: 'productdetailItaly',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Size`
   String get productlistSize {
     return Intl.message(

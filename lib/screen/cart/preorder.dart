@@ -593,7 +593,7 @@ class _PreorderState extends State<Preorder> {
                     builder: (context) => PreorderSelectPayment(
                       carts: widget.carts,
                       shippinglocationid: _selected,
-                      shippingtype: "B",
+                      shippingtype: "O",
                     ),
                   ),
                 );*/
@@ -625,7 +625,7 @@ class _PreorderState extends State<Preorder> {
                   _lastname.text,
                   _mobile.text,
                   _selected,
-                  "B",
+                  "O",
                 )
                     .then((value) {
                   var data = json.decode(value.toString());

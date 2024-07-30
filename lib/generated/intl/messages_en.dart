@@ -738,6 +738,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Designed In"),
         "productdetailDiscover":
             MessageLookupByLibrary.simpleMessage("Discover"),
+        "productdetailItaly":
+            MessageLookupByLibrary.simpleMessage("Made In Italy"),
         "productdetailMadeIn": MessageLookupByLibrary.simpleMessage("Made In"),
         "productdetailMaterial":
             MessageLookupByLibrary.simpleMessage("About the Materials"),

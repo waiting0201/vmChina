@@ -163,7 +163,9 @@ class _MemberPlanState extends State<MemberPlan> {
                 right: horizonSpace,
               ),
               child: Text(
-                lang.S.of(context).memberplanCaption(widget.brand.title),
+                (!_isSetupLoading && _isMembershipFree)
+                    ? lang.S.of(context).productdetailNoDiscountCaption
+                    : lang.S.of(context).memberplanCaption(widget.brand.title),
                 textAlign: TextAlign.center,
                 style: textTheme.bodyMedium,
               ),

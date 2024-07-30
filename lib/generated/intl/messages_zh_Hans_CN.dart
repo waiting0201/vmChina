@@ -618,6 +618,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("设计详情"),
         "productdetailDesignIn": MessageLookupByLibrary.simpleMessage("设计地点"),
         "productdetailDiscover": MessageLookupByLibrary.simpleMessage("探索更多"),
+        "productdetailItaly": MessageLookupByLibrary.simpleMessage("意大利制造"),
         "productdetailMadeIn": MessageLookupByLibrary.simpleMessage("产地"),
         "productdetailMaterial": MessageLookupByLibrary.simpleMessage("关于材料"),
         "productdetailMaterialFrom":

@@ -26,6 +26,7 @@ import '../home/setup_provider.dart';
 import '../profile/clubinsiderchangeplan.dart';
 import '../profile/clubinsiderplanpayment.dart';
 import '../profile/clubinsiderresumepayment.dart';
+import '../widgets/extension.dart';
 
 class LoadingCircle extends StatelessWidget {
   const LoadingCircle({
@@ -1340,11 +1341,8 @@ class ExchangePrice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    LanguageChangeProvider languageChangeProvider =
-        Provider.of<LanguageChangeProvider>(context, listen: true);
-
     return Text(
-      '${languageChangeProvider.currsymbol}${convertCurrency(price, languageChangeProvider.exchange)}',
+      price.toCNY(),
       style: style,
       maxLines: maxLines,
       overflow: overflow,
@@ -1365,43 +1363,62 @@ class ClubInsiderPrice extends StatelessWidget {
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
 
-    LanguageChangeProvider languageChangeProvider =
-        Provider.of<LanguageChangeProvider>(context, listen: true);
-
-    return Consumer<AuthChangeProvider>(
-      builder: (context, auth, child) {
-        bool isChangeCurr = currencySign != languageChangeProvider.currsymbol;
-
-        return ListView.builder(
-          padding: const EdgeInsets.only(top: 0, left: 0, right: 0),
-          shrinkWrap: true,
-          physics: const BouncingScrollPhysics(),
-          itemCount: brandmemberplans.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Row(
-              children: [
-                Text(
-                  '${brandmemberplans[index].plantitle} $currencySign${(product.price * brandmemberplans[index].promote).roundToDouble().toStringAsFixed(0)}',
-                  style: textTheme.titleSmall?.copyWith(color: darkColor),
-                ),
-                if (isChangeCurr)
+    return Consumer<SetupChangeProvider>(
+      builder: (context, set, child) {
+        if (set.setup.discounttype == 0) {
+          return Padding(
+            padding:
+                const EdgeInsets.only(top: 0, left: 0, right: 0, bottom: 2),
+            child: Text(
+                '${lang.S.of(context).productMember} ${product.discountprice.toCNY()}',
+                style: textTheme.titleSmall?.copyWith(
+                  color: darkColor,
+                )),
+          );
+        } else if (set.setup.discounttype == 1) {
+          return ListView.builder(
+            padding:
+                const EdgeInsets.only(top: 0, left: 0, right: 0, bottom: 2),
+            shrinkWrap: true,
+            physics: const BouncingScrollPhysics(),
+            itemCount: brandmemberplans.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Row(
+                children: [
+                  Text(
+                    '${brandmemberplans[index].plantitle} ${(product.price * brandmemberplans[index].promote).roundToDouble().toCNY()}',
+                    style: textTheme.titleSmall?.copyWith(color: darkColor),
+                  ),
+                  /*if (isChangeCurr)
                   Text(
                     ' / ${lang.S.of(context).commonApprox} ',
                     style: textTheme.bodySmall
                         ?.copyWith(color: lightGreyTextColor),
-                  ),
-                if (isChangeCurr)
+                  ),*/
+                  /*if (isChangeCurr)
                   ExchangePrice(
                     price: (product.price * brandmemberplans[index].promote)
                         .roundToDouble(),
                     style: textTheme.titleSmall?.copyWith(
                       color: darkColor,
                     ),
-                  ),
-              ],
-            );
-          },
-        );
+                  ),*/
+                ],
+              );
+            },
+          );
+        } else {
+          return Padding(
+            padding:
+                const EdgeInsets.only(top: 0, left: 0, right: 0, bottom: 2),
+            child: Text(
+              lang.S.of(context).productdetailNoDiscountCaption,
+              style: textTheme.titleSmall?.copyWith(
+                color: darkColor,
+              ),
+            ),
+          );
+        }
       },
     );
   }
@@ -1454,7 +1471,7 @@ class ProductPrice extends StatelessWidget {
           }
         }
 
-        bool isChangeCurr = currencySign != languageChangeProvider.currsymbol;
+        //bool isChangeCurr = currencySign != languageChangeProvider.currsymbol;
 
         return setupChangeProvider.isloading
             ? const SizedBox()
@@ -1464,21 +1481,21 @@ class ProductPrice extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            '$currencySign${discountprice.toStringAsFixed(0)}',
+                            discountprice.toCNY(),
                             style: textTheme.bodyMedium?.copyWith(
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                           const SizedBox(width: 3),
                           Text(
-                            '$currencySign${product.price.toStringAsFixed(0)}',
+                            product.price.toCNY(),
                             style: textTheme.bodySmall?.copyWith(
                               decoration: TextDecoration.lineThrough,
                             ),
                           ),
                         ],
                       ),
-                      if (isChangeCurr) ...[
+                      /*if (isChangeCurr) ...[
                         const SizedBox(width: 3),
                         Text('${lang.S.of(context).commonApprox} ',
                             style: textTheme.bodySmall),
@@ -1488,7 +1505,7 @@ class ProductPrice extends StatelessWidget {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                      ]
+                      ]*/
                     ],
                   )
                 : Column(
@@ -1497,12 +1514,12 @@ class ProductPrice extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            '$currencySign${product.price.toStringAsFixed(0)}',
+                            product.price.toCNY(),
                             style: textTheme.bodyMedium?.copyWith(
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          if (isChangeCurr) ...[
+                          /*if (isChangeCurr) ...[
                             const SizedBox(width: 3),
                             Text('${lang.S.of(context).commonApprox} ',
                                 style: textTheme.bodySmall),
@@ -1512,19 +1529,19 @@ class ProductPrice extends StatelessWidget {
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-                          ]
+                          ]*/
                         ],
                       ),
                       if (setup.discounttype != 1) ...[
                         Row(
                           children: [
                             Text(
-                              '${lang.S.of(context).productMember} $currencySign${discountprice.toStringAsFixed(0)}',
+                              '${lang.S.of(context).productMember} ${discountprice.toCNY()}',
                               style: textTheme.bodyMedium?.copyWith(
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-                            if (isChangeCurr) ...[
+                            /*if (isChangeCurr) ...[
                               const SizedBox(width: 3),
                               Text('${lang.S.of(context).commonApprox} ',
                                   style: textTheme.bodySmall),
@@ -1534,7 +1551,7 @@ class ProductPrice extends StatelessWidget {
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                            ]
+                            ]*/
                           ],
                         ),
                       ]
