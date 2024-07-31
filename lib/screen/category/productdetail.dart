@@ -835,7 +835,7 @@ class _ProductDetailState extends State<ProductDetail> {
                           ),
                         ),
                   _product.summary == null || _product.summary == ''
-                      ? Container()
+                      ? const SizedBox()
                       : Padding(
                           padding: const EdgeInsets.only(
                             top: 5,
