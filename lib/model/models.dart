@@ -1094,6 +1094,7 @@ class Product {
   final String? productcare;
   final String? flagurl;
   final String? materialflagurl;
+  final String? isselling;
   final int createdate;
 
   Product({
@@ -1117,6 +1118,7 @@ class Product {
     this.productcare,
     this.flagurl,
     this.materialflagurl,
+    this.isselling,
     required this.createdate,
   });
 
@@ -1146,6 +1148,7 @@ class Product {
         productcare = json['productcare'],
         flagurl = json['flagurl'],
         materialflagurl = json['materialflagurl'],
+        isselling = json['isselling'],
         createdate = json['createdate'];
 
   Map<String, dynamic> toMap() => {
@@ -1170,6 +1173,7 @@ class Product {
         'productcare': productcare,
         'flagurl': flagurl,
         'materialflagurl': materialflagurl,
+        'isselling': isselling,
         'createdate': createdate,
       };
 }

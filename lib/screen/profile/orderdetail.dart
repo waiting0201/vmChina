@@ -481,7 +481,7 @@ class _OrderdetailState extends State<Orderdetail> {
                             const Spacer(),
                             Text(
                               widget.order.email!,
-                              style: textTheme.bodyMedium,
+                              style: textTheme.bodySmall,
                             ),
                           ],
                         ),

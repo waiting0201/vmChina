@@ -76,7 +76,7 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
   }
 
   Future<void> getWhatsnews() async {
-    if (!_isWhatsnewLoading) {
+    if (!_isWhatsnewLoading && mounted) {
       setState(() {
         _isWhatsnewLoading = true;
       });
@@ -87,7 +87,7 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
 
         log('getwhatsnews code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200) {
+        if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _whatsnews.addAll((data["data"] as List)
                 .map((e) => WhatsNew.fromMap(e))
@@ -97,7 +97,7 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
 
             log('getwhatsnews isloading: $_isWhatsnewLoading');
           });
-        } else {
+        } else if (mounted) {
           setState(() {
             _isWhatsnewLoading = false;
 

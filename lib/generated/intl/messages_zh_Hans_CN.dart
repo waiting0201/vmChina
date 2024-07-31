@@ -253,6 +253,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "commonMore": MessageLookupByLibrary.simpleMessage("更多"),
         "commonNotQualified": MessageLookupByLibrary.simpleMessage("不符合条件"),
         "commonOk": MessageLookupByLibrary.simpleMessage("确定"),
+        "commonOutStock": MessageLookupByLibrary.simpleMessage("目前缺货中"),
         "commonPayment": MessageLookupByLibrary.simpleMessage("支付"),
         "commonPerMonth": MessageLookupByLibrary.simpleMessage("每月"),
         "commonPreOrder": MessageLookupByLibrary.simpleMessage("预订"),

@@ -44,7 +44,7 @@ class _PreorderState extends State<Preorder> {
     _member = Provider.of<AuthChangeProvider>(context, listen: false).member;
     _firstname.text = _member.firstname!;
     _lastname.text = _member.lastname!;
-    _mobile.text = _member.mobile!;
+    _mobile.text = _member.mobile != null ? _member.mobile! : "";
     getShippingLocations();
   }
 

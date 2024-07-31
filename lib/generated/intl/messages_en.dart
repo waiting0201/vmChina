@@ -300,6 +300,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "commonNotQualified":
             MessageLookupByLibrary.simpleMessage("NOT QUALIFIED"),
         "commonOk": MessageLookupByLibrary.simpleMessage("OK"),
+        "commonOutStock": MessageLookupByLibrary.simpleMessage("Out of stock"),
         "commonPayment": MessageLookupByLibrary.simpleMessage("Payment"),
         "commonPerMonth": MessageLookupByLibrary.simpleMessage("per month"),
         "commonPreOrder": MessageLookupByLibrary.simpleMessage("Pre Order"),

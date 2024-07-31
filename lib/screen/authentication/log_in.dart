@@ -12,9 +12,9 @@ import '../widgets/constant.dart';
 import '../widgets/common.dart';
 import '../widgets/partial.dart';
 import '../home/home.dart';
+import '../profile/profile.dart';
 import 'sign_up.dart';
 import 'forgot_password.dart';
-import 'wechat_email.dart';
 
 class LogIn extends StatefulWidget {
   final String? refer;
@@ -47,6 +47,7 @@ class _LogInState extends State<LogIn> {
     super.initState();
     _authChangeProvider =
         Provider.of<AuthChangeProvider>(context, listen: false);
+
     doInit();
   }
 
@@ -54,6 +55,21 @@ class _LogInState extends State<LogIn> {
   void dispose() {
     super.dispose();
     _fluwx.removeSubscriber(responseListener);
+  }
+
+  Future<void> doWeChatSignUp(String code) async {
+    _authChangeProvider.wechatBinding(code).then((value) {
+      if (value != null) {
+      } else {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const Profile(),
+          ),
+          (route) => false,
+        );
+      }
+    });
   }
 
   Future<void> doInit() async {
@@ -82,7 +98,7 @@ class _LogInState extends State<LogIn> {
           _authChangeProvider.wechatBinding(res.code!).then((value) {
             if (value != null) {
               overlayEntry.remove();
-              setState(() {
+              /*setState(() {
                 _startLogin = false;
               });
 
@@ -94,10 +110,21 @@ class _LogInState extends State<LogIn> {
                     unionid: value.unionid,
                   ),
                 ),
-              );
+              );*/
             } else {
               overlayEntry.remove();
-              Navigator.pop(context);
+
+              if (widget.refer == 'intro') {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Home(),
+                  ),
+                  (route) => false,
+                );
+              } else {
+                Navigator.pop(context);
+              }
             }
           });
         } else {
@@ -124,8 +151,10 @@ class _LogInState extends State<LogIn> {
 
     _fluwx
         .authBy(
-            which:
-                NormalAuth(scope: 'snsapi_userinfo', state: 'vm_wechat_login'))
+            which: NormalAuth(
+                scope: 'snsapi_userinfo',
+                state: 'vm_wechat_login',
+                nonAutomatic: false))
         .then((value) {
       if (!value) {
         log("scope:${value.toString()}");
@@ -421,7 +450,7 @@ class _LogInState extends State<LogIn> {
                 ),
                 const SizedBox(height: 20),
                 !_isWeChatInstalled
-                    ? Container()
+                    ? const SizedBox()
                     : Padding(
                         padding: const EdgeInsets.only(left: 25, right: 25),
                         child: SizedBox(

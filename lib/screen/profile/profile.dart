@@ -177,7 +177,7 @@ class _ProfileState extends State<Profile> {
                                   const SizedBox(height: 5.0),
                                   Text(
                                     auth.member.email,
-                                    style: textTheme.bodyMedium?.copyWith(
+                                    style: textTheme.bodySmall?.copyWith(
                                       color: lightGreyTextColor,
                                     ),
                                   ),

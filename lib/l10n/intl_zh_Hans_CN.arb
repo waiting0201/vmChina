@@ -494,5 +494,6 @@
     "commonGotoCart": "前往购物车",
     "commonComingSoon": "即将推出",
     "commonProduct": "商品",
-    "commonBrand": "品牌"
+    "commonBrand": "品牌",
+    "commonOutStock": "目前缺货中"
 }

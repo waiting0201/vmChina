@@ -118,7 +118,7 @@ class _ProductDetailState extends State<ProductDetail> {
   }
 
   Future<void> getSetup() async {
-    if (!_isSetupLoading) {
+    if (!_isSetupLoading && mounted) {
       setState(() {
         _isSetupLoading = true;
       });
@@ -146,7 +146,7 @@ class _ProductDetailState extends State<ProductDetail> {
   }
 
   Future<void> getPhotos() async {
-    if (!_isPhotoLoading) {
+    if (!_isPhotoLoading && mounted) {
       setState(() {
         _isPhotoLoading = true;
       });
@@ -157,14 +157,14 @@ class _ProductDetailState extends State<ProductDetail> {
 
         log('getphotos code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200) {
+        if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _photos.addAll((data["data"] as List)
                 .map((e) => ProductMedia.fromMap(e))
                 .toList());
             _isPhotoLoading = false;
           });
-        } else {
+        } else if (mounted) {
           setState(() {
             log('getphotos isloading');
             _isPhotoLoading = false;
@@ -175,7 +175,7 @@ class _ProductDetailState extends State<ProductDetail> {
   }
 
   Future<void> getBrand() async {
-    if (!_isBrandLoading) {
+    if (!_isBrandLoading && mounted) {
       setState(() {
         _isBrandLoading = true;
       });
@@ -186,12 +186,12 @@ class _ProductDetailState extends State<ProductDetail> {
 
         log('getbrand code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200) {
+        if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _brand = Brand.fromMap(data["data"]);
             _isBrandLoading = false;
           });
-        } else {
+        } else if (mounted) {
           setState(() {
             log('getbrand isloading');
             _isBrandLoading = false;
@@ -202,7 +202,7 @@ class _ProductDetailState extends State<ProductDetail> {
   }
 
   Future<void> getDesigners() async {
-    if (!_isDesignerLoading) {
+    if (!_isDesignerLoading && mounted) {
       setState(() {
         _isDesignerLoading = true;
       });
@@ -215,7 +215,7 @@ class _ProductDetailState extends State<ProductDetail> {
 
         log('getdesigners code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200) {
+        if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _designers.addAll((data["data"] as List)
                 .map((e) => Designer.fromMap(e))
@@ -225,7 +225,7 @@ class _ProductDetailState extends State<ProductDetail> {
 
             log('getdesigners isloading: $_isDesignerLoading');
           });
-        } else {
+        } else if (mounted) {
           setState(() {
             _isDesignerLoading = false;
 
@@ -237,7 +237,7 @@ class _ProductDetailState extends State<ProductDetail> {
   }
 
   Future<void> getProductsByBrandID() async {
-    if (!_isProductByBrandLoading) {
+    if (!_isProductByBrandLoading && mounted) {
       setState(() {
         _isProductByBrandLoading = true;
       });
@@ -251,13 +251,13 @@ class _ProductDetailState extends State<ProductDetail> {
 
         log('getproductsbybrand code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200) {
+        if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _productsbybrand.addAll(
                 (data["data"] as List).map((e) => Product.fromMap(e)).toList());
             _isProductByBrandLoading = false;
           });
-        } else {
+        } else if (mounted) {
           setState(() {
             log('getproductsbybrand isloading');
             _isProductByBrandLoading = false;
@@ -268,7 +268,7 @@ class _ProductDetailState extends State<ProductDetail> {
   }
 
   Future<void> getProductsByCollectionID() async {
-    if (!_isProductByCollectionLoading) {
+    if (!_isProductByCollectionLoading && mounted) {
       setState(() {
         _isProductByCollectionLoading = true;
       });
@@ -282,13 +282,13 @@ class _ProductDetailState extends State<ProductDetail> {
 
         log('getproductsbycollection code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200) {
+        if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _productsbycollection.addAll(
                 (data["data"] as List).map((e) => Product.fromMap(e)).toList());
             _isProductByCollectionLoading = false;
           });
-        } else {
+        } else if (mounted) {
           setState(() {
             log('getproductsbycollection isloading');
             _isProductByCollectionLoading = false;
@@ -299,7 +299,7 @@ class _ProductDetailState extends State<ProductDetail> {
   }
 
   Future<void> getMessages() async {
-    if (!_isMessageLoading) {
+    if (!_isMessageLoading && mounted) {
       setState(() {
         _isMessageLoading = true;
       });
@@ -312,14 +312,14 @@ class _ProductDetailState extends State<ProductDetail> {
 
         log('getmessages code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200) {
+        if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _messages.addAll((data["data"] as List)
                 .map((e) => OrderDetailMessage.fromMap(e))
                 .toList());
             _isMessageLoading = false;
           });
-        } else {
+        } else if (mounted) {
           setState(() {
             log('getmessages isloading');
             _isMessageLoading = false;
@@ -330,7 +330,7 @@ class _ProductDetailState extends State<ProductDetail> {
   }
 
   Future<void> getManufactures() async {
-    if (!_isManufactureLoading) {
+    if (!_isManufactureLoading && mounted) {
       setState(() {
         _isManufactureLoading = true;
       });
@@ -343,14 +343,14 @@ class _ProductDetailState extends State<ProductDetail> {
 
         log('getmanufactures code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200) {
+        if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _manufactures.addAll((data["data"] as List)
                 .map((e) => Manufacture.fromMap(e))
                 .toList());
             _isManufactureLoading = false;
           });
-        } else {
+        } else if (mounted) {
           setState(() {
             log('getmanufactures isloading');
             _isManufactureLoading = false;
@@ -391,7 +391,7 @@ class _ProductDetailState extends State<ProductDetail> {
   }
 
   Future<void> getSizes() async {
-    if (!_isSizeLoading) {
+    if (!_isSizeLoading && mounted) {
       setState(() {
         _isSizeLoading = true;
       });
@@ -403,13 +403,13 @@ class _ProductDetailState extends State<ProductDetail> {
           .then((value) {
         var data = json.decode(value.toString());
 
-        if (data["statusCode"] == 200) {
+        if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _sizes.addAll(
                 (data["data"] as List).map((e) => VSize.fromMap(e)).toList());
             _isSizeLoading = false;
           });
-        } else {
+        } else if (mounted) {
           setState(() {
             log('getsize isloading');
             _isSizeLoading = false;
@@ -776,6 +776,18 @@ class _ProductDetailState extends State<ProductDetail> {
                     ),
                     child: ProductPrice(product: _product),
                   ),
+                  if (_product.isselling == "n")
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 3,
+                        left: horizonSpace,
+                        right: horizonSpace,
+                      ),
+                      child: Text(
+                        lang.S.of(context).commonOutStock,
+                        style: textTheme.titleSmall?.copyWith(color: redColor),
+                      ),
+                    ),
                   _isBrandLoading
                       ? const SizedBox()
                       : Padding(
@@ -1578,77 +1590,16 @@ class _ProductDetailState extends State<ProductDetail> {
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            child: Text(
-                              lang.S.of(context).commonPreOrder,
-                              style: textTheme.titleSmall?.copyWith(
-                                color: whiteColor,
+                        if (_product.isselling == "y") ...[
+                          Expanded(
+                            child: ElevatedButton(
+                              child: Text(
+                                lang.S.of(context).commonPreOrder,
+                                style: textTheme.titleSmall?.copyWith(
+                                  color: whiteColor,
+                                ),
                               ),
-                            ),
-                            onPressed: () {
-                              Carts cart = Carts(
-                                productid: _product.productid,
-                                brandtitle: _product.brandtitle,
-                                producttitle: _product.title,
-                                productphoto:
-                                    _photos.isNotEmpty ? _photos[0].url : '',
-                                sizetitle: _size.text,
-                                productsizeid: selectedSize,
-                                quantity: buyamount,
-                                price: _price,
-                                total: buyamount * _price,
-                              );
-
-                              _carts.clear();
-                              _carts.add(cart);
-
-                              if (_authChangeProvider.status) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => Preorder(
-                                      carts: _carts,
-                                    ),
-                                  ),
-                                );
-                              } else {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const LogIn(),
-                                  ),
-                                );
-                              }
-                            },
-                          ),
-                        ),
-                        const SizedBox(width: 5),
-                        _isBrandLoading
-                            ? const SizedBox()
-                            : MemberPlanIcon(
-                                brand: _brand,
-                              ),
-                      ],
-                    )
-                  : Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: darkColor,
-                            ),
-                            child: Text(
-                              lang.S.of(context).commonAddtoCart,
-                              style: textTheme.titleSmall?.copyWith(
-                                color: whiteColor,
-                              ),
-                            ),
-                            onPressed: () {
-                              if (selectedSize == "") {
-                                sizeselect();
-                              } else {
+                              onPressed: () {
                                 Carts cart = Carts(
                                   productid: _product.productid,
                                   brandtitle: _product.brandtitle,
@@ -1662,186 +1613,18 @@ class _ProductDetailState extends State<ProductDetail> {
                                   total: buyamount * _price,
                                 );
 
+                                _carts.clear();
+                                _carts.add(cart);
+
                                 if (_authChangeProvider.status) {
-                                  if (_cartChangeProvider.addCart(cart)) {
-                                    showModalBottomSheet(
-                                      context: context,
-                                      builder: (context) => SafeArea(
-                                        top: false,
-                                        left: false,
-                                        right: false,
-                                        bottom: true,
-                                        child: Container(
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          padding: const EdgeInsets.only(
-                                            top: 20,
-                                            left: horizonSpace,
-                                            right: horizonSpace,
-                                          ),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                  bottom: 10,
-                                                ),
-                                                child: Text(
-                                                  lang.S
-                                                      .of(context)
-                                                      .productdetailAddSuccess,
-                                                  style: textTheme.bodyMedium,
-                                                ),
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                      horizontal: 20,
-                                                    ),
-                                                    child: Image(
-                                                      width: 90,
-                                                      image:
-                                                          CachedNetworkImageProvider(
-                                                        cart.productphoto!,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Expanded(
-                                                    flex: 3,
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Text(
-                                                          cart.brandtitle
-                                                              .toUpperCase(),
-                                                          maxLines: 2,
-                                                          softWrap: true,
-                                                          style: textTheme
-                                                              .displaySmall
-                                                              ?.copyWith(
-                                                            color: darkColor,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
-                                                        ),
-                                                        const SizedBox(
-                                                            height: 5),
-                                                        Text(
-                                                          cart.producttitle,
-                                                          style: textTheme
-                                                              .displaySmall,
-                                                        ),
-                                                        const SizedBox(
-                                                            height: 10),
-                                                        Text(
-                                                          '${lang.S.of(context).productdetailSize}: ${cart.sizetitle}',
-                                                          style: textTheme
-                                                              .bodySmall
-                                                              ?.copyWith(
-                                                            color: darkColor,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Align(
-                                                alignment:
-                                                    Alignment.centerRight,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                    right: 20,
-                                                  ),
-                                                  child: ExchangePrice(
-                                                    price: cart.price,
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: textTheme.bodyMedium
-                                                        ?.copyWith(
-                                                      color: redColor,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                padding: const EdgeInsets.only(
-                                                  top: 15,
-                                                  bottom: 15,
-                                                ),
-                                                width: MediaQuery.of(context)
-                                                    .size
-                                                    .width,
-                                                child: ElevatedButton(
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    backgroundColor: darkColor,
-                                                  ),
-                                                  child: Text(
-                                                    lang.S
-                                                        .of(context)
-                                                        .commonGotoCart,
-                                                    style: textTheme.titleSmall
-                                                        ?.copyWith(
-                                                      color: whiteColor,
-                                                    ),
-                                                  ),
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            const Cart(),
-                                                      ),
-                                                    );
-                                                  },
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Preorder(
+                                        carts: _carts,
                                       ),
-                                    );
-                                  } else {
-                                    setState(() {
-                                      showDialog(
-                                        barrierDismissible: false,
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            backgroundColor: whiteColor,
-                                            title: const Text('Message'),
-                                            content: Text(lang.S
-                                                .of(context)
-                                                .productdetailMessage),
-                                            actions: [
-                                              OutlinedButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Text(
-                                                  lang.S.of(context).commonExit,
-                                                  style: textTheme.titleSmall
-                                                      ?.copyWith(
-                                                          color: darkColor),
-                                                ),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    });
-                                  }
+                                    ),
+                                  );
                                 } else {
                                   Navigator.push(
                                     context,
@@ -1850,11 +1633,254 @@ class _ProductDetailState extends State<ProductDetail> {
                                     ),
                                   );
                                 }
-                              }
-                            },
+                              },
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: 5),
+                          const SizedBox(width: 5),
+                        ],
+                        _isBrandLoading
+                            ? const SizedBox()
+                            : MemberPlanIcon(
+                                brand: _brand,
+                              ),
+                      ],
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        if (_product.isselling == "y") ...[
+                          Expanded(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: darkColor,
+                              ),
+                              child: Text(
+                                lang.S.of(context).commonAddtoCart,
+                                style: textTheme.titleSmall?.copyWith(
+                                  color: whiteColor,
+                                ),
+                              ),
+                              onPressed: () {
+                                if (selectedSize == "") {
+                                  sizeselect();
+                                } else {
+                                  Carts cart = Carts(
+                                    productid: _product.productid,
+                                    brandtitle: _product.brandtitle,
+                                    producttitle: _product.title,
+                                    productphoto: _photos.isNotEmpty
+                                        ? _photos[0].url
+                                        : '',
+                                    sizetitle: _size.text,
+                                    productsizeid: selectedSize,
+                                    quantity: buyamount,
+                                    price: _price,
+                                    total: buyamount * _price,
+                                  );
+
+                                  if (_authChangeProvider.status) {
+                                    if (_cartChangeProvider.addCart(cart)) {
+                                      showModalBottomSheet(
+                                        context: context,
+                                        builder: (context) => SafeArea(
+                                          top: false,
+                                          left: false,
+                                          right: false,
+                                          bottom: true,
+                                          child: Container(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            padding: const EdgeInsets.only(
+                                              top: 20,
+                                              left: horizonSpace,
+                                              right: horizonSpace,
+                                            ),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                    bottom: 10,
+                                                  ),
+                                                  child: Text(
+                                                    lang.S
+                                                        .of(context)
+                                                        .productdetailAddSuccess,
+                                                    style: textTheme.bodyMedium,
+                                                  ),
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                        horizontal: 20,
+                                                      ),
+                                                      child: Image(
+                                                        width: 90,
+                                                        image:
+                                                            CachedNetworkImageProvider(
+                                                          cart.productphoto!,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 3,
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Text(
+                                                            cart.brandtitle
+                                                                .toUpperCase(),
+                                                            maxLines: 2,
+                                                            softWrap: true,
+                                                            style: textTheme
+                                                                .displaySmall
+                                                                ?.copyWith(
+                                                              color: darkColor,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                              height: 5),
+                                                          Text(
+                                                            cart.producttitle,
+                                                            style: textTheme
+                                                                .displaySmall,
+                                                          ),
+                                                          const SizedBox(
+                                                              height: 10),
+                                                          Text(
+                                                            '${lang.S.of(context).productdetailSize}: ${cart.sizetitle}',
+                                                            style: textTheme
+                                                                .bodySmall
+                                                                ?.copyWith(
+                                                              color: darkColor,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Align(
+                                                  alignment:
+                                                      Alignment.centerRight,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                      right: 20,
+                                                    ),
+                                                    child: ExchangePrice(
+                                                      price: cart.price,
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: textTheme
+                                                          .bodyMedium
+                                                          ?.copyWith(
+                                                        color: redColor,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Container(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                    top: 15,
+                                                    bottom: 15,
+                                                  ),
+                                                  width: MediaQuery.of(context)
+                                                      .size
+                                                      .width,
+                                                  child: ElevatedButton(
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      backgroundColor:
+                                                          darkColor,
+                                                    ),
+                                                    child: Text(
+                                                      lang.S
+                                                          .of(context)
+                                                          .commonGotoCart,
+                                                      style: textTheme
+                                                          .titleSmall
+                                                          ?.copyWith(
+                                                        color: whiteColor,
+                                                      ),
+                                                    ),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              const Cart(),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    } else {
+                                      setState(() {
+                                        showDialog(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              backgroundColor: whiteColor,
+                                              title: const Text('Message'),
+                                              content: Text(lang.S
+                                                  .of(context)
+                                                  .productdetailMessage),
+                                              actions: [
+                                                OutlinedButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text(
+                                                    lang.S
+                                                        .of(context)
+                                                        .commonExit,
+                                                    style: textTheme.titleSmall
+                                                        ?.copyWith(
+                                                            color: darkColor),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      });
+                                    }
+                                  } else {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const LogIn(),
+                                      ),
+                                    );
+                                  }
+                                }
+                              },
+                            ),
+                          ),
+                          const SizedBox(width: 5),
+                        ],
                         _isBrandLoading
                             ? const SizedBox()
                             : MemberPlanIcon(

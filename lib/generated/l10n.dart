@@ -5011,6 +5011,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Out of stock`
+  String get commonOutStock {
+    return Intl.message(
+      'Out of stock',
+      name: 'commonOutStock',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

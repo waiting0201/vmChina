@@ -494,5 +494,6 @@
   "commonGotoCart": "Go to Cart",
   "commonComingSoon": "COMING SOON",
   "commonProduct": "Product",
-  "commonBrand": "Brand"
+  "commonBrand": "Brand",
+  "commonOutStock": "Out of stock"
 }

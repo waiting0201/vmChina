@@ -20,6 +20,7 @@ import 'screen/splash_screen/splashscreen.dart';
 import 'screen/widgets/library.dart';
 import 'screen/home/home.dart';
 import 'screen/cart/complete.dart';
+import 'screen/authentication/log_in.dart';
 import 'theme/theme_constants.dart';
 import 'generated/l10n.dart';
 
@@ -193,6 +194,21 @@ class _MyAppState extends State<MyApp> {
                   ),
                 );
               }
+
+              /*if (uri.pathSegments.length == 3 &&
+                  uri.pathSegments[0] == 'app' &&
+                  uri.pathSegments[2] == 'oauth') {
+                String code = uri.queryParameters['code'] ?? '';
+                return MaterialPageRoute(
+                  builder: (context) => LogIn(
+                    wechatcode: code,
+                  ),
+                );
+              }*/
+              return null;
+            },
+            onUnknownRoute: (settings) {
+              return null;
             },
           );
         },
