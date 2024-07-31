@@ -392,7 +392,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "introscreenP2Title":
             MessageLookupByLibrary.simpleMessage("独家接触欧洲独特品牌的最佳产品"),
         "introscreenP3Caption": MessageLookupByLibrary.simpleMessage(
-            "没有中间商，没有额外费用。以合理价格享受奢侈品级的质量。直接从生产者手中获取。"),
+            "我们相信时尚是精美设计和精心制作的艺术创作,是人类智慧的证明，每个人都有权力享受而无关他的收入和社会地位。"),
         "introscreenP3Title": MessageLookupByLibrary.simpleMessage("直达您手"),
         "introscreenP4Caption": MessageLookupByLibrary.simpleMessage(
             "开启通知，随时了解订单状态、商品供应、特别活动和店内动态。"),
@@ -629,7 +629,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "productdetailMessage":
             MessageLookupByLibrary.simpleMessage("该商品已添加到购物车！"),
         "productdetailNoDiscountCaption": MessageLookupByLibrary.simpleMessage(
-            "从首次购买之日起，您将获得3个月的免费会员资格，享受与订阅会员相同的所有福利！在最初的3个月结束时，您可以决定成为正式会员或退出。成为正式会员后，每个品牌会请求每月10元人民币的赞助费，相当于一杯咖啡的费用。当然，您也可以选择支付更高金额以支持您喜爱的品牌及其运营。如果选择退出，没有任何罚款"),
+            "从首次购买之日起，您将获得3个月的免费会员资格，享受与订阅会员相同的所有福利！在最初的3个月结束时，您可以决定成为正式会员或退出。成为正式会员后，每个品牌会请求每月10元人民币的赞助费，相当于一杯咖啡的费用。当然，您也可以选择支付更高金额以支持您喜爱的品牌及其运营。如果选择退出，在会员中心的俱乐部会员可以取消，且没有任何罚款"),
         "productdetailPleaseSelectSize":
             MessageLookupByLibrary.simpleMessage("请选择尺码"),
         "productdetailProductCare":

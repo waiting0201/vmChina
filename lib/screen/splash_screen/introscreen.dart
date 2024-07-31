@@ -103,7 +103,7 @@ class _IntroScreenState extends State<IntroScreen> {
           image: _buildFullscreenImage("intro_02.jpg"),
           decoration: pageDecoration,
         ),
-        PageViewModel(
+        /*PageViewModel(
           title: lang.S.of(context).introscreenP4Title,
           body: lang.S.of(context).introscreenP4Caption,
           decoration: pageDecoration.copyWith(
@@ -117,7 +117,7 @@ class _IntroScreenState extends State<IntroScreen> {
             ),
             bodyAlignment: Alignment.center,
           ),
-        ),
+        ),*/
         PageViewModel(
           title: "",
           bodyWidget: const AccountSection(

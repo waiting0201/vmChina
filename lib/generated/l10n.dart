@@ -120,10 +120,10 @@ class S {
     );
   }
 
-  /// `No middlemen, no added costs. Luxury level quality at reasonable prices. Directly from the producer themselves.`
+  /// `At Vetrina Mia, we believe that the right to enjoy fashion belongs to everyone, regardless of wealth or status.`
   String get introscreenP3Caption {
     return Intl.message(
-      'No middlemen, no added costs. Luxury level quality at reasonable prices. Directly from the producer themselves.',
+      'At Vetrina Mia, we believe that the right to enjoy fashion belongs to everyone, regardless of wealth or status.',
       name: 'introscreenP3Caption',
       desc: '',
       args: [],
@@ -4372,10 +4372,10 @@ class S {
     );
   }
 
-  /// `Starting from the date of your first purchase, you will receive 3 months of free membership, enjoying all the benefits available to subscribing members! At the end of the initial 3 months, you can decide whether to become a full member or opt out. Once you become a full member, each brand will request a monthly sponsorship fee of 10 RMB, equivalent to the cost of a cup of coffee. Of course, you can also choose to pay a higher amount to support your favorite brands and their operations. If you choose to opt out, there will be no penalties.`
+  /// `Starting from the date of your first purchase, you will receive 3 months of free membership, enjoying all the benefits available to subscribing members! At the end of the initial 3 months, you can decide whether to become a full member or opt out. Once you become a full member, each brand will request a monthly sponsorship fee of 10 RMB, equivalent to the cost of a cup of coffee. Of course, you can also choose to pay a higher amount to support your favorite brands and their operations. If you choose to opt out, cancellation can be done in the Club Insider in the member center and there will be no penalties.`
   String get productdetailNoDiscountCaption {
     return Intl.message(
-      'Starting from the date of your first purchase, you will receive 3 months of free membership, enjoying all the benefits available to subscribing members! At the end of the initial 3 months, you can decide whether to become a full member or opt out. Once you become a full member, each brand will request a monthly sponsorship fee of 10 RMB, equivalent to the cost of a cup of coffee. Of course, you can also choose to pay a higher amount to support your favorite brands and their operations. If you choose to opt out, there will be no penalties.',
+      'Starting from the date of your first purchase, you will receive 3 months of free membership, enjoying all the benefits available to subscribing members! At the end of the initial 3 months, you can decide whether to become a full member or opt out. Once you become a full member, each brand will request a monthly sponsorship fee of 10 RMB, equivalent to the cost of a cup of coffee. Of course, you can also choose to pay a higher amount to support your favorite brands and their operations. If you choose to opt out, cancellation can be done in the Club Insider in the member center and there will be no penalties.',
       name: 'productdetailNoDiscountCaption',
       desc: '',
       args: [],

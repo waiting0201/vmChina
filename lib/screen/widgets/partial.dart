@@ -410,7 +410,7 @@ class _ClubinsiderCardState extends State<ClubinsiderCard> {
                       Expanded(
                         flex: 2,
                         child: InkWell(
-                          onTap: () {
+                          onTap: () async {
                             OverlayEntry overlayEntry = OverlayEntry(
                               builder: (context) => Positioned(
                                 top: 0,
@@ -426,7 +426,7 @@ class _ClubinsiderCardState extends State<ClubinsiderCard> {
                             Overlay.of(context).insert(overlayEntry);
 
                             HttpService httpService = HttpService();
-                            httpService
+                            await httpService
                                 .getbrandbyid(
                                     widget
                                         .membershipfee.brandmemberplan!.brandid,
@@ -579,7 +579,7 @@ class _ClubinsiderCardState extends State<ClubinsiderCard> {
                           //取消且到期
                           if (_isCancel && _isExpire)
                             TextButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 OverlayEntry overlayEntry = OverlayEntry(
                                   builder: (context) => Positioned(
                                     top: 0,
@@ -595,7 +595,7 @@ class _ClubinsiderCardState extends State<ClubinsiderCard> {
                                 Overlay.of(context).insert(overlayEntry);
 
                                 HttpService httpService = HttpService();
-                                httpService
+                                await httpService
                                     .getbrandbyid(
                                         widget.membershipfee.brandmemberplan!
                                             .brandid,
@@ -641,8 +641,8 @@ class _ClubinsiderCardState extends State<ClubinsiderCard> {
                           if (!_isExpire) const Spacer(),
                           if (!_isExpire)
                             _isCancel
-                                ? IconButton(
-                                    onPressed: () {
+                                ? /*IconButton(
+                                    onPressed: () async {
                                       OverlayEntry overlayEntry = OverlayEntry(
                                         builder: (context) => Positioned(
                                           top: 0,
@@ -659,7 +659,7 @@ class _ClubinsiderCardState extends State<ClubinsiderCard> {
                                       Overlay.of(context).insert(overlayEntry);
 
                                       HttpService httpService = HttpService();
-                                      httpService
+                                      await httpService
                                           .getbrandbyid(
                                               widget.membershipfee
                                                   .brandmemberplan!.brandid,
@@ -693,7 +693,8 @@ class _ClubinsiderCardState extends State<ClubinsiderCard> {
                                     iconSize: 20,
                                     icon: const Icon(Icons.edit_note_outlined),
                                     color: primaryColor,
-                                  )
+                                  )*/
+                                const SizedBox()
                                 : IconButton(
                                     onPressed: () {
                                       showDialog(

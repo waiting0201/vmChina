@@ -282,7 +282,7 @@ class _ClubinsiderPlanPaymentState extends State<ClubinsiderPlanPayment> {
                               ),
                             ],
                           ),
-                        ).then((value) {
+                        ).then((value) async {
                           if (value) {
                             OverlayEntry overlayEntry = OverlayEntry(
                               builder: (context) => Positioned(
@@ -299,7 +299,7 @@ class _ClubinsiderPlanPaymentState extends State<ClubinsiderPlanPayment> {
                             Overlay.of(context).insert(overlayEntry);
 
                             HttpService httpService = HttpService();
-                            httpService
+                            await httpService
                                 .postupdatesubscription(
                               widget.brandmemberplan.brandmemberplanid,
                               widget.membershipfeedid,
