@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
@@ -25,7 +26,6 @@ class _QRScan extends State<QRScan> {
 
   late String _lastResult = "";
   late bool _isLoading = false;
-  late bool _isCorrect = true;
   late Product _product;
 
   QRViewController? controller;
@@ -33,14 +33,14 @@ class _QRScan extends State<QRScan> {
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
   @override
-  /*void reassemble() {
+  void reassemble() {
     super.reassemble();
 
     if (Platform.isAndroid) {
       controller!.pauseCamera();
     }
     controller!.resumeCamera();
-  }*/
+  }
 
   @override
   void dispose() {
@@ -48,7 +48,7 @@ class _QRScan extends State<QRScan> {
     super.dispose();
   }
 
-  Future<void> getproduct(String sku) async {
+  Future<bool> getproduct(String sku) async {
     if (!_isLoading && mounted) {
       setState(() {
         _isLoading = true;
@@ -63,14 +63,15 @@ class _QRScan extends State<QRScan> {
       setState(() {
         _product = Product.fromMap(data["data"]);
         _isLoading = false;
-        _isCorrect = true;
       });
+      return true;
     } else if (mounted) {
       setState(() {
         _isLoading = false;
-        _isCorrect = false;
       });
+      return false;
     }
+    return false;
   }
 
   @override
@@ -78,6 +79,7 @@ class _QRScan extends State<QRScan> {
     TextTheme textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
+      backgroundColor: whiteColor,
       appBar: AppBar(
         toolbarHeight: 44,
         elevation: 0.0,
@@ -112,45 +114,51 @@ class _QRScan extends State<QRScan> {
                     key: qrKey,
                     onQRViewCreated: (ctr) {
                       controller = ctr;
-                      ctr.scannedDataStream.listen((scanData) async {
-                        if (scanData.code != null &&
-                            _lastResult != scanData.code) {
-                          _lastResult = scanData.code!;
-                          await getproduct(scanData.code!).then((value) {
-                            if (!_isLoading && _isCorrect) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ProductDetail(
-                                    product: _product,
-                                  ),
-                                ),
-                              );
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    lang.S
-                                        .of(context)
-                                        .qrscanNoProduct(scanData.code!),
-                                  ),
-                                ),
-                              );
+                      ctr.scannedDataStream.listen(
+                        (scanData) async {
+                          if (scanData.code != null &&
+                              _lastResult != scanData.code) {
+                            _lastResult = scanData.code!;
+                            await getproduct(scanData.code!).then(
+                              (value) {
+                                ctr.stopCamera();
+                                if (!_isLoading && value) {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ProductDetail(
+                                        product: _product,
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        lang.S
+                                            .of(context)
+                                            .qrscanNoProduct(scanData.code!),
+                                      ),
+                                    ),
+                                  );
 
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const Home(),
-                                ),
-                              );
-                              /*if (Platform.isAndroid) {
-                                controller!.pauseCamera();
-                              }
-                              controller!.resumeCamera();*/
-                            }
-                          });
-                        }
-                      });
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const Home(),
+                                    ),
+                                  );
+
+                                  /*if (Platform.isAndroid) {
+                                    ctr.pauseCamera();
+                                  }
+                                  ctr.resumeCamera();*/
+                                }
+                              },
+                            );
+                          }
+                        },
+                      );
                     },
                     overlay: QrScannerOverlayShape(
                         borderColor: Colors.red,
