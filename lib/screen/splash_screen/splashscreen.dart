@@ -1,11 +1,11 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+//import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../theme/theme_constants.dart';
-import '../language/language_provider.dart';
+//import '../language/language_provider.dart';
 import '../home/home.dart';
 import 'introscreen.dart';
 
@@ -20,7 +20,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
-  late LanguageChangeProvider _languageChangeProvider;
+  //late LanguageChangeProvider _languageChangeProvider;
   late String isfirsttime = "y";
 
   late AnimationController _backgroundController;
@@ -90,8 +90,8 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Future<void> init() async {
-    _languageChangeProvider =
-        Provider.of<LanguageChangeProvider>(context, listen: false);
+    //_languageChangeProvider =
+    //Provider.of<LanguageChangeProvider>(context, listen: false);
 
     SharedPreferences pres = await SharedPreferences.getInstance();
     isfirsttime = pres.getString("isfirsttime") ?? "y";
@@ -105,7 +105,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     await _startBackgroundAnimation().then(
       (value) => _startLogoAnimation().then((value) {
-        _languageChangeProvider.setRegion().then((value) {
+        /*_languageChangeProvider.setRegion().then((value) {
           Future.delayed(const Duration(seconds: 3), () {
             Navigator.pushReplacement(
               context,
@@ -115,6 +115,15 @@ class _SplashScreenState extends State<SplashScreen>
               ),
             );
           });
+        });*/
+        Future.delayed(const Duration(seconds: 3), () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  isfirsttime == "y" ? const IntroScreen() : const Home(),
+            ),
+          );
         });
       }),
     );

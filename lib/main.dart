@@ -90,7 +90,7 @@ class _MyAppState extends State<MyApp> {
   //A層context
   Widget build(BuildContext context) {
     Locale xlocale = View.of(context).platformDispatcher.locale;
-    //print("f : $xlocale");
+    log("main : $xlocale");
 
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
@@ -134,9 +134,9 @@ class _MyAppState extends State<MyApp> {
             //App 要支援的語言
             supportedLocales: S.delegate.supportedLocales,
             //檢查手機是否支援這個語言
-            localeResolutionCallback: (locale, supportLocales) {
+            /*localeResolutionCallback: (locale, supportLocales) {
               return setDefaultLocale(locale!, supportLocales);
-            },
+            },*/
             debugShowCheckedModeBanner: false,
             title: '佛催拿',
             theme: lightTheme,

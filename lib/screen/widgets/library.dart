@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 String stripHtml(String? text) {
@@ -11,6 +13,8 @@ String convertCurrency(double price, double exchange) {
 }
 
 Locale setDefaultLocale(Locale locale, Iterable<Locale> supportedlocales) {
+  log("set : $locale");
+
   for (Locale supportedLocale in supportedlocales) {
     if (locale.languageCode == supportedLocale.languageCode) {
       if (locale.languageCode == 'zh') {

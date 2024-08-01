@@ -26,9 +26,9 @@ class LanguageChangeProvider with ChangeNotifier {
   bool get status => _status;
 
   LanguageChangeProvider(Locale xlocale) {
-    log("s : $xlocale");
+    log("p - s : $xlocale");
     xlocale = setDefaultLocale(xlocale, S.delegate.supportedLocales);
-    log("t : $xlocale");
+    log("p - t : $xlocale");
 
     _currentLocale = xlocale;
     _currentLanguage = "${xlocale.languageCode}-${xlocale.countryCode}";
@@ -52,36 +52,42 @@ class LanguageChangeProvider with ChangeNotifier {
       _currentCurrency = "EUR";
     }
 
+    setRegion();
+
     defaultlanguage();
     defaultcurrency();
   }
 
-  Future<bool> setRegion() async {
+  Future<void> setRegion() async {
     log("setRegion curr: $currentCurrency lang: $currentLanguage");
 
     SharedPreferences pres = await SharedPreferences.getInstance();
     HttpService httpService = HttpService();
-    Response response =
-        await httpService.getlanguagebycurr(currentCurrency, currentLanguage);
-    var data = json.decode(response.toString());
 
-    if (data["statusCode"] == 200) {
-      Language language = Language.fromMap(data["data"]);
-      log("languageid : ${language.langid}");
+    await httpService.getlanguagebycurr(currentCurrency, currentLanguage).then(
+      (value) {
+        var data = json.decode(value.toString());
 
-      pres.setString("languageid", language.langid);
-      pres.setString("currsymbol", language.currsymbol);
-      pres.setDouble("exchange", language.exchange);
+        if (data["statusCode"] == 200) {
+          Language language = Language.fromMap(data["data"]);
+          log("languageid : ${language.langid}");
 
-      _currsymbol = language.currsymbol;
-      _exchange = language.exchange;
-      _status = true;
+          pres.setString("languageid", language.langid);
+          pres.setString("currsymbol", language.currsymbol);
+          pres.setDouble("exchange", language.exchange);
 
-      notifyListeners();
-    } else {
-      log("setRegion: ${data["statusCode"]}");
-    }
-    return true;
+          _currsymbol = language.currsymbol;
+          _exchange = language.exchange;
+          _status = true;
+
+          notifyListeners();
+        } else {
+          log("setRegion: ${data["statusCode"]}");
+        }
+      },
+    );
+    //var data = json.decode(response.toString());
+    //return true;
   }
 
   Future<void> defaultlanguage() async {
