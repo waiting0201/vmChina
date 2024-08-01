@@ -952,6 +952,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                   ),
                                   const SizedBox(width: 5),
                                   Image(
+                                    width: 15,
                                     image: NetworkImage(_product.flagurl!),
                                   ),
                                 ],
@@ -969,6 +970,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                     ),
                                     const SizedBox(width: 5),
                                     Image(
+                                      width: 15,
                                       image: NetworkImage(
                                           _manufactures[0].flagurl!),
                                     ),
@@ -1322,6 +1324,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                               ),
                                               const SizedBox(width: 5),
                                               Image(
+                                                width: 15,
                                                 image: NetworkImage(
                                                     _brand.flagurl!),
                                               ),
@@ -1341,7 +1344,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                           ),
                                           child: Center(
                                             child: OutlinedButton(
-                                              onPressed: () {
+                                              onPressed: () async {
                                                 OverlayEntry overlayEntry =
                                                     OverlayEntry(
                                                   builder: (context) =>
@@ -1363,7 +1366,7 @@ class _ProductDetailState extends State<ProductDetail> {
 
                                                 HttpService httpService =
                                                     HttpService();
-                                                httpService
+                                                await httpService
                                                     .getbrandbyid(
                                                         widget.product.brandid,
                                                         null)
@@ -1480,7 +1483,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                         ),
                                       ),
                                       OutlinedButton(
-                                        onPressed: () {
+                                        onPressed: () async {
                                           OverlayEntry overlayEntry =
                                               OverlayEntry(
                                             builder: (context) => Positioned(
@@ -1500,7 +1503,7 @@ class _ProductDetailState extends State<ProductDetail> {
 
                                           HttpService httpService =
                                               HttpService();
-                                          httpService
+                                          await httpService
                                               .getbrandbyid(
                                                   widget.product.brandid, null)
                                               .then((value) {
