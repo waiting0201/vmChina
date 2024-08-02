@@ -814,9 +814,18 @@ class OrderCard extends StatelessWidget {
                 children: [
                   Expanded(
                     flex: 2,
-                    child: Text(
-                      order.ordercode,
-                      style: textTheme.titleLarge,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          order.ordercode,
+                          style: textTheme.titleLarge,
+                        ),
+                        Text(
+                          order.ordertype,
+                          style: textTheme.bodySmall,
+                        ),
+                      ],
                     ),
                   ),
                   const Spacer(),
@@ -1026,7 +1035,7 @@ class BrandExpendCard extends StatelessWidget {
                   ),
                 ),
                 OutlinedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (brand.publishstatus != 2) {
                       OverlayEntry overlayEntry = OverlayEntry(
                         builder: (context) => Positioned(
@@ -1043,7 +1052,7 @@ class BrandExpendCard extends StatelessWidget {
                       Overlay.of(context).insert(overlayEntry);
 
                       HttpService httpService = HttpService();
-                      httpService
+                      await httpService
                           .getbrandbyid(brand.brandid, null)
                           .then((value) {
                         var data = json.decode(value.toString());

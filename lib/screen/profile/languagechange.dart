@@ -88,7 +88,8 @@ class _LanguagechangeState extends State<Languagechange> {
                 onTap: () {
                   region.changeLocale(_languages[index].langcode);
                   region.changeCurrency(_languages[index].currtitle);
-                  region.setRegion();
+                  region.setRegion(
+                      _languages[index].currtitle, _languages[index].langcode);
                 },
               );
             }),

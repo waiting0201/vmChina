@@ -2562,6 +2562,16 @@ class S {
     );
   }
 
+  /// `Order Type`
+  String get orderdetailOrderType {
+    return Intl.message(
+      'Order Type',
+      name: 'orderdetailOrderType',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Notifications`
   String get notificationTitle {
     return Intl.message(

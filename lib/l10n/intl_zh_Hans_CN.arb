@@ -250,6 +250,7 @@
     "orderdetailCountry": "国家",
     "orderdetailSize": "尺寸",
     "orderdetailDuty": "包含进口税",
+    "orderdetailOrderType": "订单类型",
     "notificationTitle": "通知",
     "notificationCaption": "开启推送通知，获取关于我们产品、服务和活动的信息。",
     "notificationOrderUpdate": "订单更新",

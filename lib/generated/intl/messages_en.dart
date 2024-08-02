@@ -628,6 +628,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Order Information"),
         "orderdetailOrderStatus":
             MessageLookupByLibrary.simpleMessage("Order Status"),
+        "orderdetailOrderType":
+            MessageLookupByLibrary.simpleMessage("Order Type"),
         "orderdetailPayStatus":
             MessageLookupByLibrary.simpleMessage("Payment Status"),
         "orderdetailPayment": MessageLookupByLibrary.simpleMessage("Payment"),

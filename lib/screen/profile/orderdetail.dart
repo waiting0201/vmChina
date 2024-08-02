@@ -82,6 +82,24 @@ class _OrderdetailState extends State<Orderdetail> {
                             style: textTheme.titleMedium,
                           ),
                         ),
+                        if (widget.order.orderstatus == "1") ...[
+                          const Spacer(),
+                          SizedBox(
+                            width: 70,
+                            height: 30,
+                            child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                backgroundColor: primaryColor,
+                                side: const BorderSide(color: primaryColor),
+                              ),
+                              onPressed: () {},
+                              child: Text(
+                                lang.S.of(context).commonCancel,
+                                style: textTheme.bodySmall,
+                              ),
+                            ),
+                          ),
+                        ]
                       ],
                     ),
                   ),
@@ -95,6 +113,20 @@ class _OrderdetailState extends State<Orderdetail> {
                   ),
                   child: Column(
                     children: [
+                      Row(
+                        children: [
+                          Text(
+                            lang.S.of(context).orderdetailOrderType,
+                            style: textTheme.bodyMedium,
+                          ),
+                          const Spacer(),
+                          Text(
+                            widget.order.ordertype,
+                            style: textTheme.bodyMedium,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 2),
                       Row(
                         children: [
                           Text(

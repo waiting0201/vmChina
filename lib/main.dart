@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -89,8 +88,8 @@ class _MyAppState extends State<MyApp> {
   @override
   //A層context
   Widget build(BuildContext context) {
-    Locale xlocale = View.of(context).platformDispatcher.locale;
-    log("main : $xlocale");
+    //Locale xlocale = View.of(context).platformDispatcher.locale;
+    debugPrint("main init");
 
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
@@ -101,7 +100,7 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<LanguageChangeProvider>(
-          create: (context) => LanguageChangeProvider(xlocale),
+          create: (context) => LanguageChangeProvider(),
         ),
         ChangeNotifierProvider<AuthChangeProvider>(
           create: (context) => AuthChangeProvider(),
@@ -119,7 +118,7 @@ class _MyAppState extends State<MyApp> {
       //用Builder原因主要是產生自己的context，屬於上層MultiProvier
       child: Consumer<LanguageChangeProvider>(
         builder: (context, lang, child) {
-          log("main locale : ${lang.currentLocale}");
+          debugPrint("main locale : ${lang.currentLocale}");
           return MaterialApp(
             navigatorKey: _navigatorKey,
             //設定現在手機的語言

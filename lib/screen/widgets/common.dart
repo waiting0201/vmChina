@@ -1404,9 +1404,11 @@ class _PopularBrandsListState extends State<PopularBrandsList> {
 
 class CategorysList extends StatelessWidget {
   final List<Category> categorys;
+  final Brand? brand;
   const CategorysList({
     super.key,
     required this.categorys,
+    this.brand,
   });
 
   @override
@@ -1429,6 +1431,7 @@ class CategorysList extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) => Categorydetail(
                     category: categorys[index],
+                    brand: brand,
                   ),
                 ),
               );

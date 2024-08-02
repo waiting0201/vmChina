@@ -1119,6 +1119,17 @@ class HttpService {
     return response;
   }
 
+  Future<Response> getlanguagebycurrandcodeasync(
+      String curr, String code) async {
+    Response response = await _dio
+        .post('/language/getlanguagebycurrandcodeasync', queryParameters: {
+      "curr": curr,
+      "code": code,
+    });
+
+    return response;
+  }
+
   Future<Response> getcountrylists(String? languageid) async {
     String slanguageid = await getLanguage();
     languageid = (languageid != null) ? languageid : slanguageid;

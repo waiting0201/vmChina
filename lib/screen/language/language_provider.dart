@@ -1,14 +1,13 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
+//import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../model/models.dart';
 import '../../model/repository.dart';
-import '../../generated/l10n.dart';
-import '../widgets/library.dart';
+//import '../../generated/l10n.dart';
+//import '../widgets/library.dart';
 
 class LanguageChangeProvider with ChangeNotifier {
   late Locale _currentLocale;
@@ -25,10 +24,16 @@ class LanguageChangeProvider with ChangeNotifier {
   double get exchange => _exchange;
   bool get status => _status;
 
-  LanguageChangeProvider(Locale xlocale) {
-    log("p - s : $xlocale");
-    xlocale = setDefaultLocale(xlocale, S.delegate.supportedLocales);
-    log("p - t : $xlocale");
+  LanguageChangeProvider() {
+    Locale xlocale = const Locale.fromSubtags(
+      languageCode: "zh",
+      scriptCode: "Hans",
+      countryCode: "CN",
+    );
+
+    debugPrint("p - s : $xlocale");
+    /*xlocale = setDefaultLocale(xlocale, S.delegate.supportedLocales);
+    log("p - t : $xlocale");*/
 
     _currentLocale = xlocale;
     _currentLanguage = "${xlocale.languageCode}-${xlocale.countryCode}";
@@ -52,25 +57,24 @@ class LanguageChangeProvider with ChangeNotifier {
       _currentCurrency = "EUR";
     }
 
-    setRegion();
-
+    setRegion(_currentCurrency, _currentLanguage);
     defaultlanguage();
     defaultcurrency();
   }
 
-  Future<void> setRegion() async {
-    log("setRegion curr: $currentCurrency lang: $currentLanguage");
+  Future<void> setRegion(String curr, String code) async {
+    debugPrint("setRegion curr: $curr lang: $code");
 
     SharedPreferences pres = await SharedPreferences.getInstance();
     HttpService httpService = HttpService();
 
-    await httpService.getlanguagebycurr(currentCurrency, currentLanguage).then(
+    await httpService.getlanguagebycurrandcodeasync(curr, code).then(
       (value) {
         var data = json.decode(value.toString());
 
         if (data["statusCode"] == 200) {
           Language language = Language.fromMap(data["data"]);
-          log("languageid : ${language.langid}");
+          debugPrint("languageid : ${language.langid}");
 
           pres.setString("languageid", language.langid);
           pres.setString("currsymbol", language.currsymbol);
@@ -82,7 +86,7 @@ class LanguageChangeProvider with ChangeNotifier {
 
           notifyListeners();
         } else {
-          log("setRegion: ${data["statusCode"]}");
+          debugPrint("setRegion: ${data["statusCode"]}");
         }
       },
     );
@@ -94,7 +98,7 @@ class LanguageChangeProvider with ChangeNotifier {
     SharedPreferences pres = await SharedPreferences.getInstance();
     _currentLanguage = pres.getString("language_code") ?? _currentLanguage;
 
-    log("defaultlanguage: $currentLanguage");
+    debugPrint("defaultlanguage: $currentLanguage");
 
     if (_currentLanguage.isNotEmpty) {
       await changeLocale(_currentLanguage);
@@ -145,8 +149,9 @@ class LanguageChangeProvider with ChangeNotifier {
 
   Future<void> defaultcurrency() async {
     SharedPreferences pres = await SharedPreferences.getInstance();
+    _currentCurrency = pres.getString("currency_title") ?? currentCurrency;
 
-    _currentCurrency = pres.getString("currency_title") ?? _currentCurrency;
+    debugPrint("defaultcurrency: $_currentCurrency");
 
     if (_currentCurrency.isNotEmpty) {
       await changeCurrency(_currentCurrency);

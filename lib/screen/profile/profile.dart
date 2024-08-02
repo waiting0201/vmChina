@@ -711,7 +711,7 @@ class _ProfileState extends State<Profile> {
                           ),
                         ),
                       )
-                    : Container(),
+                    : const SizedBox(),
 
                 const SizedBox(height: 50),
               ],

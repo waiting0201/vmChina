@@ -250,6 +250,7 @@
   "orderdetailCountry": "Country",
   "orderdetailSize": "Size",
   "orderdetailDuty": "Import duties included",
+  "orderdetailOrderType": "Order Type",
   "notificationTitle": "Notifications",
   "notificationCaption": "Enable push notifications to receive information regarding our products, services and events.",
   "notificationOrderUpdate": "Order updates",

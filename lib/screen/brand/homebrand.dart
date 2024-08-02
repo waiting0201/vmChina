@@ -722,6 +722,7 @@ class _HomebrandState extends State<Homebrand> {
                     )
                   : CategorysList(
                       categorys: _categorys,
+                      brand: widget.brand,
                     ),
             ),
             const SizedBox(height: verticalSpace),

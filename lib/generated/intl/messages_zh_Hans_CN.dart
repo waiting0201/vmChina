@@ -529,6 +529,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "orderdetailOrderInformation":
             MessageLookupByLibrary.simpleMessage("订单信息"),
         "orderdetailOrderStatus": MessageLookupByLibrary.simpleMessage("订单状态"),
+        "orderdetailOrderType": MessageLookupByLibrary.simpleMessage("订单类型"),
         "orderdetailPayStatus": MessageLookupByLibrary.simpleMessage("支付状态"),
         "orderdetailPayment": MessageLookupByLibrary.simpleMessage("支付方式"),
         "orderdetailPhone": MessageLookupByLibrary.simpleMessage("电话"),

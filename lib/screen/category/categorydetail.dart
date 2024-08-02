@@ -8,9 +8,11 @@ import 'productlist.dart';
 
 class Categorydetail extends StatefulWidget {
   final Category category;
+  final Brand? brand;
   const Categorydetail({
     super.key,
     required this.category,
+    this.brand,
   });
 
   @override
@@ -108,6 +110,7 @@ class _CategorydetailState extends State<Categorydetail> {
                             categoryid: widget.category.categoryid,
                             subcategoryid: widget
                                 .category.subcategorys![index].subcategoryid,
+                            brandid: widget.brand?.brandid,
                           ),
                         ),
                       );
