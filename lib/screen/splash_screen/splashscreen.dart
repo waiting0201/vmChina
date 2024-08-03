@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-//import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../theme/theme_constants.dart';
-//import '../language/language_provider.dart';
+import '../language/language_provider.dart';
 import '../home/home.dart';
 import 'introscreen.dart';
 
 class SplashScreen extends StatefulWidget {
+  final Locale defaultLocal;
   const SplashScreen({
+    required this.defaultLocal,
     super.key,
   });
 
@@ -18,7 +20,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
-  //late LanguageChangeProvider _languageChangeProvider;
+  late LanguageChangeProvider _languageChangeProvider;
   late String isfirsttime = "y";
 
   late AnimationController _backgroundController;
@@ -27,13 +29,15 @@ class _SplashScreenState extends State<SplashScreen>
   late Animation<double> _logoAnimation;
   late bool _isBackgroundAnimationPlayed = false;
   late bool _isLogoAnimationPlayed = false;
+  late String _currentLanguage;
+  late String _currentCurrency;
 
   @override
   void initState() {
     super.initState();
 
     if (mounted) {
-      debugPrint("init isfirsttime : $isfirsttime");
+      debugPrint("splashscreen init isfirsttime : $isfirsttime");
 
       _backgroundController = AnimationController(
         duration: const Duration(seconds: 2),
@@ -89,10 +93,23 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Future<void> init() async {
-    //_languageChangeProvider =
-    //Provider.of<LanguageChangeProvider>(context, listen: false);
+    _languageChangeProvider =
+        Provider.of<LanguageChangeProvider>(context, listen: false);
 
     SharedPreferences pres = await SharedPreferences.getInstance();
+    _currentLanguage = pres.getString("language_code") ?? "";
+
+    if (_currentLanguage.isEmpty) {
+      _currentLanguage =
+          "${widget.defaultLocal.languageCode}-${widget.defaultLocal.countryCode}";
+    }
+
+    if (_currentLanguage == "zh-CN") {
+      _currentCurrency = "CNY";
+    } else {
+      _currentCurrency = "EUR";
+    }
+
     isfirsttime = pres.getString("isfirsttime") ?? "y";
 
     setState(() {
@@ -104,7 +121,12 @@ class _SplashScreenState extends State<SplashScreen>
 
     await _startBackgroundAnimation().then(
       (value) => _startLogoAnimation().then((value) {
-        /*_languageChangeProvider.setRegion().then((value) {
+        _languageChangeProvider
+            .setRegion(_currentCurrency, _currentLanguage)
+            .then((value) {
+          _languageChangeProvider.changeLocale(_currentLanguage);
+          _languageChangeProvider.changeCurrency(_currentCurrency);
+
           Future.delayed(const Duration(seconds: 3), () {
             Navigator.pushReplacement(
               context,
@@ -114,8 +136,8 @@ class _SplashScreenState extends State<SplashScreen>
               ),
             );
           });
-        });*/
-        Future.delayed(const Duration(seconds: 3), () {
+        });
+        /*Future.delayed(const Duration(seconds: 3), () {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -123,7 +145,7 @@ class _SplashScreenState extends State<SplashScreen>
                   isfirsttime == "y" ? const IntroScreen() : const Home(),
             ),
           );
-        });
+        });*/
       }),
     );
   }

@@ -31,39 +31,30 @@ class LanguageChangeProvider with ChangeNotifier {
       countryCode: "CN",
     );
 
-    debugPrint("p - s : $xlocale");
+    debugPrint("lang provider : $xlocale");
     /*xlocale = setDefaultLocale(xlocale, S.delegate.supportedLocales);
     log("p - t : $xlocale");*/
 
     _currentLocale = xlocale;
-    _currentLanguage = "${xlocale.languageCode}-${xlocale.countryCode}";
+    /*_currentLanguage = "${xlocale.languageCode}-${xlocale.countryCode}";
 
     if (xlocale.languageCode == "zh") {
       if (xlocale.countryCode == "CN") {
         _currentCurrency = "CNY";
-        /*} else if (xlocale.countryCode == "TW") {
-        _currentCurrency = "TWD";
-      } else if (xlocale.countryCode == "HK") {
-        _currentCurrency = "HKD";
-      }*/
       } else {
         _currentCurrency = "EUR";
       }
-      /*} else if (xlocale.languageCode == "ja") {
-      _currentCurrency = "JPY";
-    } else if (xlocale.languageCode == "ko") {
-      _currentCurrency = "KRW";*/
     } else {
       _currentCurrency = "EUR";
     }
 
     setRegion(_currentCurrency, _currentLanguage);
     defaultlanguage();
-    defaultcurrency();
+    defaultcurrency();*/
   }
 
   Future<void> setRegion(String curr, String code) async {
-    debugPrint("setRegion curr: $curr lang: $code");
+    debugPrint("lang provider setRegion curr: $curr lang: $code");
 
     SharedPreferences pres = await SharedPreferences.getInstance();
     HttpService httpService = HttpService();

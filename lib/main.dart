@@ -139,7 +139,9 @@ class _MyAppState extends State<MyApp> {
             debugShowCheckedModeBanner: false,
             title: '佛催拿',
             theme: lightTheme,
-            home: const SplashScreen(),
+            home: SplashScreen(
+              defaultLocal: lang.currentLocale,
+            ),
             //home: const IntroScreen(),
             initialRoute: "/",
             onGenerateRoute: (settings) {

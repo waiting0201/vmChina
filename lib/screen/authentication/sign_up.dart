@@ -229,9 +229,7 @@ class _SignUpState extends State<SignUp> {
                                   .of(context)
                                   .signupPasswordContainLower;
                             }
-                            if (!RegExp(
-                                    r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!#$%&]).{8,20}$')
-                                .hasMatch(value)) {
+                            if (!RegExp(r'^(?=.*[!#\$%&])').hasMatch(value)) {
                               return lang.S
                                   .of(context)
                                   .signupPasswordContainSpecial;
