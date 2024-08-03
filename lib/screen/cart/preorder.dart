@@ -134,7 +134,7 @@ class _PreorderState extends State<Preorder> {
                     ),
                   ),
                   _shippinglocations.isEmpty
-                      ? Container()
+                      ? const SizedBox()
                       : ListView.separated(
                           padding: const EdgeInsets.only(
                             top: 20,
@@ -388,6 +388,8 @@ class _PreorderState extends State<Preorder> {
                     ),
                   ),
                   ListView.builder(
+                    addAutomaticKeepAlives: false,
+                    addRepaintBoundaries: false,
                     padding: const EdgeInsets.only(
                       top: 20,
                       left: horizonSpace,
@@ -411,7 +413,7 @@ class _PreorderState extends State<Preorder> {
                                       right: horizonSpace,
                                     ),
                                     child: InkWell(
-                                      onTap: () {
+                                      onTap: () async {
                                         OverlayEntry overlayEntry =
                                             OverlayEntry(
                                           builder: (context) => Positioned(
@@ -430,7 +432,7 @@ class _PreorderState extends State<Preorder> {
                                             .insert(overlayEntry);
 
                                         HttpService httpService = HttpService();
-                                        httpService
+                                        await httpService
                                             .getproductbyid(
                                                 widget.carts[i].productid, null)
                                             .then((value) {

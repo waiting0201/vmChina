@@ -7,19 +7,19 @@ import 'package:flutter/services.dart';
 import 'package:fluwx/fluwx.dart';
 import 'package:app_links/app_links.dart';
 
-import 'model/repository.dart';
-import 'model/models.dart';
+//import 'model/repository.dart';
+//import 'model/models.dart';
 import 'screen/authentication/auth_provider.dart';
 import 'screen/language/language_provider.dart';
 import 'screen/cart/cart_provider.dart';
 import 'screen/home/setup_provider.dart';
-import 'screen/home/notification_provider.dart';
+//import 'screen/home/notification_provider.dart';
 import 'screen/splash_screen/splashscreen.dart';
 //import 'screen/splash_screen/introscreen.dart';
-import 'screen/widgets/library.dart';
+//import 'screen/widgets/library.dart';
 import 'screen/home/home.dart';
 import 'screen/cart/complete.dart';
-import 'screen/authentication/log_in.dart';
+//import 'screen/authentication/log_in.dart';
 import 'theme/theme_constants.dart';
 import 'generated/l10n.dart';
 
