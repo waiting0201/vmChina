@@ -1478,7 +1478,7 @@ class ProductsHorizonSlideList extends StatelessWidget {
                   itemExtent: 240,
                   itemCount: products.length,
                   itemBuilder: (BuildContext context, int index) => InkWell(
-                    onTap: () {
+                    onTap: () async {
                       OverlayEntry overlayEntry = OverlayEntry(
                         builder: (context) => Positioned(
                           top: 0,
@@ -1494,7 +1494,7 @@ class ProductsHorizonSlideList extends StatelessWidget {
                       Overlay.of(context).insert(overlayEntry);
 
                       HttpService httpService = HttpService();
-                      httpService
+                      await httpService
                           .getproductbyid(products[index].productid, null)
                           .then((value) {
                         var data = json.decode(value.toString());
