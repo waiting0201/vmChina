@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:vetrinamia_cn/screen/widgets/extension.dart';
 import 'package:video_player/video_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -471,7 +472,13 @@ class _PriceFilterState extends State<PriceFilter> {
         children: [
           Row(
             children: [
-              Column(
+              Text(
+                _startValue.toCNY(),
+                style: textTheme.bodySmall?.copyWith(
+                  color: orangeColor,
+                ),
+              ),
+              /*Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
@@ -500,9 +507,15 @@ class _PriceFilterState extends State<PriceFilter> {
                       ),
                     ),
                 ],
-              ),
+              ),*/
               const Spacer(),
-              Column(
+              Text(
+                _endValue.toCNY(),
+                style: textTheme.bodySmall?.copyWith(
+                  color: orangeColor,
+                ),
+              ),
+              /*Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Padding(
@@ -531,7 +544,7 @@ class _PriceFilterState extends State<PriceFilter> {
                       ),
                     ),
                 ],
-              ),
+              ),*/
             ],
           ),
           RangeSlider(

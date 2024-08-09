@@ -229,7 +229,7 @@ class _ComingBrandsCarouselState extends State<ComingBrandsCarousel> {
       });
 
       HttpService httpService = HttpService();
-      await httpService.getpublishstatusbrandlists(2, null).then((value) {
+      await httpService.getpublishstatusbrandlists(3, null).then((value) {
         var data = json.decode(value.toString());
 
         log('getbrand code: ${data["statusCode"]}');

@@ -1597,7 +1597,7 @@ class _BrandFavoriteIconState extends State<BrandFavoriteIcon> {
         .postaddmemberbrand(auth.member.memberid, widget.brandid)
         .then((value) {
       var data = json.decode(value.toString());
-      if (data["statusCode"] == 200) {
+      if (data["statusCode"] == 200 && mounted) {
         auth.refreshMember();
       }
     });
@@ -1668,7 +1668,7 @@ class _ProductFavoriteIconState extends State<ProductFavoriteIcon> {
         .postaddmemberproduct(auth.member.memberid, widget.product.productid)
         .then((value) {
       var data = json.decode(value.toString());
-      if (data["statusCode"] == 200) {
+      if (data["statusCode"] == 200 && mounted) {
         auth.refreshMember();
       }
     });

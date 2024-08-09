@@ -147,15 +147,13 @@ class _SplashScreenState extends State<SplashScreen>
       _languageChangeProvider.changeLocale(_currentLanguage);
       _languageChangeProvider.changeCurrency(_currentCurrency);
 
-      Future.delayed(const Duration(seconds: 1), () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                isfirsttime == "y" ? const IntroScreen() : const Home(),
-          ),
-        );
-      });
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              isfirsttime == "y" ? const IntroScreen() : const Home(),
+        ),
+      );
     });
   }
 

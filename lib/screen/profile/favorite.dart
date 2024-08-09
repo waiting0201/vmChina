@@ -136,6 +136,7 @@ class _FavoriteState extends State<Favorite>
       if (data["statusCode"] == 200 && mounted) {
         setState(() {
           _products.removeWhere((e) => e.productid == productid);
+          _authChangeProvider.refreshMember();
         });
       } else {}
     });
@@ -152,6 +153,7 @@ class _FavoriteState extends State<Favorite>
       if (data["statusCode"] == 200 && mounted) {
         setState(() {
           _brands.removeWhere((e) => e.brandid == brandid);
+          _authChangeProvider.refreshMember();
         });
       } else {}
     });
