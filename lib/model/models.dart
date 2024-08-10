@@ -1086,6 +1086,7 @@ class Product {
   final List<ProductColor>? productcolors;
   final int popular;
   final String? summary;
+  final String? videourl;
   //橫圖
   final String? landscapeurl;
   //直圖
@@ -1112,6 +1113,7 @@ class Product {
     this.productcolors,
     required this.popular,
     this.summary,
+    this.videourl,
     this.landscapeurl,
     this.portraiturl,
     this.content,
@@ -1142,6 +1144,7 @@ class Product {
             json['productcolors'].map((x) => ProductColor.fromMap(x))),
         popular = json['popular'],
         summary = json['summary'],
+        videourl = json['videourl'],
         landscapeurl = json['landscapeurl'],
         portraiturl = json['portraiturl'],
         content = json['content'],
@@ -1167,6 +1170,7 @@ class Product {
             List<dynamic>.from(productcolors!.map((x) => x.toMap())),
         'popular': popular,
         'summary': summary,
+        'videourl': videourl,
         'landscapeurl': landscapeurl,
         'portraiturl': portraiturl,
         'content': content,

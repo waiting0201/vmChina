@@ -834,11 +834,23 @@ class _ProductDetailState extends State<ProductDetail> {
                             ],
                           ),
                         ),
+                  if (_product.videourl!.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: horizonSpace,
+                        right: horizonSpace,
+                      ),
+                      child: VideoPlay(
+                        pathh: _product.videourl!,
+                        isautoplay: true,
+                        control: true,
+                      ),
+                    ),
                   _product.summary == null || _product.summary == ''
                       ? const SizedBox()
                       : Padding(
                           padding: const EdgeInsets.only(
-                            top: 5,
+                            top: 10,
                             left: horizonSpace,
                             right: horizonSpace,
                           ),
