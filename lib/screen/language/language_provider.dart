@@ -57,8 +57,8 @@ class LanguageChangeProvider with ChangeNotifier {
     debugPrint("lang provider setRegion curr: $curr lang: $code");
 
     SharedPreferences pres = await SharedPreferences.getInstance();
-    HttpService httpService = HttpService();
 
+    HttpService httpService = HttpService();
     await httpService.getlanguagebycurrandcodeasync(curr, code).then(
       (value) {
         var data = json.decode(value.toString());

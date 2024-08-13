@@ -326,6 +326,7 @@ class ClubinsiderCard extends StatefulWidget {
 }
 
 class _ClubinsiderCardState extends State<ClubinsiderCard> {
+  late String? _expiredate;
   late bool _isBrandLoading = false;
   late bool _isExpire = false;
   late bool _isCancel = widget.membershipfee.canceldate != null &&
@@ -337,9 +338,10 @@ class _ClubinsiderCardState extends State<ClubinsiderCard> {
   void initState() {
     super.initState();
 
-    _isExpire = DateTime.parse(widget.membershipfee.expiredate!)
-                .compareTo(DateTime.now()) <
-            0
+    _expiredate = widget.membershipfee.expiredate;
+    _isExpire = (_expiredate != null &&
+            _expiredate!.isNotEmpty &&
+            DateTime.parse(_expiredate!).compareTo(DateTime.now()) < 0)
         ? true
         : false;
   }
