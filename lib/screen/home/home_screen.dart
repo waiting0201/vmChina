@@ -318,7 +318,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           automaticallyImplyLeading: false,
                           centerTitle: true,
                           title: Text(
-                            'WELCOME',
+                            lang.S.of(context).appTitle,
                             style: textTheme.titleLarge?.copyWith(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,

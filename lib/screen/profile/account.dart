@@ -32,14 +32,12 @@ class _AccountState extends State<Account> {
   final _day = TextEditingController();
   final _country = TextEditingController();
   final _mobile = TextEditingController();
-  final List<Country> _countrys = [];
   final List<String> _titles = ["Mr.", "Mrs.", "Ms.", "I'd rather not say"];
 
   late AuthChangeProvider _authChangeProvider;
   late int _genderselect;
   late Member _member;
   late bool _isDisableing = false;
-  late Country _selectedcountry;
 
   @override
   void initState() {
@@ -49,7 +47,7 @@ class _AccountState extends State<Account> {
         Provider.of<AuthChangeProvider>(context, listen: false);
     _member = _authChangeProvider.member;
 
-    _gender.text = _titles[_member.gender != null ? _member.gender! - 1 : 0];
+    _gender.text = _titles[_member.gender != null ? _member.gender! : 0];
     _firstname.text = _member.firstname!;
     _lastname.text = _member.lastname!;
     _month.text = _member.month != null ? _member.month!.toString() : '';
@@ -57,27 +55,6 @@ class _AccountState extends State<Account> {
     _year.text = _member.year != null ? _member.year!.toString() : '';
     _genderselect = _member.gender != null ? _member.gender! : 0;
     _mobile.text = _member.mobile != null ? _member.mobile! : '';
-
-    getCountrys();
-  }
-
-  Future<void> getCountrys() async {
-    HttpService httpService = HttpService();
-    await httpService.getcountrylists(null).then((value) {
-      var data = json.decode(value.toString());
-
-      if (data["statusCode"] == 200 && mounted) {
-        setState(() {
-          _countrys.addAll(
-              (data["data"] as List).map((e) => Country.fromMap(e)).toList());
-          _selectedcountry =
-              _countrys.singleWhere((e) => e.countryid == _member.countryid);
-        });
-        _country.text = '+${_selectedcountry.phonecode}';
-      } else if (mounted) {
-        setState(() {});
-      }
-    });
   }
 
   @override
@@ -269,8 +246,9 @@ class _AccountState extends State<Account> {
                     children: [
                       Expanded(
                         child: TextFormField(
-                          controller: _country,
                           style: textTheme.bodyMedium,
+                          initialValue: '+86',
+                          readOnly: true,
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.symmetric(
                               vertical: 2,
@@ -283,66 +261,40 @@ class _AccountState extends State<Account> {
                               color: lightGreyTextColor,
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
-                            suffixIcon: const Icon(
-                              IconlyLight.arrowDown2,
-                            ),
                           ),
-                          onTap: () => showCupertinoModalPopup(
-                            context: context,
-                            builder: (_) => SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              height: 350,
-                              child: CupertinoPicker(
-                                backgroundColor: colorScheme.secondaryContainer,
-                                itemExtent: 40,
-                                scrollController: FixedExtentScrollController(
-                                  initialItem: 0,
-                                ),
-                                children: List<Widget>.generate(
-                                    _countrys.length, (int index) {
-                                  return Center(
-                                    child: Text(
-                                      '${_countrys[index].nickname} (+${_countrys[index].phonecode})',
-                                    ),
-                                  );
-                                }),
-                                onSelectedItemChanged: (int selectedItem) {
-                                  setState(() {
-                                    _selectedcountry = _countrys[selectedItem];
-                                  });
-                                  _country.text =
-                                      '+${_countrys[selectedItem].phonecode}';
-                                },
-                              ),
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return lang.S
-                                  .of(context)
-                                  .accountCountryCodeRequired;
-                            }
-                            return null;
-                          },
                         ),
                       ),
                       const SizedBox(width: 10.0),
                       Expanded(
-                          child: TextFormField(
-                        controller: _mobile,
-                        style: textTheme.bodyMedium,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(
-                            vertical: 2,
+                        flex: 2,
+                        child: TextFormField(
+                          controller: _mobile,
+                          readOnly: true,
+                          style: textTheme.bodyMedium,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 2,
+                            ),
+                            labelText: lang.S.of(context).accountMobile,
+                            hintText:
+                                lang.S.of(context).accountMobilePlaceholder,
+                            hintStyle: textTheme.bodySmall?.copyWith(
+                              color: lightGreyTextColor,
+                            ),
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
                           ),
-                          labelText: lang.S.of(context).accountMobile,
-                          hintText: lang.S.of(context).accountMobilePlaceholder,
-                          hintStyle: textTheme.bodySmall?.copyWith(
-                            color: lightGreyTextColor,
-                          ),
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return lang.S.of(context).signupMobileRequired;
+                            }
+                            if (!RegExp(r'^\d{11}$').hasMatch(value)) {
+                              return '手机号码格式错误';
+                            }
+
+                            return null;
+                          },
                         ),
-                      )),
+                      ),
                     ],
                   ),
                 ),
@@ -578,7 +530,7 @@ class _AccountState extends State<Account> {
                           int.parse(_month.text),
                           int.parse(_day.text),
                           int.parse(_year.text),
-                          _selectedcountry.countryid,
+                          44,
                           _mobile.text,
                         )
                             .then(
