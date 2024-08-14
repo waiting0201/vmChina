@@ -170,6 +170,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "addressEmptyCaption": MessageLookupByLibrary.simpleMessage(
             "You don\'t have any saved addresses yet"),
         "addressTitle": MessageLookupByLibrary.simpleMessage("My Addresses"),
+        "appTitle": MessageLookupByLibrary.simpleMessage("WELCOME"),
         "brandsAZ": MessageLookupByLibrary.simpleMessage("Brands A-Z"),
         "brandsPopular": MessageLookupByLibrary.simpleMessage("Popular Brands"),
         "brandsTitle": MessageLookupByLibrary.simpleMessage("Brands"),
@@ -807,7 +808,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "signupAccountRequiredEmail":
             MessageLookupByLibrary.simpleMessage("Email required"),
         "signupAlert": MessageLookupByLibrary.simpleMessage(
-            "This email address is already registered as a member. Please try again or login from HERE"),
+            "This mobile number is already registered as a member. Please try again or login from HERE"),
         "signupCaption": MessageLookupByLibrary.simpleMessage(
             "Take just one minute, and create an account to start shopping, receive updates and news, and gain access to collection preview pre-order events."),
         "signupConfirmPassword":
@@ -859,7 +860,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "signupPasswordRequired":
             MessageLookupByLibrary.simpleMessage("Password required"),
         "signupSuccessmessage": MessageLookupByLibrary.simpleMessage(
-            "Your account has been created. Please click the link in your email to activate your account."),
+            "Your account has been created."),
         "signupTitle": MessageLookupByLibrary.simpleMessage("Join Us"),
         "sizeguideCaption": MessageLookupByLibrary.simpleMessage(
             "Find your perfect size using our size guides.\nWhile you browse, just choose one or more filters that suits your needs."),

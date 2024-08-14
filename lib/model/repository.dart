@@ -25,14 +25,22 @@ class HttpService {
     return languageid;
   }
 
-  Future<Response> signup(String email, String password, String firstname,
+  Future<Response> signup(String code, String password, String firstname,
       String lastname, int countryid, String mobile) async {
     Response response = await _dio.post('/auth/signup', queryParameters: {
-      "email": email,
+      "code": code,
       "password": password,
       "firstname": firstname,
       "lastname": lastname,
       "countryid": countryid,
+      "mobile": mobile,
+    });
+
+    return response;
+  }
+
+  Future<Response> postsendsms(String mobile) async {
+    Response response = await _dio.post('/auth/postsendsms', queryParameters: {
       "mobile": mobile,
     });
 
@@ -47,9 +55,9 @@ class HttpService {
     return response;
   }
 
-  Future<Response> login(String email, String password, bool ischeck) async {
+  Future<Response> login(String mobile, String password, bool ischeck) async {
     Response response = await _dio.post('/auth/signin', queryParameters: {
-      "email": email,
+      "mobile": mobile,
       "password": password,
       "ischeck": ischeck,
     });

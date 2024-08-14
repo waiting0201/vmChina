@@ -81,8 +81,6 @@ class LanguageChangeProvider with ChangeNotifier {
         }
       },
     );
-    //var data = json.decode(response.toString());
-    //return true;
   }
 
   Future<void> defaultlanguage() async {

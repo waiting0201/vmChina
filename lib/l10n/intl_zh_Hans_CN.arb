@@ -1,4 +1,5 @@
 {
+    "appTitle": "福催拿",
     "introscreenSkip": "跳过",
     "introscreenEnter": "进入",
     "introscreenP1Title": "欧洲奢侈品的精华",
@@ -407,9 +408,9 @@
     "signupMobile": "手机号码*",
     "signupMobilePlaceholder": "输入您的手机号码",
     "signupMobileRequired": "手机号码必填",
-    "signupAlert": "该电子邮箱地址已注册为会员。请重试或从此处登录。",
+    "signupAlert": "该手机号码已注册为会员。请重试或从此处登录。",
     "signupNote": "选择“注册”，即表示您同意我们的{服务条款}，已阅读并理解我们的{隐私政策}，并希望创建您的VM个人资料。",
-    "signupSuccessmessage": "您的账号已创建。请点击邮件中的链接激活您的账号。",
+    "signupSuccessmessage": "您的账号已创建。",
     "whatsnewTitle": "新品动态",
     "whatsnewCaption": "了解最新产品发布和更新",
     "whatsnewProducts": "推荐产品",

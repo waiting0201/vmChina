@@ -148,6 +148,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "addressEmptyCaption":
             MessageLookupByLibrary.simpleMessage("您还没有保存任何地址"),
         "addressTitle": MessageLookupByLibrary.simpleMessage("我的地址"),
+        "appTitle": MessageLookupByLibrary.simpleMessage("福催拿"),
         "brandsAZ": MessageLookupByLibrary.simpleMessage("品牌 A-Z"),
         "brandsPopular": MessageLookupByLibrary.simpleMessage("热门品牌"),
         "brandsTitle": MessageLookupByLibrary.simpleMessage("品牌"),
@@ -672,7 +673,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "signupAccountRequiredEmail":
             MessageLookupByLibrary.simpleMessage("电子邮箱必填"),
         "signupAlert":
-            MessageLookupByLibrary.simpleMessage("该电子邮箱地址已注册为会员。请重试或从此处登录。"),
+            MessageLookupByLibrary.simpleMessage("该手机号码已注册为会员。请重试或从此处登录。"),
         "signupCaption": MessageLookupByLibrary.simpleMessage(
             "只需一分钟，创建账号开始购物，接收更新和新闻，并获得预览新款预订活动的权限。"),
         "signupConfirmPassword": MessageLookupByLibrary.simpleMessage("确认密码*"),
@@ -718,7 +719,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("输入密码"),
         "signupPasswordRequired": MessageLookupByLibrary.simpleMessage("密码必填"),
         "signupSuccessmessage":
-            MessageLookupByLibrary.simpleMessage("您的账号已创建。请点击邮件中的链接激活您的账号。"),
+            MessageLookupByLibrary.simpleMessage("您的账号已创建。"),
         "signupTitle": MessageLookupByLibrary.simpleMessage("加入我们"),
         "sizeguideCaption": MessageLookupByLibrary.simpleMessage(
             "使用我们的尺码指南找到您的完美尺码。\n在浏览时，选择适合您需求的一个或多个筛选条件。"),

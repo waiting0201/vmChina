@@ -89,14 +89,14 @@ class AuthChangeProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> signUp(String email, String password, String firstname,
+  Future<bool> signUp(String code, String password, String firstname,
       String lastname, int countryid, String mobile) async {
     try {
       await setLoading(true);
 
       HttpService httpService = HttpService();
       Response response = await httpService.signup(
-          email, password, firstname, lastname, countryid, mobile);
+          code, password, firstname, lastname, countryid, mobile);
 
       var data = json.decode(response.toString());
 
@@ -189,13 +189,13 @@ class AuthChangeProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> signIn(String email, String password, bool ischeck) async {
+  Future<bool> signIn(String mobile, String password, bool ischeck) async {
     try {
       await setLoading(true);
 
       HttpService httpService = HttpService();
       SharedPreferences pres = await SharedPreferences.getInstance();
-      Response response = await httpService.login(email, password, ischeck);
+      Response response = await httpService.login(mobile, password, ischeck);
 
       var data = json.decode(response.toString());
 

@@ -1,9 +1,8 @@
 import 'dart:convert';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:email_validator/email_validator.dart';
-import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:dio/dio.dart';
 import 'package:provider/provider.dart';
 
 import '../../generated/l10n.dart' as lang;
@@ -25,50 +24,53 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
-  final _email = TextEditingController();
+  final _code = TextEditingController();
   final _password = TextEditingController();
   final _confirmpassword = TextEditingController();
   final _firstname = TextEditingController();
   final _lastname = TextEditingController();
   final _mobile = TextEditingController();
-  final _country = TextEditingController();
-  final List<Country> _countrys = [];
 
   late bool hidePassword = true;
   late bool hideConfirmPassword = true;
   late bool _isLoging = false;
-  late bool _isCountryLoading = false;
-  late Country _selectedcountry;
+  late bool _isMobileValid = false;
+  late bool _isCounting = false;
+  late int _start;
+  String? _mobileError;
+  Timer? _timer;
 
   @override
   void initState() {
-    getCountrys();
     super.initState();
   }
 
-  Future<void> getCountrys() async {
-    if (!_isCountryLoading && mounted) {
-      setState(() {
-        _isCountryLoading = true;
-      });
+  @override
+  void dispose() {
+    _code.dispose();
+    _password.dispose();
+    _confirmpassword.dispose();
+    _firstname.dispose();
+    _lastname.dispose();
+    _mobile.dispose();
+    super.dispose();
+  }
 
-      HttpService httpService = HttpService();
-      await httpService.getcountrylists(null).then((value) {
-        var data = json.decode(value.toString());
-
-        if (data["statusCode"] == 200 && mounted) {
-          setState(() {
-            _countrys.addAll(
-                (data["data"] as List).map((e) => Country.fromMap(e)).toList());
-            _isCountryLoading = false;
-          });
-        } else if (mounted) {
-          setState(() {
-            _isCountryLoading = false;
-          });
-        }
-      });
-    }
+  void startTimer() {
+    _start = 120;
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_start > 0) {
+        setState(() {
+          _isCounting = true;
+          _start--;
+        });
+      } else {
+        setState(() {
+          _isCounting = false;
+        });
+        _timer?.cancel();
+      }
+    });
   }
 
   @override
@@ -95,7 +97,7 @@ class _SignUpState extends State<SignUp> {
           ),
           centerTitle: true,
           title: Text(
-            'WELCOME',
+            lang.S.of(context).appTitle,
             style: textTheme.titleLarge?.copyWith(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -143,36 +145,87 @@ class _SignUpState extends State<SignUp> {
                     children: [
                       Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: horizonSpace,
-                        ),
-                        child: TextFormField(
-                          controller: _email,
-                          style: textTheme.bodyMedium,
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(
-                              vertical: 2,
+                            horizontal: horizonSpace),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: TextFormField(
+                                style: textTheme.bodyMedium,
+                                initialValue: '+86',
+                                readOnly: true,
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 2,
+                                  ),
+                                  labelText:
+                                      lang.S.of(context).signupCountryCode,
+                                  hintText: lang.S
+                                      .of(context)
+                                      .signupCountryCodePlaceholder,
+                                  hintStyle: textTheme.bodySmall?.copyWith(
+                                    color: lightGreyTextColor,
+                                  ),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                ),
+                              ),
                             ),
-                            labelText: lang.S.of(context).signupAccount,
-                            hintText:
-                                lang.S.of(context).signupAccountPlaceholder,
-                            hintStyle: textTheme.bodySmall?.copyWith(
-                              color: lightGreyTextColor,
+                            const SizedBox(width: 10.0),
+                            Expanded(
+                              flex: 2,
+                              child: TextFormField(
+                                controller: _mobile,
+                                style: textTheme.bodyMedium,
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 2,
+                                  ),
+                                  labelText: lang.S.of(context).signupMobile,
+                                  hintText: lang.S
+                                      .of(context)
+                                      .signupMobilePlaceholder,
+                                  hintStyle: textTheme.bodySmall?.copyWith(
+                                    color: lightGreyTextColor,
+                                  ),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                  errorText: _mobileError,
+                                ),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _isMobileValid = true;
+                                  });
+                                  if (value.isEmpty) {
+                                    setState(() {
+                                      _isMobileValid = false;
+                                    });
+                                  }
+                                  if (!RegExp(r'^\d{11}$').hasMatch(value)) {
+                                    setState(() {
+                                      _isMobileValid = false;
+                                    });
+                                  }
+                                },
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return lang.S
+                                        .of(context)
+                                        .signupMobileRequired;
+                                  }
+                                  if (!RegExp(r'^\d{11}$').hasMatch(value)) {
+                                    return '手机号码格式错误';
+                                  }
+
+                                  setState(() {
+                                    _isMobileValid = true;
+                                  });
+
+                                  return null;
+                                },
+                              ),
                             ),
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return lang.S
-                                  .of(context)
-                                  .signupAccountRequiredEmail;
-                            }
-                            if (!EmailValidator.validate(value)) {
-                              return lang.S
-                                  .of(context)
-                                  .signupAccountInvalidEmail;
-                            }
-                            return null;
-                          },
+                          ],
                         ),
                       ),
                       const SizedBox(height: 20.0),
@@ -371,108 +424,88 @@ class _SignUpState extends State<SignUp> {
                       const SizedBox(height: 20.0),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: horizonSpace),
+                          horizontal: horizonSpace,
+                        ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Expanded(
+                              flex: 2,
                               child: TextFormField(
-                                controller: _country,
+                                controller: _code,
                                 style: textTheme.bodyMedium,
                                 decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.symmetric(
                                     vertical: 2,
                                   ),
-                                  labelText:
-                                      lang.S.of(context).signupCountryCode,
-                                  hintText: lang.S
-                                      .of(context)
-                                      .signupCountryCodePlaceholder,
+                                  labelText: '验证码',
+                                  hintText: '请输入验证码',
                                   hintStyle: textTheme.bodySmall?.copyWith(
                                     color: lightGreyTextColor,
                                   ),
                                   floatingLabelBehavior:
                                       FloatingLabelBehavior.always,
-                                  suffixIcon: const Icon(
-                                    IconlyLight.arrowDown2,
-                                  ),
                                 ),
-                                onTap: () {
-                                  if (!_isCountryLoading) {
-                                    showCupertinoModalPopup(
-                                      context: context,
-                                      builder: (_) => SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        height: 350,
-                                        child: CupertinoPicker(
-                                          backgroundColor:
-                                              colorScheme.secondaryContainer,
-                                          itemExtent: 40,
-                                          scrollController:
-                                              FixedExtentScrollController(
-                                            initialItem: 0,
-                                          ),
-                                          children: List<Widget>.generate(
-                                              _countrys.length, (int index) {
-                                            return Center(
-                                              child: Text(
-                                                '${_countrys[index].nickname} (+${_countrys[index].phonecode})',
-                                              ),
-                                            );
-                                          }),
-                                          onSelectedItemChanged:
-                                              (int selectedItem) {
-                                            _country.text =
-                                                '+${_countrys[selectedItem].phonecode}';
-                                            _selectedcountry =
-                                                _countrys[selectedItem];
-                                          },
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                },
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return lang.S
-                                        .of(context)
-                                        .signupCountryCodeRequired;
+                                    return '验证码必填';
                                   }
+                                  if (!RegExp(r'^\d{6}$').hasMatch(value)) {
+                                    return '验证码格式错误';
+                                  }
+
                                   return null;
                                 },
                               ),
                             ),
                             const SizedBox(width: 10.0),
                             Expanded(
-                              child: TextFormField(
-                                controller: _mobile,
-                                style: textTheme.bodyMedium,
-                                decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 2,
-                                  ),
-                                  labelText: lang.S.of(context).signupMobile,
-                                  hintText: lang.S
-                                      .of(context)
-                                      .signupMobilePlaceholder,
-                                  hintStyle: textTheme.bodySmall?.copyWith(
-                                    color: lightGreyTextColor,
-                                  ),
-                                  floatingLabelBehavior:
-                                      FloatingLabelBehavior.always,
-                                ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return lang.S
-                                        .of(context)
-                                        .signupMobileRequired;
+                              flex: 1,
+                              child: OutlinedButton(
+                                onPressed: () async {
+                                  debugPrint('Mobile Valid: $_isMobileValid');
+                                  debugPrint('Counting: $_isCounting');
+                                  if (_isMobileValid && !_isCounting) {
+                                    HttpService httpService = HttpService();
+                                    Response response = await httpService
+                                        .postsendsms(_mobile.text);
+
+                                    var data = json.decode(response.toString());
+
+                                    if (data["statusCode"] == 200) {
+                                      startTimer();
+                                    } else if (data["statusCode"] == 202) {
+                                      setState(() {
+                                        _mobileError = data["statusMessage"];
+                                      });
+                                    }
                                   }
-                                  return null;
+                                  if (!_isMobileValid && !_isCounting) {
+                                    setState(() {
+                                      _mobileError = "请先输入手机号码";
+                                    });
+                                  }
                                 },
+                                child: Text(
+                                  _isCounting ? '($_start)' : '获取验证码',
+                                  style: textTheme.titleSmall?.copyWith(
+                                    color: darkColor,
+                                  ),
+                                ),
                               ),
                             ),
                           ],
+                        ),
+                      ),
+                      Container(
+                        padding:
+                            const EdgeInsets.only(top: 5, left: horizonSpace),
+                        child: Text(
+                          '短信验证码60分钟有效',
+                          style: textTheme.bodySmall?.copyWith(
+                            color: lightGreyTextColor,
+                          ),
+                          textAlign: TextAlign.left,
                         ),
                       ),
                       const SizedBox(height: 20.0),
@@ -482,7 +515,7 @@ class _SignUpState extends State<SignUp> {
                             ? const LoadingCircle()
                             : ElevatedButton(
                                 child: Text(
-                                  lang.S.of(context).commonSignUp,
+                                  lang.S.of(context).commonContinue,
                                   style: textTheme.titleSmall?.copyWith(
                                     color: whiteColor,
                                   ),
@@ -495,11 +528,11 @@ class _SignUpState extends State<SignUp> {
 
                                     authchangeprovider
                                         .signUp(
-                                            _email.text,
+                                            _code.text,
                                             _password.text,
                                             _firstname.text,
                                             _lastname.text,
-                                            _selectedcountry.countryid,
+                                            44,
                                             _mobile.text)
                                         .then(
                                       (value) {
@@ -515,7 +548,7 @@ class _SignUpState extends State<SignUp> {
                                               builder: (BuildContext context) {
                                                 return AlertDialog(
                                                   backgroundColor: whiteColor,
-                                                  title: const Text('恭喜！'),
+                                                  title: const Text('恭喜你!'),
                                                   content: Text(lang.S
                                                       .of(context)
                                                       .signupSuccessmessage),

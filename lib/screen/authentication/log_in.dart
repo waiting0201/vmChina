@@ -30,7 +30,7 @@ class LogIn extends StatefulWidget {
 class _LogInState extends State<LogIn> {
   final _fluwx = Fluwx();
   final _formKey = GlobalKey<FormState>();
-  final _email = TextEditingController();
+  final _mobile = TextEditingController();
   final _password = TextEditingController();
 
   late AuthChangeProvider _authChangeProvider;
@@ -185,7 +185,7 @@ class _LogInState extends State<LogIn> {
           ),
           centerTitle: true,
           title: Text(
-            'WELCOME',
+            lang.S.of(context).appTitle,
             style: textTheme.titleLarge?.copyWith(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -219,15 +219,15 @@ class _LogInState extends State<LogIn> {
                           horizontal: horizonSpace,
                         ),
                         child: TextFormField(
-                          controller: _email,
+                          controller: _mobile,
                           style: textTheme.bodyMedium,
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.symmetric(
                               vertical: 2,
                             ),
-                            labelText: lang.S.of(context).loginAccount,
+                            labelText: lang.S.of(context).signupMobile,
                             hintText:
-                                lang.S.of(context).loginAccountPlaceholder,
+                                lang.S.of(context).signupMobilePlaceholder,
                             hintStyle: textTheme.bodySmall?.copyWith(
                               color: lightGreyTextColor,
                             ),
@@ -235,14 +235,10 @@ class _LogInState extends State<LogIn> {
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return lang.S
-                                  .of(context)
-                                  .loginAccountRequiredEmail;
+                              return lang.S.of(context).signupMobileRequired;
                             }
-                            if (!EmailValidator.validate(value)) {
-                              return lang.S
-                                  .of(context)
-                                  .loginAccountInvalidEmail;
+                            if (!RegExp(r'^\d{11}$').hasMatch(value)) {
+                              return '手机号码格式错误';
                             }
                             return null;
                           },
@@ -368,8 +364,8 @@ class _LogInState extends State<LogIn> {
                                       });
 
                                       _authChangeProvider
-                                          .signIn(
-                                              _email.text, _password.text, true)
+                                          .signIn(_mobile.text, _password.text,
+                                              true)
                                           .then(
                                         (value) {
                                           setState(() {

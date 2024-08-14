@@ -50,6 +50,16 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `WELCOME`
+  String get appTitle {
+    return Intl.message(
+      'WELCOME',
+      name: 'appTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Skip`
   String get introscreenSkip {
     return Intl.message(
@@ -4132,10 +4142,10 @@ class S {
     );
   }
 
-  /// `This email address is already registered as a member. Please try again or login from HERE`
+  /// `This mobile number is already registered as a member. Please try again or login from HERE`
   String get signupAlert {
     return Intl.message(
-      'This email address is already registered as a member. Please try again or login from HERE',
+      'This mobile number is already registered as a member. Please try again or login from HERE',
       name: 'signupAlert',
       desc: '',
       args: [],
@@ -4152,10 +4162,10 @@ class S {
     );
   }
 
-  /// `Your account has been created. Please click the link in your email to activate your account.`
+  /// `Your account has been created.`
   String get signupSuccessmessage {
     return Intl.message(
-      'Your account has been created. Please click the link in your email to activate your account.',
+      'Your account has been created.',
       name: 'signupSuccessmessage',
       desc: '',
       args: [],
