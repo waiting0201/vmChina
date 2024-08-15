@@ -61,6 +61,8 @@ class _MyAppState extends State<MyApp> {
     super.dispose();
   }
 
+  Future<void> checkAndrequestPermission() async {}
+
   _initFluwx() async {
     await _fluwx.registerApi(
       appId: 'wx6c9eb433c4b8562f',

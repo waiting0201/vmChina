@@ -66,6 +66,7 @@ class LanguageChangeProvider with ChangeNotifier {
         if (data["statusCode"] == 200) {
           Language language = Language.fromMap(data["data"]);
           debugPrint("languageid : ${language.langid}");
+          debugPrint(language.currsymbol);
 
           pres.setString("languageid", language.langid);
           pres.setString("currsymbol", language.currsymbol);
@@ -81,6 +82,22 @@ class LanguageChangeProvider with ChangeNotifier {
         }
       },
     );
+  }
+
+  Future<void> iniRegion(String curr, String code) async {
+    debugPrint("lang provider iniRegion curr: $curr lang: $code");
+
+    SharedPreferences pres = await SharedPreferences.getInstance();
+
+    pres.setString("languageid", "67f14945-6988-48a4-8f29-17971416f0ee");
+    pres.setString("currsymbol", "¥");
+    pres.setDouble("exchange", 8);
+
+    _currsymbol = "¥";
+    _exchange = 8;
+    _status = true;
+
+    notifyListeners();
   }
 
   Future<void> defaultlanguage() async {

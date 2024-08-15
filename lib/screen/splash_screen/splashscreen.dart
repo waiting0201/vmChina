@@ -142,7 +142,7 @@ class _SplashScreenState extends State<SplashScreen>
     );*/
 
     _languageChangeProvider
-        .setRegion(_currentCurrency, _currentLanguage)
+        .iniRegion(_currentCurrency, _currentLanguage)
         .then((value) {
       _languageChangeProvider.changeLocale(_currentLanguage);
       _languageChangeProvider.changeCurrency(_currentCurrency);
