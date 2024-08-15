@@ -456,13 +456,13 @@ class _ClubinsiderCardState extends State<ClubinsiderCard> {
                           ),
                         ),
                       ),
-                      const Spacer(),
+                      /*const Spacer(),
                       IconButton(
                         onPressed: () {},
                         iconSize: 20,
                         icon: const Icon(Icons.monetization_on),
                         color: primaryColor,
-                      ),
+                      ),*/
                     ],
                   ),
                 ),
@@ -535,7 +535,8 @@ class _ClubinsiderCardState extends State<ClubinsiderCard> {
                                 ),
                                 const Spacer(),
                                 Text(
-                                  '${100 - (widget.membershipfee.brandmemberplan!.promote * 100)}% Off',
+                                  //'${100 - (widget.membershipfee.brandmemberplan!.promote * 100)}% Off',
+                                  '40% Off',
                                   style: textTheme.bodyMedium?.copyWith(
                                     fontWeight: FontWeight.bold,
                                     color: primaryColor,

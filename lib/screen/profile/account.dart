@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
@@ -7,7 +5,6 @@ import 'package:provider/provider.dart';
 
 import '../../generated/l10n.dart' as lang;
 import '../../model/models.dart';
-import '../../model/repository.dart';
 import '../../theme/theme_constants.dart';
 import '../authentication/auth_provider.dart';
 import '../widgets/constant.dart';
@@ -30,7 +27,6 @@ class _AccountState extends State<Account> {
   final _year = TextEditingController();
   final _month = TextEditingController();
   final _day = TextEditingController();
-  final _country = TextEditingController();
   final _mobile = TextEditingController();
   final List<String> _titles = ["Mr.", "Mrs.", "Ms.", "I'd rather not say"];
 
