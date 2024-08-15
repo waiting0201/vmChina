@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vetrinamia_cn/theme/theme_constants.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 //import '../../theme/theme_constants.dart';
 import '../language/language_provider.dart';
@@ -19,8 +23,10 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen>
-    with TickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen> {
+  List<ConnectivityResult> _connectionStatus = [ConnectivityResult.none];
+  final Connectivity _connectivity = Connectivity();
+  late StreamSubscription<List<ConnectivityResult>> _connectivitySubscription;
   late LanguageChangeProvider _languageChangeProvider;
   late String isfirsttime = "y";
 
@@ -39,6 +45,11 @@ class _SplashScreenState extends State<SplashScreen>
 
     if (mounted) {
       debugPrint("splashscreen init isfirsttime : $isfirsttime");
+
+      initConnectivity();
+
+      _connectivitySubscription =
+          _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
 
       /*_backgroundController = AnimationController(
         duration: const Duration(seconds: 2),
@@ -70,7 +81,7 @@ class _SplashScreenState extends State<SplashScreen>
           }
         });*/
 
-      init();
+      //init();
     }
   }
 
@@ -90,7 +101,42 @@ class _SplashScreenState extends State<SplashScreen>
   void dispose() {
     //_backgroundController.dispose();
     //_logoController.dispose();
+    _connectivitySubscription.cancel();
     super.dispose();
+  }
+
+  // Platform messages are asynchronous, so we initialize in an async method.
+  Future<void> initConnectivity() async {
+    late List<ConnectivityResult> result;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      result = await _connectivity.checkConnectivity();
+    } on PlatformException catch (e) {
+      debugPrint('Couldn\'t check connectivity status $e');
+      return;
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) {
+      return Future.value(null);
+    }
+
+    return _updateConnectionStatus(result);
+  }
+
+  Future<void> _updateConnectionStatus(List<ConnectivityResult> result) async {
+    setState(() {
+      _connectionStatus = result;
+    });
+    debugPrint(
+        'Connectivity changed: $_connectionStatus ${_connectionStatus.last.toString()}');
+
+    if (_connectionStatus.last != ConnectivityResult.none) {
+      _connectivitySubscription.cancel();
+      init();
+    }
   }
 
   Future<void> init() async {

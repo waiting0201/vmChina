@@ -50,6 +50,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+
     _initFluwx();
     initDeepLinks();
   }
@@ -60,8 +61,6 @@ class _MyAppState extends State<MyApp> {
 
     super.dispose();
   }
-
-  Future<void> checkAndrequestPermission() async {}
 
   _initFluwx() async {
     await _fluwx.registerApi(
