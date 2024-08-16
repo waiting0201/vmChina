@@ -50,6 +50,7 @@ class _SignUpState extends State<SignUp> {
     _firstname.dispose();
     _lastname.dispose();
     _mobile.dispose();
+    _timer?.cancel();
     super.dispose();
   }
 
