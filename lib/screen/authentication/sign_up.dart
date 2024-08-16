@@ -26,13 +26,11 @@ class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
   final _code = TextEditingController();
   final _password = TextEditingController();
-  final _confirmpassword = TextEditingController();
   final _firstname = TextEditingController();
   final _lastname = TextEditingController();
   final _mobile = TextEditingController();
 
   late bool hidePassword = true;
-  late bool hideConfirmPassword = true;
   late bool _isLoging = false;
   late bool _isMobileValid = false;
   late bool _isCounting = false;
@@ -49,7 +47,6 @@ class _SignUpState extends State<SignUp> {
   void dispose() {
     _code.dispose();
     _password.dispose();
-    _confirmpassword.dispose();
     _firstname.dispose();
     _lastname.dispose();
     _mobile.dispose();
@@ -272,21 +269,6 @@ class _SignUpState extends State<SignUp> {
                             if (value.length > 20) {
                               return lang.S.of(context).signupPasswordMustLess;
                             }
-                            if (value == value.toLowerCase()) {
-                              return lang.S
-                                  .of(context)
-                                  .signupPasswordContainUpper;
-                            }
-                            if (value == value.toUpperCase()) {
-                              return lang.S
-                                  .of(context)
-                                  .signupPasswordContainLower;
-                            }
-                            if (!RegExp(r'^(?=.*[!#\$%&])').hasMatch(value)) {
-                              return lang.S
-                                  .of(context)
-                                  .signupPasswordContainSpecial;
-                            }
                             return null;
                           },
                         ),
@@ -300,56 +282,6 @@ class _SignUpState extends State<SignUp> {
                             color: lightGreyTextColor,
                           ),
                           textAlign: TextAlign.left,
-                        ),
-                      ),
-                      const SizedBox(height: 20.0),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: horizonSpace,
-                        ),
-                        child: TextFormField(
-                          controller: _confirmpassword,
-                          style: textTheme.bodyMedium,
-                          obscureText: hideConfirmPassword,
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(
-                              vertical: 2,
-                            ),
-                            labelText: lang.S.of(context).signupConfirmPassword,
-                            hintText: lang.S
-                                .of(context)
-                                .signupConfirmPasswordPlaceholder,
-                            hintStyle: textTheme.bodySmall?.copyWith(
-                              color: lightGreyTextColor,
-                            ),
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            suffixIcon: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  hideConfirmPassword = !hideConfirmPassword;
-                                });
-                              },
-                              icon: Icon(
-                                hideConfirmPassword
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
-                                color: colorScheme.outline,
-                              ),
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return lang.S
-                                  .of(context)
-                                  .signupConfirmPasswordRequired;
-                            }
-                            if (value != _password.text) {
-                              return lang.S
-                                  .of(context)
-                                  .signupConfirmPasswordMustSame;
-                            }
-                            return null;
-                          },
                         ),
                       ),
                       const SizedBox(height: 20.0),

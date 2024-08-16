@@ -15,7 +15,6 @@ import '../widgets/common.dart';
 import '../widgets/constant.dart';
 import '../widgets/carousel.dart';
 import '../widgets/partial.dart';
-import 'whatsnew.dart';
 import 'home.dart';
 
 class HomeScreen extends StatefulWidget {

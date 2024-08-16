@@ -186,8 +186,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("必须少于20个字符"),
         "changepasswordPasswordMustMore":
             MessageLookupByLibrary.simpleMessage("必须超过8个字符"),
-        "changepasswordPasswordNote": MessageLookupByLibrary.simpleMessage(
-            "您的密码必须包含以下内容:\n- 长度为8-20个字符\n- 至少1个特殊字符 !#\\\$%&\n- 至少1个大写字母\n- 至少1个小写字母\n- 只能使用阿拉伯数字"),
+        "changepasswordPasswordNote":
+            MessageLookupByLibrary.simpleMessage("您的密码必须包含以下内容:\n- 长度为8-20个字符"),
         "changepasswordPasswordPlaceholder":
             MessageLookupByLibrary.simpleMessage("输入新密码"),
         "changepasswordPasswordRequired":
@@ -713,8 +713,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("密码必须少于20个字符"),
         "signupPasswordMustMore":
             MessageLookupByLibrary.simpleMessage("密码必须超过8个字符"),
-        "signupPasswordNote": MessageLookupByLibrary.simpleMessage(
-            "您的密码必须包含以下内容:\n- 长度为8-20个字符\n- 至少包含一个特殊字符 !#\$%&\n- 至少包含一个大写字母\n- 至少包含一个小写字母\n- 只包含阿拉伯数字"),
+        "signupPasswordNote":
+            MessageLookupByLibrary.simpleMessage("您的密码必须包含以下内容:\n- 长度为8-20个字符"),
         "signupPasswordPlaceholder":
             MessageLookupByLibrary.simpleMessage("输入密码"),
         "signupPasswordRequired": MessageLookupByLibrary.simpleMessage("密码必填"),

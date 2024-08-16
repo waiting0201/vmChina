@@ -120,23 +120,7 @@ class _ChangepasswordState extends State<Changepassword> {
                                 .of(context)
                                 .changepasswordPasswordMustLess;
                           }
-                          if (value == value.toLowerCase()) {
-                            return lang.S
-                                .of(context)
-                                .changepasswordPasswordContainUpper;
-                          }
-                          if (value == value.toUpperCase()) {
-                            return lang.S
-                                .of(context)
-                                .changepasswordPasswordContainLower;
-                          }
-                          if (!RegExp(
-                                  r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!#$%&]).{8,20}$')
-                              .hasMatch(value)) {
-                            return lang.S
-                                .of(context)
-                                .changepasswordPasswordContainSpecial;
-                          }
+
                           return null;
                         },
                       ),

@@ -218,7 +218,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "changepasswordPasswordMustMore": MessageLookupByLibrary.simpleMessage(
             "Must be more than 8 characters"),
         "changepasswordPasswordNote": MessageLookupByLibrary.simpleMessage(
-            "Your password must contain the following:\n- 8-20 characters in length\n- Minimum 1 special character !#\\\$%&\n- Minimum 1 upper case letter\n- Minimum 1 lower case letter\n- Arabic numbers and only"),
+            "Your password must contain the following:\n- 8-20 characters in length"),
         "changepasswordPasswordPlaceholder":
             MessageLookupByLibrary.simpleMessage("Enter new password"),
         "changepasswordPasswordRequired":
@@ -854,7 +854,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "signupPasswordMustMore": MessageLookupByLibrary.simpleMessage(
             "Must be more than 8 characters"),
         "signupPasswordNote": MessageLookupByLibrary.simpleMessage(
-            "Your password must contain the following:\n- 8-20 characters in length\n- Minimum 1 special character !#\$%&\n- Minimum 1 upper case letter\n- Minimum 1 lower case letter\n- Arabic numbers and only"),
+            "Your password must contain the following:\n- 8-20 characters in length"),
         "signupPasswordPlaceholder":
             MessageLookupByLibrary.simpleMessage("Enter password"),
         "signupPasswordRequired":

@@ -2182,10 +2182,10 @@ class S {
     );
   }
 
-  /// `Your password must contain the following:\n- 8-20 characters in length\n- Minimum 1 special character !#\$%&\n- Minimum 1 upper case letter\n- Minimum 1 lower case letter\n- Arabic numbers and only`
+  /// `Your password must contain the following:\n- 8-20 characters in length`
   String get changepasswordPasswordNote {
     return Intl.message(
-      'Your password must contain the following:\n- 8-20 characters in length\n- Minimum 1 special character !#\\\$%&\n- Minimum 1 upper case letter\n- Minimum 1 lower case letter\n- Arabic numbers and only',
+      'Your password must contain the following:\n- 8-20 characters in length',
       name: 'changepasswordPasswordNote',
       desc: '',
       args: [],
@@ -3972,10 +3972,10 @@ class S {
     );
   }
 
-  /// `Your password must contain the following:\n- 8-20 characters in length\n- Minimum 1 special character !#$%&\n- Minimum 1 upper case letter\n- Minimum 1 lower case letter\n- Arabic numbers and only`
+  /// `Your password must contain the following:\n- 8-20 characters in length`
   String get signupPasswordNote {
     return Intl.message(
-      'Your password must contain the following:\n- 8-20 characters in length\n- Minimum 1 special character !#\$%&\n- Minimum 1 upper case letter\n- Minimum 1 lower case letter\n- Arabic numbers and only',
+      'Your password must contain the following:\n- 8-20 characters in length',
       name: 'signupPasswordNote',
       desc: '',
       args: [],
