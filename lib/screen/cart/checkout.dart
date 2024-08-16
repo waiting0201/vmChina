@@ -33,7 +33,7 @@ class _CheckoutState extends State<Checkout> {
   final _firstname = TextEditingController();
   final _lastname = TextEditingController();
   final List<ShippingLocation> _shippinglocations = [];
-  final String _shippingtype = "B";
+  final String _shippingtype = "O";
   final String _ispreorder = "n";
 
   late CartChangeProvider _cartChangeProvider;
@@ -69,7 +69,7 @@ class _CheckoutState extends State<Checkout> {
         .then((value) {
       var data = json.decode(value.toString());
 
-      if (data["statusCode"] == 200) {
+      if (data["statusCode"] == 200 && mounted) {
         setState(() {
           _shippinglocations.addAll((data["data"] as List)
               .map((e) => ShippingLocation.fromMap(e))

@@ -72,7 +72,6 @@ class _CartSummaryState extends State<CartSummary> {
     if (!_setupChangeProvider.isloading) {
       setState(() {
         _setup = _setupChangeProvider.setup;
-        _freight = _setup.freight;
       });
     }
   }
@@ -83,8 +82,12 @@ class _CartSummaryState extends State<CartSummary> {
 
     return Consumer<CartChangeProvider>(
       builder: (context, cart, child) {
-        double shipping =
-            cart.getSubTotalPrice() > _setup.freeshippingreach ? 0 : _freight;
+        if (!_setupChangeProvider.isloading) {
+          _freight = (_setup.isfreeshipping == 1 &&
+                  cart.getSubTotalPrice() > _setup.freeshippingreach)
+              ? 0
+              : _setup.freightsd;
+        }
 
         return Padding(
           padding: const EdgeInsets.symmetric(
@@ -129,10 +132,12 @@ class _CartSummaryState extends State<CartSummary> {
                       style: textTheme.bodyMedium,
                     ),
                     const Spacer(),
-                    ExchangePrice(
-                      price: shipping,
-                      style: textTheme.bodyMedium,
-                    ),
+                    _setupChangeProvider.isloading
+                        ? const SizedBox()
+                        : ExchangePrice(
+                            price: _freight,
+                            style: textTheme.bodyMedium,
+                          ),
                   ],
                 ),
               ),
@@ -151,12 +156,14 @@ class _CartSummaryState extends State<CartSummary> {
                       ),
                     ),
                     const Spacer(),
-                    ExchangePrice(
-                      price: cart.getSubTotalPrice() + shipping,
-                      style: textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    _setupChangeProvider.isloading
+                        ? const SizedBox()
+                        : ExchangePrice(
+                            price: cart.getSubTotalPrice() + _freight,
+                            style: textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                   ],
                 ),
               ),
@@ -209,7 +216,10 @@ class _PreorderSummaryState extends State<PreorderSummary> {
     if (!_setupChangeProvider.isloading) {
       setState(() {
         _setup = _setupChangeProvider.setup;
-        _freight = _total > _setup.freeshippingreach ? 0 : _setup.freight;
+        _freight =
+            (_setup.isfreeshipping == 1 && _total > _setup.freeshippingreach)
+                ? 0
+                : _setup.freightsd;
       });
     }
   }
@@ -261,10 +271,12 @@ class _PreorderSummaryState extends State<PreorderSummary> {
                   style: textTheme.bodyMedium,
                 ),
                 const Spacer(),
-                ExchangePrice(
-                  price: _freight,
-                  style: textTheme.bodyMedium,
-                ),
+                _setupChangeProvider.isloading
+                    ? const SizedBox()
+                    : ExchangePrice(
+                        price: _freight,
+                        style: textTheme.bodyMedium,
+                      ),
               ],
             ),
           ),
@@ -283,12 +295,14 @@ class _PreorderSummaryState extends State<PreorderSummary> {
                   ),
                 ),
                 const Spacer(),
-                ExchangePrice(
-                  price: _total + _freight,
-                  style: textTheme.bodyLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                _setupChangeProvider.isloading
+                    ? const SizedBox()
+                    : ExchangePrice(
+                        price: _total + _freight,
+                        style: textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
               ],
             ),
           ),

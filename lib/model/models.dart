@@ -279,17 +279,20 @@ class OrderResponse {
 
 class Carts {
   final String productid;
+  final String brandid;
   final String brandtitle;
   final String producttitle;
   String? productphoto;
   final String sizetitle;
   final String productsizeid;
   final int quantity;
-  final double price;
+  late double price;
+  final double discountprice;
   final double total;
 
   Carts({
     required this.productid,
+    required this.brandid,
     required this.brandtitle,
     required this.producttitle,
     this.productphoto,
@@ -297,6 +300,7 @@ class Carts {
     required this.productsizeid,
     required this.quantity,
     required this.price,
+    required this.discountprice,
     required this.total,
   });
 
@@ -305,6 +309,7 @@ class Carts {
 
   Carts.fromMap(Map<String, dynamic> json)
       : productid = json['productid'],
+        brandid = json['brandid'],
         brandtitle = json['brandtitle'],
         producttitle = json['producttitle'],
         productphoto = json['productphoto'],
@@ -312,10 +317,12 @@ class Carts {
         productsizeid = json['productsizeid'],
         quantity = json['quantity'],
         price = json['price'],
+        discountprice = json['discountprice'],
         total = json['total'];
 
   Map<String, dynamic> toMap() => {
         'productid': productid,
+        'brandid': brandid,
         'brandtitle': brandtitle,
         'producttitle': producttitle,
         'productphoto': productphoto,
@@ -323,6 +330,7 @@ class Carts {
         'productsizeid': productsizeid,
         'quantity': quantity,
         'price': price,
+        'discountprice': discountprice,
         'total': total,
       };
 }

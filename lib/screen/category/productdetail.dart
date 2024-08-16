@@ -130,10 +130,7 @@ class _ProductDetailState extends State<ProductDetail> {
         if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _setup = Setup.fromMap(data["data"]);
-            _isMembershipFree = (_setup.ischargemembershipfee == 0 &&
-                DateTime.parse(_setup.freemembershipfeeuntil!)
-                        .compareTo(DateTime.now()) >
-                    0);
+            _isMembershipFree = (_setup.ischargemembershipfee == 0);
             _isSetupLoading = false;
           });
         } else if (mounted) {
@@ -516,11 +513,7 @@ class _ProductDetailState extends State<ProductDetail> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    TextTheme textTheme = Theme.of(context).textTheme;
-    ColorScheme colorScheme = Theme.of(context).colorScheme;
-
+  double getPrice() {
     _price = _product.price;
 
     if (!_isSetupLoading) {
@@ -545,8 +538,13 @@ class _ProductDetailState extends State<ProductDetail> {
         }
       }
     }
+    return _price;
+  }
 
-    //debugInvertOversizedImages = true;
+  @override
+  Widget build(BuildContext context) {
+    TextTheme textTheme = Theme.of(context).textTheme;
+    ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     return SafeArea(
       top: false,
@@ -788,55 +786,55 @@ class _ProductDetailState extends State<ProductDetail> {
                         style: textTheme.titleSmall?.copyWith(color: redColor),
                       ),
                     ),
-                  _isBrandLoading
-                      ? const SizedBox()
-                      : Padding(
-                          padding: const EdgeInsets.only(
-                            top: 0,
-                            left: horizonSpace,
-                            right: horizonSpace,
-                          ),
-                          child: ExpansionTile(
-                            backgroundColor: bggray100,
-                            dense: true,
-                            initiallyExpanded: false,
-                            tilePadding: const EdgeInsets.symmetric(
-                              vertical: 0,
-                              horizontal: 3,
-                            ),
-                            childrenPadding: const EdgeInsets.only(
-                              top: 0,
-                              left: 20,
-                              bottom: 3,
-                            ),
-                            title: Row(
-                              children: [
-                                const Icon(
-                                  Icons.person,
-                                  size: 15,
-                                ),
-                                const SizedBox(width: 3),
-                                Text(
-                                  lang.S
-                                      .of(context)
-                                      .productdetailClubInsiderPricing,
-                                  style: textTheme.titleSmall,
-                                )
-                              ],
-                            ),
-                            children: [
-                              if (!_isSetupLoading) ...[
-                                ClubInsiderPrice(
-                                  brandmemberplans: _brand.brandmemberplans,
-                                  product: _product,
-                                ),
-                              ]
-                            ],
-                          ),
+
+                  if (!_isSetupLoading && _setup.discounttype == 1) ...[
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 0,
+                        left: horizonSpace,
+                        right: horizonSpace,
+                      ),
+                      child: ExpansionTile(
+                        backgroundColor: bggray100,
+                        dense: true,
+                        initiallyExpanded: false,
+                        tilePadding: const EdgeInsets.symmetric(
+                          vertical: 0,
+                          horizontal: 3,
                         ),
+                        childrenPadding: const EdgeInsets.only(
+                          top: 0,
+                          left: 20,
+                          bottom: 3,
+                        ),
+                        title: Row(
+                          children: [
+                            const Icon(
+                              Icons.person,
+                              size: 15,
+                            ),
+                            const SizedBox(width: 3),
+                            Text(
+                              lang.S
+                                  .of(context)
+                                  .productdetailClubInsiderPricing,
+                              style: textTheme.titleSmall,
+                            )
+                          ],
+                        ),
+                        children: [
+                          ClubInsiderPrice(
+                            brandmemberplans: _brand.brandmemberplans,
+                            product: _product,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                   if (_product.videourl!.isNotEmpty)
                     Padding(
                       padding: const EdgeInsets.only(
+                        top: 5,
                         left: horizonSpace,
                         right: horizonSpace,
                       ),
@@ -1615,8 +1613,11 @@ class _ProductDetailState extends State<ProductDetail> {
                                 ),
                               ),
                               onPressed: () {
+                                _price = getPrice();
+
                                 Carts cart = Carts(
                                   productid: _product.productid,
+                                  brandid: _product.brandid,
                                   brandtitle: _product.brandtitle,
                                   producttitle: _product.title,
                                   productphoto:
@@ -1625,6 +1626,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                   productsizeid: selectedSize,
                                   quantity: buyamount,
                                   price: _price,
+                                  discountprice: _product.discountprice,
                                   total: buyamount * _price,
                                 );
 
@@ -1679,8 +1681,11 @@ class _ProductDetailState extends State<ProductDetail> {
                                 if (selectedSize == "") {
                                   sizeselect();
                                 } else {
+                                  _price = getPrice();
+
                                   Carts cart = Carts(
                                     productid: _product.productid,
+                                    brandid: _product.brandid,
                                     brandtitle: _product.brandtitle,
                                     producttitle: _product.title,
                                     productphoto: _photos.isNotEmpty
@@ -1690,6 +1695,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                     productsizeid: selectedSize,
                                     quantity: buyamount,
                                     price: _price,
+                                    discountprice: _product.discountprice,
                                     total: buyamount * _price,
                                   );
 
