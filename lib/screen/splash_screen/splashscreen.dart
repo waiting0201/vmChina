@@ -4,10 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vetrinamia_cn/theme/theme_constants.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
-//import '../../theme/theme_constants.dart';
+import '../../theme/theme_constants.dart';
 import '../language/language_provider.dart';
 import '../home/home.dart';
 import 'introscreen.dart';
