@@ -57,7 +57,7 @@ class _CheckoutState extends State<Checkout> {
   }
 
   Future<void> getShippingLocations() async {
-    if (!_isLoading) {
+    if (!_isLoading && mounted) {
       setState(() {
         _isLoading = true;
       });

@@ -45,11 +45,12 @@ class _PreorderState extends State<Preorder> {
     _firstname.text = _member.firstname!;
     _lastname.text = _member.lastname!;
     _mobile.text = _member.mobile != null ? _member.mobile! : "";
+
     getShippingLocations();
   }
 
   Future<void> getShippingLocations() async {
-    if (!_isLoading) {
+    if (!_isLoading && mounted) {
       setState(() {
         _isLoading = true;
       });
@@ -61,7 +62,7 @@ class _PreorderState extends State<Preorder> {
         .then((value) {
       var data = json.decode(value.toString());
 
-      if (data["statusCode"] == 200) {
+      if (data["statusCode"] == 200 && mounted) {
         setState(() {
           _shippinglocations.addAll((data["data"] as List)
               .map((e) => ShippingLocation.fromMap(e))
