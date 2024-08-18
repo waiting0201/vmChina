@@ -9,7 +9,6 @@ import '../../model/models.dart';
 import '../widgets/constant.dart';
 import '../widgets/partial.dart';
 import '../home/home.dart';
-import '../profile/profile.dart';
 import '../brand/homebrand.dart';
 
 class MemberPlanComplete extends StatefulWidget {
@@ -28,7 +27,6 @@ class MemberPlanComplete extends StatefulWidget {
 }
 
 class _MemberPlanCompleteState extends State<MemberPlanComplete> {
-
   @override
   void initState() {
     super.initState();
@@ -76,13 +74,13 @@ class _MemberPlanCompleteState extends State<MemberPlanComplete> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 widget.result
-                        ? const Icon(
-                            Icons.check_circle,
-                            color: Colors.green,
-                            size: 100.0,
-                          )
-                        : const Icon(Icons.warning_rounded,
-                            color: Colors.amber, size: 100.0),
+                    ? const Icon(
+                        Icons.check_circle,
+                        color: Colors.green,
+                        size: 100.0,
+                      )
+                    : const Icon(Icons.warning_rounded,
+                        color: Colors.amber, size: 100.0),
                 Padding(
                   padding: const EdgeInsets.only(
                     top: verticalSpace,
@@ -91,10 +89,8 @@ class _MemberPlanCompleteState extends State<MemberPlanComplete> {
                   ),
                   child: Text(
                     widget.result
-                            ? lang.S
-                                .of(context)
-                                .memberplanpaymentcompleteSucceeded
-                            : lang.S.of(context).memberplanpaymentcompleteWrong,
+                        ? lang.S.of(context).memberplanpaymentcompleteSucceeded
+                        : lang.S.of(context).memberplanpaymentcompleteWrong,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontSize: 24.0,
@@ -110,14 +106,14 @@ class _MemberPlanCompleteState extends State<MemberPlanComplete> {
                   ),
                   child: Text(
                     widget.result
-                            ? lang.S
-                                .of(context)
-                                .memberplanpaymentcompleteSucceededCaption(
-                                    widget.brand.title,
-                                    widget.brandmemberplan.plantitle)
-                            : lang.S
-                                .of(context)
-                                .memberplanpaymentcompleteWrongCaption,
+                        ? lang.S
+                            .of(context)
+                            .memberplanpaymentcompleteSucceededCaption(
+                                widget.brand.title,
+                                widget.brandmemberplan.plantitle)
+                        : lang.S
+                            .of(context)
+                            .memberplanpaymentcompleteWrongCaption,
                     textAlign: TextAlign.center,
                     style: textTheme.bodyMedium?.copyWith(
                       color: lightGreyTextColor,
@@ -130,7 +126,9 @@ class _MemberPlanCompleteState extends State<MemberPlanComplete> {
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const Profile(),
+                        builder: (context) => const Home(
+                          bottomNavIndex: 4,
+                        ),
                       ),
                       (route) => false,
                     );

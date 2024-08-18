@@ -43,7 +43,8 @@ class _PreorderCompleteState extends State<PreorderComplete> {
     HttpService httpService = HttpService();
     Response response = await httpService.getorderbyorderid(widget.orderid);
     var data = json.decode(response.toString());
-    if (data["statusCode"] == 200) {
+
+    if (data["statusCode"] == 200 && mounted) {
       setState(() {
         _order = Order.fromMap(data["data"]);
         _isLoading = false;
