@@ -28,8 +28,9 @@ class _AddaddressState extends State<Addaddress> {
   late Country _selectedcountry;
   late Member _member;
   late ShippingLocation _shippinglocation;
-  late bool isModify = false;
-  late bool isDefault = false;
+  late bool _isModify = false;
+  late bool _isDefault = false;
+  late bool _isCountryLoading = false;
 
   final List<Country> _countrys = [];
   final _formKey = GlobalKey<FormState>();
@@ -51,23 +52,29 @@ class _AddaddressState extends State<Addaddress> {
     getCountrys();
 
     if (widget.shippinglocation != null) {
-      isModify = true;
+      _isModify = true;
       _shippinglocation = widget.shippinglocation!;
       _state.text = _shippinglocation.state ?? '';
       _postcode.text = _shippinglocation.postcode;
       _city.text = _shippinglocation.city;
       _district.text = _shippinglocation.district ?? '';
       _address.text = _shippinglocation.address;
-      isDefault = _shippinglocation.isdefault;
+      _isDefault = _shippinglocation.isdefault;
     }
   }
 
   Future<void> getCountrys() async {
+    if (!_isCountryLoading && mounted) {
+      setState(() {
+        _isCountryLoading = true;
+      });
+    }
+
     HttpService httpService = HttpService();
     await httpService.getcountrylists(null).then((value) {
       var data = json.decode(value.toString());
 
-      if (data["statusCode"] == 200) {
+      if (data["statusCode"] == 200 && mounted) {
         setState(() {
           _countrys.addAll(
               (data["data"] as List).map((e) => Country.fromMap(e)).toList());
@@ -77,9 +84,12 @@ class _AddaddressState extends State<Addaddress> {
                 (element) => element.countryid == _shippinglocation.countryid);
             _country.text = _selectedcountry.nickname;
           }
+          _isCountryLoading = false;
         });
       } else {
-        setState(() {});
+        setState(() {
+          _isCountryLoading = false;
+        });
       }
     });
   }
@@ -107,7 +117,7 @@ class _AddaddressState extends State<Addaddress> {
           ),
         ),
         title: Text(
-          isModify
+          _isModify
               ? lang.S.of(context).addaddressEditTitle
               : lang.S.of(context).addaddressAddTitle,
           style: textTheme.titleLarge?.copyWith(
@@ -132,7 +142,7 @@ class _AddaddressState extends State<Addaddress> {
                   right: horizonSpace,
                 ),
                 child: Text(
-                  isModify
+                  _isModify
                       ? lang.S.of(context).addaddressEditCaption
                       : lang.S.of(context).addaddressAddCaption,
                   textAlign: TextAlign.center,
@@ -153,73 +163,80 @@ class _AddaddressState extends State<Addaddress> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Expanded(
-                            child: InkWell(
-                              onTap: () {
-                                showCupertinoModalPopup(
-                                  context: context,
-                                  builder: (_) => SizedBox(
-                                    width: MediaQuery.of(context).size.width,
-                                    height: 350,
-                                    child: CupertinoPicker(
-                                      backgroundColor: whiteColor,
-                                      itemExtent: 40,
-                                      scrollController:
-                                          FixedExtentScrollController(
-                                        initialItem: 0,
-                                      ),
-                                      children: List<Widget>.generate(
-                                        _countrys.length,
-                                        (int index) => Center(
-                                          child: Text(
-                                            _countrys[index].nickname,
+                            child: _isCountryLoading
+                                ? const SizedBox()
+                                : InkWell(
+                                    onTap: () {
+                                      showCupertinoModalPopup(
+                                        context: context,
+                                        builder: (_) => SizedBox(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          height: 350,
+                                          child: CupertinoPicker(
+                                            backgroundColor: whiteColor,
+                                            itemExtent: 40,
+                                            scrollController:
+                                                FixedExtentScrollController(
+                                              initialItem: 0,
+                                            ),
+                                            children: List<Widget>.generate(
+                                              _countrys.length,
+                                              (int index) => Center(
+                                                child: Text(
+                                                  _countrys[index].nickname,
+                                                ),
+                                              ),
+                                            ),
+                                            onSelectedItemChanged:
+                                                (int selectedItem) {
+                                              _country.text =
+                                                  _countrys[selectedItem]
+                                                      .nickname;
+                                              _selectedcountry =
+                                                  _countrys[selectedItem];
+                                            },
                                           ),
                                         ),
+                                      );
+                                    },
+                                    child: AbsorbPointer(
+                                      absorbing: true,
+                                      child: TextFormField(
+                                        controller: _country,
+                                        style: textTheme.bodyMedium,
+                                        decoration: InputDecoration(
+                                          contentPadding:
+                                              const EdgeInsets.symmetric(
+                                            vertical: 2,
+                                          ),
+                                          labelText: lang.S
+                                              .of(context)
+                                              .addaddressCountry,
+                                          hintText: lang.S
+                                              .of(context)
+                                              .addaddressCountryPlaceholder,
+                                          hintStyle:
+                                              textTheme.bodySmall?.copyWith(
+                                            color: lightGreyTextColor,
+                                          ),
+                                          floatingLabelBehavior:
+                                              FloatingLabelBehavior.always,
+                                          suffixIcon: const Icon(
+                                            IconlyLight.arrowDown2,
+                                          ),
+                                        ),
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return lang.S
+                                                .of(context)
+                                                .addaddressRequiredCountry;
+                                          }
+                                          return null;
+                                        },
                                       ),
-                                      onSelectedItemChanged:
-                                          (int selectedItem) {
-                                        _country.text =
-                                            _countrys[selectedItem].nickname;
-                                        _selectedcountry =
-                                            _countrys[selectedItem];
-                                      },
                                     ),
                                   ),
-                                );
-                              },
-                              child: AbsorbPointer(
-                                absorbing: true,
-                                child: TextFormField(
-                                  controller: _country,
-                                  style: textTheme.bodyMedium,
-                                  decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 2,
-                                    ),
-                                    labelText:
-                                        lang.S.of(context).addaddressCountry,
-                                    hintText: lang.S
-                                        .of(context)
-                                        .addaddressCountryPlaceholder,
-                                    hintStyle: textTheme.bodySmall?.copyWith(
-                                      color: lightGreyTextColor,
-                                    ),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
-                                    suffixIcon: const Icon(
-                                      IconlyLight.arrowDown2,
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return lang.S
-                                          .of(context)
-                                          .addaddressRequiredCountry;
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ),
-                            ),
                           ),
                           const SizedBox(width: 10.0),
                           Expanded(
@@ -393,11 +410,11 @@ class _AddaddressState extends State<Addaddress> {
                             ),
                             checkColor: Colors.white,
                             visualDensity: const VisualDensity(horizontal: -4),
-                            value: isDefault,
+                            value: _isDefault,
                             onChanged: (val) {
                               setState(
                                 () {
-                                  isDefault = val!;
+                                  _isDefault = val!;
                                 },
                               );
                             },
@@ -424,7 +441,7 @@ class _AddaddressState extends State<Addaddress> {
                     OutlinedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          if (isModify) {
+                          if (_isModify) {
                             _authChangeProvider
                                 .updateShippingLocation(
                               _shippinglocation.shippinglocationid,
@@ -434,7 +451,7 @@ class _AddaddressState extends State<Addaddress> {
                               _city.text,
                               _district.text,
                               _address.text,
-                              isDefault,
+                              _isDefault,
                               _state.text,
                             )
                                 .then((value) {
@@ -451,7 +468,7 @@ class _AddaddressState extends State<Addaddress> {
                                     _city.text,
                                     _district.text,
                                     _address.text,
-                                    isDefault,
+                                    _isDefault,
                                     _state.text)
                                 .then((value) {
                               if (value) {
@@ -468,7 +485,7 @@ class _AddaddressState extends State<Addaddress> {
                         ),
                       ),
                     ),
-                    isModify
+                    _isModify
                         ? Padding(
                             padding: const EdgeInsets.only(
                               left: 10,
@@ -497,7 +514,7 @@ class _AddaddressState extends State<Addaddress> {
                               ),
                             ),
                           )
-                        : Container()
+                        : const SizedBox()
                   ],
                 ),
               ),

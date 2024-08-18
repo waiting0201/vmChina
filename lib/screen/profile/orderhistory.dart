@@ -41,7 +41,7 @@ class _OrderhistoryState extends State<Orderhistory> {
   }
 
   Future<void> getOrders() async {
-    if (_hasMore && !_isLoading) {
+    if (_hasMore && !_isLoading && mounted) {
       setState(() {
         _isLoading = true;
       });
@@ -54,7 +54,7 @@ class _OrderhistoryState extends State<Orderhistory> {
 
         log('getorders code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200) {
+        if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _orders.addAll(
                 (data["data"] as List).map((e) => Order.fromMap(e)).toList());

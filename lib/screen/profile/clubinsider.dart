@@ -48,7 +48,7 @@ class _ClubinsiderState extends State<Clubinsider> {
   }
 
   Future<void> getSetup() async {
-    if (!_isSetupLoading) {
+    if (!_isSetupLoading && mounted) {
       setState(() {
         _isSetupLoading = true;
       });

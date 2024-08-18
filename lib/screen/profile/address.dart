@@ -35,7 +35,7 @@ class _AddressState extends State<Address> {
   }
 
   Future<void> getShippingLocations() async {
-    if (!_isLoading) {
+    if (!_isLoading && mounted) {
       setState(() {
         _isLoading = true;
       });
@@ -47,7 +47,7 @@ class _AddressState extends State<Address> {
         .then((value) {
       var data = json.decode(value.toString());
 
-      if (data["statusCode"] == 200) {
+      if (data["statusCode"] == 200 && mounted) {
         setState(() {
           _shippinglocations.addAll((data["data"] as List)
               .map((e) => ShippingLocation.fromMap(e))
