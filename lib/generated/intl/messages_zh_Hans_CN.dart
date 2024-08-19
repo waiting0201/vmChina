@@ -71,11 +71,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "accountConfirm": MessageLookupByLibrary.simpleMessage("您确定吗？"),
         "accountConfirmCaption":
             MessageLookupByLibrary.simpleMessage("您确定要禁用您的账户吗？"),
-        "accountCountryCode": MessageLookupByLibrary.simpleMessage("国家代码"),
+        "accountCountryCode": MessageLookupByLibrary.simpleMessage("代码"),
         "accountCountryCodePlaceholder":
-            MessageLookupByLibrary.simpleMessage("输入您的国家代码"),
+            MessageLookupByLibrary.simpleMessage("输入您的代码"),
         "accountCountryCodeRequired":
-            MessageLookupByLibrary.simpleMessage("国家代码必填"),
+            MessageLookupByLibrary.simpleMessage("代码必填"),
         "accountDateOfBirth": MessageLookupByLibrary.simpleMessage("出生日期"),
         "accountDay": MessageLookupByLibrary.simpleMessage("日"),
         "accountDisableCaption": MessageLookupByLibrary.simpleMessage(
@@ -115,9 +115,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "addaddressCity": MessageLookupByLibrary.simpleMessage("城市*"),
         "addaddressCityPlaceholder":
             MessageLookupByLibrary.simpleMessage("输入城市"),
-        "addaddressCountry": MessageLookupByLibrary.simpleMessage("国家*"),
+        "addaddressCountry": MessageLookupByLibrary.simpleMessage("必填*"),
         "addaddressCountryPlaceholder":
-            MessageLookupByLibrary.simpleMessage("选择国家"),
+            MessageLookupByLibrary.simpleMessage("請选择"),
         "addaddressDistrict": MessageLookupByLibrary.simpleMessage("区*"),
         "addaddressDistrictPlaceholder":
             MessageLookupByLibrary.simpleMessage("输入区"),
@@ -130,8 +130,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "addaddressRequiredAddress":
             MessageLookupByLibrary.simpleMessage("地址必填"),
         "addaddressRequiredCity": MessageLookupByLibrary.simpleMessage("城市必填"),
-        "addaddressRequiredCountry":
-            MessageLookupByLibrary.simpleMessage("国家必填"),
+        "addaddressRequiredCountry": MessageLookupByLibrary.simpleMessage("必填"),
         "addaddressRequiredDistrict":
             MessageLookupByLibrary.simpleMessage("区必填"),
         "addaddressRequiredPostalCode":
@@ -683,11 +682,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("确认您的密码"),
         "signupConfirmPasswordRequired":
             MessageLookupByLibrary.simpleMessage("确认密码必填"),
-        "signupCountryCode": MessageLookupByLibrary.simpleMessage("国家代码*"),
+        "signupCountryCode": MessageLookupByLibrary.simpleMessage("代码*"),
         "signupCountryCodePlaceholder":
-            MessageLookupByLibrary.simpleMessage("输入您的国家代码"),
+            MessageLookupByLibrary.simpleMessage("输入您的代码"),
         "signupCountryCodeRequired":
-            MessageLookupByLibrary.simpleMessage("国家代码必填"),
+            MessageLookupByLibrary.simpleMessage("代码必填"),
         "signupFirstName": MessageLookupByLibrary.simpleMessage("名字*"),
         "signupFirstNamePlaceholder":
             MessageLookupByLibrary.simpleMessage("输入您的名字"),

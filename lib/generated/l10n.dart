@@ -1462,30 +1462,30 @@ class S {
     );
   }
 
-  /// `Country code`
+  /// `Phone Code`
   String get accountCountryCode {
     return Intl.message(
-      'Country code',
+      'Phone Code',
       name: 'accountCountryCode',
       desc: '',
       args: [],
     );
   }
 
-  /// `Enter your country code`
+  /// `Enter your phone code`
   String get accountCountryCodePlaceholder {
     return Intl.message(
-      'Enter your country code',
+      'Enter your phone code',
       name: 'accountCountryCodePlaceholder',
       desc: '',
       args: [],
     );
   }
 
-  /// `Country code required`
+  /// `Phone code required`
   String get accountCountryCodeRequired {
     return Intl.message(
-      'Country code required',
+      'Phone code required',
       name: 'accountCountryCodeRequired',
       desc: '',
       args: [],
@@ -1712,30 +1712,30 @@ class S {
     );
   }
 
-  /// `Country*`
+  /// `Required*`
   String get addaddressCountry {
     return Intl.message(
-      'Country*',
+      'Required*',
       name: 'addaddressCountry',
       desc: '',
       args: [],
     );
   }
 
-  /// `Select country`
+  /// `Please select`
   String get addaddressCountryPlaceholder {
     return Intl.message(
-      'Select country',
+      'Please select',
       name: 'addaddressCountryPlaceholder',
       desc: '',
       args: [],
     );
   }
 
-  /// `Country required`
+  /// `Required`
   String get addaddressRequiredCountry {
     return Intl.message(
-      'Country required',
+      'Required',
       name: 'addaddressRequiredCountry',
       desc: '',
       args: [],
@@ -4082,30 +4082,30 @@ class S {
     );
   }
 
-  /// `Country code*`
+  /// `Phone code*`
   String get signupCountryCode {
     return Intl.message(
-      'Country code*',
+      'Phone code*',
       name: 'signupCountryCode',
       desc: '',
       args: [],
     );
   }
 
-  /// `Enter your country code`
+  /// `Enter your phone code`
   String get signupCountryCodePlaceholder {
     return Intl.message(
-      'Enter your country code',
+      'Enter your phone code',
       name: 'signupCountryCodePlaceholder',
       desc: '',
       args: [],
     );
   }
 
-  /// `Country code required`
+  /// `Phone code required`
   String get signupCountryCodeRequired {
     return Intl.message(
-      'Country code required',
+      'Phone code required',
       name: 'signupCountryCodeRequired',
       desc: '',
       args: [],

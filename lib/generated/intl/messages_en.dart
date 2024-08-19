@@ -77,11 +77,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "accountConfirmCaption": MessageLookupByLibrary.simpleMessage(
             "Are you sure you would like to disable your account?"),
         "accountCountryCode":
-            MessageLookupByLibrary.simpleMessage("Country code"),
+            MessageLookupByLibrary.simpleMessage("Phone Code"),
         "accountCountryCodePlaceholder":
-            MessageLookupByLibrary.simpleMessage("Enter your country code"),
+            MessageLookupByLibrary.simpleMessage("Enter your phone code"),
         "accountCountryCodeRequired":
-            MessageLookupByLibrary.simpleMessage("Country code required"),
+            MessageLookupByLibrary.simpleMessage("Phone code required"),
         "accountDateOfBirth":
             MessageLookupByLibrary.simpleMessage("Date of Birth"),
         "accountDay": MessageLookupByLibrary.simpleMessage("Day"),
@@ -131,9 +131,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "addaddressCity": MessageLookupByLibrary.simpleMessage("City*"),
         "addaddressCityPlaceholder":
             MessageLookupByLibrary.simpleMessage("Enter city"),
-        "addaddressCountry": MessageLookupByLibrary.simpleMessage("Country*"),
+        "addaddressCountry": MessageLookupByLibrary.simpleMessage("Required*"),
         "addaddressCountryPlaceholder":
-            MessageLookupByLibrary.simpleMessage("Select country"),
+            MessageLookupByLibrary.simpleMessage("Please select"),
         "addaddressDistrict": MessageLookupByLibrary.simpleMessage("District*"),
         "addaddressDistrictPlaceholder":
             MessageLookupByLibrary.simpleMessage("Enter district"),
@@ -150,7 +150,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "addaddressRequiredCity":
             MessageLookupByLibrary.simpleMessage("City required"),
         "addaddressRequiredCountry":
-            MessageLookupByLibrary.simpleMessage("Country required"),
+            MessageLookupByLibrary.simpleMessage("Required"),
         "addaddressRequiredDistrict":
             MessageLookupByLibrary.simpleMessage("District required"),
         "addaddressRequiredPostalCode":
@@ -820,11 +820,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "signupConfirmPasswordRequired": MessageLookupByLibrary.simpleMessage(
             "Confirm password your required"),
         "signupCountryCode":
-            MessageLookupByLibrary.simpleMessage("Country code*"),
+            MessageLookupByLibrary.simpleMessage("Phone code*"),
         "signupCountryCodePlaceholder":
-            MessageLookupByLibrary.simpleMessage("Enter your country code"),
+            MessageLookupByLibrary.simpleMessage("Enter your phone code"),
         "signupCountryCodeRequired":
-            MessageLookupByLibrary.simpleMessage("Country code required"),
+            MessageLookupByLibrary.simpleMessage("Phone code required"),
         "signupFirstName": MessageLookupByLibrary.simpleMessage("First Name*"),
         "signupFirstNamePlaceholder":
             MessageLookupByLibrary.simpleMessage("Enter your first name"),
