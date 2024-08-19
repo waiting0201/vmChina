@@ -137,7 +137,7 @@ class _AccountState extends State<Account> {
                               itemExtent: 40,
                               scrollController: FixedExtentScrollController(
                                 initialItem: _member.gender != null
-                                    ? _member.gender! - 1
+                                    ? _member.gender!
                                     : 0,
                               ),
                               children: List<Widget>.generate(4, (int index) {
@@ -149,7 +149,7 @@ class _AccountState extends State<Account> {
                               }),
                               onSelectedItemChanged: (int selectedItem) {
                                 _gender.text = _titles[selectedItem];
-                                _genderselect = selectedItem + 1;
+                                _genderselect = selectedItem;
                               },
                             ),
                           ),
