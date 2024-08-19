@@ -66,10 +66,7 @@ class _MemberPlanState extends State<MemberPlan> {
         if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _setup = Setup.fromMap(data["data"]);
-            _isMembershipFree = (_setup.ischargemembershipfee == 0 &&
-                DateTime.parse(_setup.freemembershipfeeuntil!)
-                        .compareTo(DateTime.now()) >
-                    0);
+            _isMembershipFree = (_setup.ischargemembershipfee == 0);
             if (_isMembershipFree) {
               //Duration difference = DateTime.parse(_setup.freemembershipfeeuntil!)
               //.difference(DateTime.now());

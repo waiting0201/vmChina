@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:provider/provider.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../generated/l10n.dart' as lang;
 import '../../model/models.dart';
@@ -43,11 +44,29 @@ class _ProfileState extends State<Profile> {
   final List<Faq> _faqs = [];
   final List<Law> _laws = [];
 
+  late PackageInfo _packageInfo = PackageInfo(
+    appName: 'Unknown',
+    packageName: 'Unknown',
+    version: 'Unknown',
+    buildNumber: 'Unknown',
+    buildSignature: 'Unknown',
+    installerStore: 'Unknown',
+  );
+
   @override
   void initState() {
     super.initState();
+
+    initPackageInfo();
     getFaqs();
     getLaws();
+  }
+
+  Future<void> initPackageInfo() async {
+    final info = await PackageInfo.fromPlatform();
+    setState(() {
+      _packageInfo = info;
+    });
   }
 
   Future<void> getFaqs() async {
@@ -688,31 +707,35 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
                 //_____________________________________________________Logout
+                if (auth.status) ...[
+                  const SizedBox(height: 50),
+                  Center(
+                    child: OutlinedButton(
+                      onPressed: () {
+                        auth.logOut().then((value) {
+                          if (value) {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Home(),
+                              ),
+                              (route) => false,
+                            );
+                          }
+                        });
+                      },
+                      child: Text(
+                        lang.S.of(context).commonLogOut,
+                        style: textTheme.bodyMedium,
+                      ),
+                    ),
+                  ),
+                ],
                 const SizedBox(height: 50),
-                auth.status
-                    ? Center(
-                        child: OutlinedButton(
-                          onPressed: () {
-                            auth.logOut().then((value) {
-                              if (value) {
-                                Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const Home(),
-                                  ),
-                                  (route) => false,
-                                );
-                              }
-                            });
-                          },
-                          child: Text(
-                            lang.S.of(context).commonLogOut,
-                            style: textTheme.bodyMedium,
-                          ),
-                        ),
-                      )
-                    : const SizedBox(),
-
+                Text(
+                  'CN v ${_packageInfo.version}+${_packageInfo.buildNumber}',
+                  style: textTheme.bodyMedium,
+                ),
                 const SizedBox(height: 50),
               ],
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vetrinamia_cn/screen/widgets/partial.dart';
 
 import '../../generated/l10n.dart' as lang;
 import '../../model/models.dart';
@@ -22,6 +23,7 @@ class _ChangepasswordState extends State<Changepassword> {
   bool hidePassword = true;
   bool hideConfirmPassword = true;
   late Member _member;
+  late bool _isLoading = false;
 
   @override
   void initState() {
@@ -190,52 +192,60 @@ class _ChangepasswordState extends State<Changepassword> {
                     const SizedBox(height: 20.0),
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
-                      child: ElevatedButton(
-                        child: Text(
-                          lang.S.of(context).commonSaveChanges,
-                          style: textTheme.titleSmall?.copyWith(
-                            color: whiteColor,
-                          ),
-                        ),
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            authchangeprovider
-                                .updatepassword(
-                                    _member.memberid, _password.text)
-                                .then((value) {
-                              if (value) {
-                                setState(() {
-                                  showDialog(
-                                    barrierDismissible: false,
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return WarnModal(
-                                        title: 'Information',
-                                        message: lang.S
-                                            .of(context)
-                                            .changepasswordInformation,
-                                      );
-                                    },
-                                  );
-                                });
-                              } else {
-                                setState(() {
-                                  showDialog(
-                                    barrierDismissible: false,
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return const WarnModal(
-                                        title: 'Alert',
-                                        message: 'Updated Failed.',
-                                      );
-                                    },
-                                  );
-                                });
-                              }
-                            });
-                          }
-                        },
-                      ),
+                      child: _isLoading
+                          ? const LoadingCircle()
+                          : ElevatedButton(
+                              child: Text(
+                                lang.S.of(context).commonSaveChanges,
+                                style: textTheme.titleSmall?.copyWith(
+                                  color: whiteColor,
+                                ),
+                              ),
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  setState(() {
+                                    _isLoading = true;
+                                  });
+                                  authchangeprovider
+                                      .updatepassword(
+                                          _member.memberid, _password.text)
+                                      .then((value) {
+                                    setState(() {
+                                      _isLoading = false;
+                                    });
+                                    if (value) {
+                                      setState(() {
+                                        showDialog(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return WarnModal(
+                                              title: 'Information',
+                                              message: lang.S
+                                                  .of(context)
+                                                  .changepasswordInformation,
+                                            );
+                                          },
+                                        );
+                                      });
+                                    } else {
+                                      setState(() {
+                                        showDialog(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return const WarnModal(
+                                              title: 'Alert',
+                                              message: 'Updated Failed.',
+                                            );
+                                          },
+                                        );
+                                      });
+                                    }
+                                  });
+                                }
+                              },
+                            ),
                     ),
                   ],
                 ),
