@@ -4,25 +4,31 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:provider/provider.dart';
+import 'package:fluwx/fluwx.dart';
 
 import '../../generated/l10n.dart' as lang;
 import '../../theme/theme_constants.dart';
-import '../../model/models.dart';
 import '../../model/repository.dart';
 import '../authentication/auth_provider.dart';
 import '../widgets/constant.dart';
 import '../widgets/library.dart';
 import '../widgets/partial.dart';
 import '../home/home.dart';
+import '../profile/profile.dart';
 
 class SignUp extends StatefulWidget {
-  const SignUp({super.key});
+  final String? refer;
+  const SignUp({
+    super.key,
+    this.refer,
+  });
 
   @override
   State<SignUp> createState() => _SignUpState();
 }
 
 class _SignUpState extends State<SignUp> {
+  final _fluwx = Fluwx();
   final _formKey = GlobalKey<FormState>();
   final _code = TextEditingController();
   final _password = TextEditingController();
@@ -30,17 +36,25 @@ class _SignUpState extends State<SignUp> {
   final _lastname = TextEditingController();
   final _mobile = TextEditingController();
 
+  late AuthChangeProvider _authChangeProvider;
   late bool hidePassword = true;
   late bool _isLoging = false;
   late bool _isMobileValid = false;
   late bool _isCounting = false;
   late int _start;
+  late bool _startLogin = false;
+  late bool _isWeChatInstalled = false;
+  late Function(WeChatResponse) responseListener;
   String? _mobileError;
   Timer? _timer;
 
   @override
   void initState() {
     super.initState();
+    _authChangeProvider =
+        Provider.of<AuthChangeProvider>(context, listen: false);
+
+    doInit();
   }
 
   @override
@@ -51,6 +65,7 @@ class _SignUpState extends State<SignUp> {
     _lastname.dispose();
     _mobile.dispose();
     _timer?.cancel();
+    _fluwx.removeSubscriber(responseListener);
     super.dispose();
   }
 
@@ -71,10 +86,113 @@ class _SignUpState extends State<SignUp> {
     });
   }
 
+  Future<void> doWeChatSignUp(String code) async {
+    _authChangeProvider.wechatBinding(code).then((value) {
+      if (value != null) {
+      } else {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const Profile(),
+          ),
+          (route) => false,
+        );
+      }
+    });
+  }
+
+  Future<void> doInit() async {
+    bool isWeChatInstalled = await _fluwx.isWeChatInstalled;
+    setState(() {
+      _isWeChatInstalled = isWeChatInstalled;
+    });
+
+    responseListener = (res) {
+      if (res is WeChatAuthResponse) {
+        OverlayEntry overlayEntry = OverlayEntry(
+          builder: (context) => Positioned(
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              color: Colors.black.withOpacity(0.5),
+              child: const LoadingCircle(),
+            ),
+          ),
+        );
+        Overlay.of(context).insert(overlayEntry);
+
+        if (res.isSuccessful) {
+          _authChangeProvider.wechatBinding(res.code!).then((value) {
+            if (value != null) {
+              overlayEntry.remove();
+              /*setState(() {
+                _startLogin = false;
+              });
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => WechatEmail(
+                    name: value.nickname,
+                    unionid: value.unionid,
+                  ),
+                ),
+              );*/
+            } else {
+              overlayEntry.remove();
+
+              if (widget.refer == 'intro') {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Home(),
+                  ),
+                  (route) => false,
+                );
+              } else {
+                Navigator.pop(context);
+              }
+            }
+          });
+        } else {
+          overlayEntry.remove();
+          setState(() {
+            _startLogin = false;
+          });
+        }
+      } else {
+        setState(() {
+          _startLogin = false;
+        });
+      }
+    };
+    _fluwx.addSubscriber(responseListener);
+  }
+
+  Future<void> doLogin() async {
+    if (mounted) {
+      setState(() {
+        _startLogin = true;
+      });
+    }
+
+    _fluwx
+        .authBy(
+            which: NormalAuth(
+                scope: 'snsapi_userinfo',
+                state: 'vm_wechat_login',
+                nonAutomatic: false))
+        .then((value) {
+      if (!value) {
+        return;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final authchangeprovider =
-        Provider.of<AuthChangeProvider>(context, listen: false);
     ColorScheme colorScheme = Theme.of(context).colorScheme;
     TextTheme textTheme = Theme.of(context).textTheme;
 
@@ -459,7 +577,7 @@ class _SignUpState extends State<SignUp> {
                                       _isLoging = true;
                                     });
 
-                                    authchangeprovider
+                                    _authChangeProvider
                                         .signUp(
                                             _code.text,
                                             _password.text,
@@ -559,6 +677,37 @@ class _SignUpState extends State<SignUp> {
                                 },
                               ),
                       ),
+                      if (_isWeChatInstalled) ...[
+                        const SizedBox(height: 15),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: _startLogin
+                                ? const LoadingCircle()
+                                : ElevatedButton.icon(
+                                    icon: const Icon(
+                                      Icons.wechat,
+                                      color: whiteColor,
+                                    ),
+                                    onPressed: () {
+                                      doLogin();
+                                    },
+                                    label: Text(
+                                      lang.S
+                                          .of(context)
+                                          .loginSignInorRegisterwithwechat,
+                                      style: textTheme.titleSmall?.copyWith(
+                                        color: whiteColor,
+                                      ),
+                                    ),
+                                    style: OutlinedButton.styleFrom(
+                                      backgroundColor: wechatColor,
+                                    ),
+                                  ),
+                          ),
+                        ),
+                      ],
                       const SizedBox(height: 10),
                       Container(
                         padding: const EdgeInsets.symmetric(
