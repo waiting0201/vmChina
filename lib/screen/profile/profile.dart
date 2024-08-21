@@ -200,7 +200,9 @@ class _ProfileState extends State<Profile> {
                               ),
                               const SizedBox(height: 5.0),
                               Text(
-                                auth.member.mobile!,
+                                auth.member.mobile != null
+                                    ? auth.member.mobile!
+                                    : '',
                                 style: textTheme.bodySmall?.copyWith(
                                   color: lightGreyTextColor,
                                 ),
