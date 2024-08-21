@@ -186,23 +186,23 @@ class _SplashScreenState extends State<SplashScreen> {
       }),
     );*/
 
-    _languageChangeProvider
-        .iniRegion(_currentCurrency, _currentLanguage)
-        .then((value) {
-      _languageChangeProvider.changeLocale(_currentLanguage);
-      _languageChangeProvider.changeCurrency(_currentCurrency);
+    _languageChangeProvider.iniRegion(_currentCurrency, _currentLanguage).then(
+      (value) {
+        _languageChangeProvider.changeLocale(_currentLanguage);
+        _languageChangeProvider.changeCurrency(_currentCurrency);
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => isfirsttime == "y"
-              ? const IntroScreen()
-              : const Home(
-                  bottomNavIndex: 0,
-                ),
-        ),
-      );
-    });
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => isfirsttime == "y"
+                ? const IntroScreen()
+                : const Home(
+                    bottomNavIndex: 0,
+                  ),
+          ),
+        );
+      },
+    );
   }
 
   @override

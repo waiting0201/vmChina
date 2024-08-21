@@ -294,8 +294,6 @@ class _HomeScreenState extends State<HomeScreen> {
     final authchangeprovider =
         Provider.of<AuthChangeProvider>(context, listen: true);
 
-    //debugInvertOversizedImages = true;
-
     return Consumer<LanguageChangeProvider>(
       builder: (context, language, child) {
         return !language.status
