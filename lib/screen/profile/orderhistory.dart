@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -52,7 +51,7 @@ class _OrderhistoryState extends State<Orderhistory> {
           .then((value) {
         var data = json.decode(value.toString());
 
-        log('getorders code: ${data["statusCode"]}');
+        debugPrint('getorders code: ${data["statusCode"]}');
 
         if (data["statusCode"] == 200 && mounted) {
           setState(() {
@@ -62,15 +61,15 @@ class _OrderhistoryState extends State<Orderhistory> {
             _isLoading = false;
             if ((data["data"] as List).length < _take) _hasMore = false;
 
-            log('getorders isloading: $_isLoading');
-            log('getorders skip: $_skip');
+            debugPrint('getorders isloading: $_isLoading');
+            debugPrint('getorders skip: $_skip');
           });
         } else {
           setState(() {
             _isLoading = false;
             _hasMore = false;
 
-            log('getorders isloading: $_isLoading');
+            debugPrint('getorders isloading: $_isLoading');
           });
         }
       });
@@ -183,7 +182,16 @@ class _OrderhistoryState extends State<Orderhistory> {
                             order: _orders[index],
                           ),
                         ),
-                      );
+                      ).then((value) {
+                        if (value != null && value) {
+                          _orders.clear();
+                          _isLoading = false;
+                          _hasMore = true;
+                          _skip = 0;
+
+                          getOrders();
+                        }
+                      });
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(

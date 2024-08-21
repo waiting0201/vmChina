@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../generated/l10n.dart' as lang;
 import '../../model/models.dart';
+import '../../model/repository.dart';
 import '../../theme/theme_constants.dart';
 import '../widgets/constant.dart';
 import '../widgets/partial.dart';
@@ -82,20 +85,40 @@ class _OrderdetailState extends State<Orderdetail> {
                             style: textTheme.titleMedium,
                           ),
                         ),
-                        if (widget.order.orderstatus == "1") ...[
+                        if (widget.order.orderstatus == "Processing" &&
+                            widget.order.paystatus == "Unpaid") ...[
                           const Spacer(),
                           SizedBox(
-                            width: 70,
+                            width: 60,
                             height: 30,
                             child: OutlinedButton(
                               style: OutlinedButton.styleFrom(
                                 backgroundColor: primaryColor,
                                 side: const BorderSide(color: primaryColor),
                               ),
-                              onPressed: () {},
+                              onPressed: () async {
+                                HttpService httpService = HttpService();
+                                await httpService
+                                    .postcancelorder(widget.order.orderid)
+                                    .then((value) {
+                                  var data = json.decode(value.toString());
+                                  if (data["statusCode"] == 200) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('订单取消成功'),
+                                      ),
+                                    );
+                                    Navigator.pop(context, true);
+                                  } else {
+                                    Navigator.pop(context);
+                                  }
+                                });
+                              },
                               child: Text(
                                 lang.S.of(context).commonCancel,
-                                style: textTheme.bodySmall,
+                                style: textTheme.bodySmall?.copyWith(
+                                  color: whiteColor,
+                                ),
                               ),
                             ),
                           ),

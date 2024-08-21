@@ -688,43 +688,45 @@ class _HomebrandState extends State<Homebrand> {
                   ),
                 ),
               ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: verticalSpace,
-                left: horizonSpace,
-                right: horizonSpace,
-              ),
-              child: Center(
-                child: Text(
-                  lang.S.of(context).homebrandShopByCategory,
-                  style: textTheme.titleLarge,
+            if (!_isCategoryLoading && _categorys.isNotEmpty) ...[
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: verticalSpace,
+                  left: horizonSpace,
+                  right: horizonSpace,
+                ),
+                child: Center(
+                  child: Text(
+                    lang.S.of(context).homebrandShopByCategory,
+                    style: textTheme.titleLarge,
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 10,
-                left: horizonSpace,
-                right: horizonSpace,
-              ),
-              child: _isCategoryLoading
-                  ? Center(
-                      child: Shimmer.fromColors(
-                        baseColor: shimmerbaseColor,
-                        highlightColor: shimmerhilightColor,
-                        child: AspectRatio(
-                          aspectRatio: 16 / 9,
-                          child: Container(
-                            color: whiteColor,
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 10,
+                  left: horizonSpace,
+                  right: horizonSpace,
+                ),
+                child: _isCategoryLoading
+                    ? Center(
+                        child: Shimmer.fromColors(
+                          baseColor: shimmerbaseColor,
+                          highlightColor: shimmerhilightColor,
+                          child: AspectRatio(
+                            aspectRatio: 16 / 9,
+                            child: Container(
+                              color: whiteColor,
+                            ),
                           ),
                         ),
+                      )
+                    : CategorysList(
+                        categorys: _categorys,
+                        brand: widget.brand,
                       ),
-                    )
-                  : CategorysList(
-                      categorys: _categorys,
-                      brand: widget.brand,
-                    ),
-            ),
+              ),
+            ],
             const SizedBox(height: verticalSpace),
           ],
         ),

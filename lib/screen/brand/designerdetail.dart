@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -66,7 +65,7 @@ class _DesignerdetailState extends State<Designerdetail> {
           .then((value) {
         var data = json.decode(value.toString());
 
-        log('getphotos code: ${data["statusCode"]}');
+        debugPrint('getphotos code: ${data["statusCode"]}');
 
         if (data["statusCode"] == 200 && mounted) {
           setState(() {
@@ -77,7 +76,7 @@ class _DesignerdetailState extends State<Designerdetail> {
           });
         } else if (mounted) {
           setState(() {
-            log('getphotos isloading');
+            debugPrint('getphotos isloading');
             _isPhotoLoading = false;
           });
         }
@@ -97,7 +96,7 @@ class _DesignerdetailState extends State<Designerdetail> {
           .then((value) {
         var data = json.decode(value.toString());
 
-        log('getcollections code: ${data["statusCode"]}');
+        debugPrint('getcollections code: ${data["statusCode"]}');
 
         if (data["statusCode"] == 200 && mounted) {
           setState(() {
@@ -108,15 +107,15 @@ class _DesignerdetailState extends State<Designerdetail> {
             _isCollectionLoading = false;
             if ((data["data"] as List).length < _take) _hasMore = false;
 
-            log('getcollections isloading: $_isCollectionLoading');
-            log('getcollections skip: $_skip');
+            debugPrint('getcollections isloading: $_isCollectionLoading');
+            debugPrint('getcollections skip: $_skip');
           });
         } else if (mounted) {
           setState(() {
             _isCollectionLoading = false;
             _hasMore = false;
 
-            log('getcollections isloading');
+            debugPrint('getcollections isloading');
           });
         }
       });
@@ -376,42 +375,44 @@ class _DesignerdetailState extends State<Designerdetail> {
                     collections: _collections,
                   ),
                 ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 20,
-                  left: horizonSpace,
-                  right: horizonSpace,
-                ),
-                child: Center(
-                  child: Text(
-                    lang.S.of(context).shareamomentShop,
-                    style: textTheme.titleLarge,
+              if (!_isCategoryLoading && _categorys.isNotEmpty) ...[
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 20,
+                    left: horizonSpace,
+                    right: horizonSpace,
+                  ),
+                  child: Center(
+                    child: Text(
+                      lang.S.of(context).shareamomentShop,
+                      style: textTheme.titleLarge,
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 10,
-                  left: horizonSpace,
-                  right: horizonSpace,
-                ),
-                child: _isCategoryLoading
-                    ? Center(
-                        child: Shimmer.fromColors(
-                          baseColor: shimmerbaseColor,
-                          highlightColor: shimmerhilightColor,
-                          child: AspectRatio(
-                            aspectRatio: 16 / 9,
-                            child: Container(
-                              color: whiteColor,
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 10,
+                    left: horizonSpace,
+                    right: horizonSpace,
+                  ),
+                  child: _isCategoryLoading
+                      ? Center(
+                          child: Shimmer.fromColors(
+                            baseColor: shimmerbaseColor,
+                            highlightColor: shimmerhilightColor,
+                            child: AspectRatio(
+                              aspectRatio: 16 / 9,
+                              child: Container(
+                                color: whiteColor,
+                              ),
                             ),
                           ),
+                        )
+                      : CategorysList(
+                          categorys: _categorys,
                         ),
-                      )
-                    : CategorysList(
-                        categorys: _categorys,
-                      ),
-              ),
+                ),
+              ],
               const SizedBox(height: 50),
             ],
           ),
