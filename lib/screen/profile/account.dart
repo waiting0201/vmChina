@@ -11,6 +11,7 @@ import '../widgets/constant.dart';
 import '../widgets/common.dart';
 import '../widgets/partial.dart';
 import '../home/home.dart';
+import 'mobilechange.dart';
 
 class Account extends StatefulWidget {
   const Account({super.key});
@@ -287,17 +288,21 @@ class _AccountState extends State<Account> {
                               ),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
+                              suffixIcon: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const Mobilechange(),
+                                    ),
+                                  );
+                                },
+                                child: const Icon(
+                                  IconlyLight.arrowRight2,
+                                ),
+                              ),
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return lang.S.of(context).signupMobileRequired;
-                              }
-                              if (!RegExp(r'^\d{11}$').hasMatch(value)) {
-                                return '手机号码格式错误';
-                              }
-
-                              return null;
-                            },
                           ),
                         ),
                       ],

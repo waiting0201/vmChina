@@ -1,9 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:vetrinamia_cn/screen/widgets/partial.dart';
 
 import '../../generated/l10n.dart' as lang;
@@ -26,17 +24,13 @@ class Addaddress extends StatefulWidget {
 
 class _AddaddressState extends State<Addaddress> {
   late AuthChangeProvider _authChangeProvider;
-  late Country _selectedcountry;
   late Member _member;
   late ShippingLocation _shippinglocation;
   late bool _isModify = false;
   late bool _isDefault = false;
-  late bool _isCountryLoading = false;
   late bool _isLoading = false;
 
-  final List<Country> _countrys = [];
   final _formKey = GlobalKey<FormState>();
-  final _country = TextEditingController();
   final _postcode = TextEditingController();
   final _state = TextEditingController();
   final _city = TextEditingController();
@@ -51,8 +45,6 @@ class _AddaddressState extends State<Addaddress> {
         Provider.of<AuthChangeProvider>(context, listen: false);
     _member = _authChangeProvider.member;
 
-    getCountrys();
-
     if (widget.shippinglocation != null) {
       _isModify = true;
       _shippinglocation = widget.shippinglocation!;
@@ -63,37 +55,6 @@ class _AddaddressState extends State<Addaddress> {
       _address.text = _shippinglocation.address;
       _isDefault = _shippinglocation.isdefault;
     }
-  }
-
-  Future<void> getCountrys() async {
-    if (!_isCountryLoading && mounted) {
-      setState(() {
-        _isCountryLoading = true;
-      });
-    }
-
-    HttpService httpService = HttpService();
-    await httpService.getcountrylists(null).then((value) {
-      var data = json.decode(value.toString());
-
-      if (data["statusCode"] == 200 && mounted) {
-        setState(() {
-          _countrys.addAll(
-              (data["data"] as List).map((e) => Country.fromMap(e)).toList());
-
-          if (widget.shippinglocation != null) {
-            _selectedcountry = _countrys.singleWhere(
-                (element) => element.countryid == _shippinglocation.countryid);
-            _country.text = _selectedcountry.nickname;
-          }
-          _isCountryLoading = false;
-        });
-      } else {
-        setState(() {
-          _isCountryLoading = false;
-        });
-      }
-    });
   }
 
   @override
@@ -329,82 +290,26 @@ class _AddaddressState extends State<Addaddress> {
                             ),
                             const SizedBox(width: 10.0),
                             Expanded(
-                              child: _isCountryLoading
-                                  ? const SizedBox()
-                                  : InkWell(
-                                      onTap: () {
-                                        showCupertinoModalPopup(
-                                          context: context,
-                                          builder: (_) => SizedBox(
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            height: 350,
-                                            child: CupertinoPicker(
-                                              backgroundColor: whiteColor,
-                                              itemExtent: 40,
-                                              scrollController:
-                                                  FixedExtentScrollController(
-                                                initialItem: 0,
-                                              ),
-                                              children: List<Widget>.generate(
-                                                _countrys.length,
-                                                (int index) => Center(
-                                                  child: Text(
-                                                    _countrys[index].nickname,
-                                                  ),
-                                                ),
-                                              ),
-                                              onSelectedItemChanged:
-                                                  (int selectedItem) {
-                                                _country.text =
-                                                    _countrys[selectedItem]
-                                                        .nickname;
-                                                _selectedcountry =
-                                                    _countrys[selectedItem];
-                                              },
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      child: AbsorbPointer(
-                                        absorbing: true,
-                                        child: TextFormField(
-                                          controller: _country,
-                                          style: textTheme.bodyMedium,
-                                          decoration: InputDecoration(
-                                            contentPadding:
-                                                const EdgeInsets.symmetric(
-                                              vertical: 2,
-                                            ),
-                                            labelText: lang.S
-                                                .of(context)
-                                                .addaddressCountry,
-                                            hintText: lang.S
-                                                .of(context)
-                                                .addaddressCountryPlaceholder,
-                                            hintStyle:
-                                                textTheme.bodySmall?.copyWith(
-                                              color: lightGreyTextColor,
-                                            ),
-                                            floatingLabelBehavior:
-                                                FloatingLabelBehavior.always,
-                                            suffixIcon: const Icon(
-                                              IconlyLight.arrowDown2,
-                                            ),
-                                          ),
-                                          validator: (value) {
-                                            if (value == null ||
-                                                value.isEmpty) {
-                                              return lang.S
-                                                  .of(context)
-                                                  .addaddressRequiredCountry;
-                                            }
-                                            return null;
-                                          },
-                                        ),
-                                      ),
-                                    ),
+                              child: TextFormField(
+                                style: textTheme.bodyMedium,
+                                initialValue: '中国',
+                                readOnly: true,
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 2,
+                                  ),
+                                  labelText:
+                                      lang.S.of(context).addaddressCountry,
+                                  hintText: lang.S
+                                      .of(context)
+                                      .addaddressCountryPlaceholder,
+                                  hintStyle: textTheme.bodySmall?.copyWith(
+                                    color: lightGreyTextColor,
+                                  ),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                ),
+                              ),
                             ),
                           ],
                         ),
@@ -462,7 +367,7 @@ class _AddaddressState extends State<Addaddress> {
                                         .updateShippingLocation(
                                       _shippinglocation.shippinglocationid,
                                       _shippinglocation.memberid,
-                                      _selectedcountry.countryid,
+                                      44,
                                       _postcode.text,
                                       _city.text,
                                       _district.text,
@@ -483,7 +388,7 @@ class _AddaddressState extends State<Addaddress> {
                                     _authChangeProvider
                                         .addShippingLocation(
                                             _member.memberid,
-                                            _selectedcountry.countryid,
+                                            44,
                                             _postcode.text,
                                             _city.text,
                                             _district.text,

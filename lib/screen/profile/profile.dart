@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -18,7 +17,6 @@ import '../widgets/constant.dart';
 import '../home/home.dart';
 import 'account.dart';
 import 'address.dart';
-import 'payment.dart';
 import 'clubinsider.dart';
 import 'changepassword.dart';
 import 'orderhistory.dart';
@@ -29,6 +27,7 @@ import 'lawdetail.dart';
 import 'emailus.dart';
 import 'notificationsetting.dart';
 import 'privacysetting.dart';
+import 'mobilechange.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -79,7 +78,7 @@ class _ProfileState extends State<Profile> {
       await httpService.getfaqlists(null).then((value) {
         var data = json.decode(value.toString());
 
-        log('getfaqs code: ${data["statusCode"]}');
+        debugPrint('getfaqs code: ${data["statusCode"]}');
 
         if (data["statusCode"] == 200 && mounted) {
           setState(() {
@@ -89,7 +88,7 @@ class _ProfileState extends State<Profile> {
           });
         } else if (mounted) {
           setState(() {
-            log('getfaqs isloading');
+            debugPrint('getfaqs isloading');
             _isFaqLoading = false;
           });
         }
@@ -107,7 +106,7 @@ class _ProfileState extends State<Profile> {
       await httpService.getlaws(null).then((value) {
         var data = json.decode(value.toString());
 
-        log('getlaws code: ${data["statusCode"]}');
+        debugPrint('getlaws code: ${data["statusCode"]}');
 
         if (data["statusCode"] == 200 && mounted) {
           setState(() {
@@ -117,7 +116,7 @@ class _ProfileState extends State<Profile> {
           });
         } else if (mounted) {
           setState(() {
-            log('getlaws isloading');
+            debugPrint('getlaws isloading');
             _isLawLoading = false;
           });
         }
@@ -165,44 +164,52 @@ class _ProfileState extends State<Profile> {
                         margin: const EdgeInsets.all(0),
                         color: whiteColor,
                         surfaceTintColor: whiteColor,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Row(
-                            children: [
-                              Container(
-                                height: 60.0,
-                                width: 60.0,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: primaryColor,
-                                    width: 2.0,
-                                  ),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Icon(
-                                  Icons.person,
-                                  size: 36,
-                                  color: primaryColor,
-                                ),
+                        child: ListTile(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Mobilechange(),
                               ),
-                              const SizedBox(width: 10.0),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '${auth.member.firstname.toString()} ${auth.member.lastname.toString()}',
-                                    style: textTheme.titleMedium,
-                                  ),
-                                  const SizedBox(height: 5.0),
-                                  Text(
-                                    auth.member.email,
-                                    style: textTheme.bodySmall?.copyWith(
-                                      color: lightGreyTextColor,
-                                    ),
-                                  ),
-                                ],
+                            );
+                          },
+                          contentPadding: const EdgeInsets.all(10.0),
+                          horizontalTitleGap: 10.0,
+                          leading: Container(
+                            height: 60.0,
+                            width: 60.0,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: primaryColor,
+                                width: 2.0,
+                              ),
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.person,
+                              size: 36,
+                              color: primaryColor,
+                            ),
+                          ),
+                          title: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${auth.member.firstname.toString()} ${auth.member.lastname.toString()}',
+                                style: textTheme.titleMedium,
+                              ),
+                              const SizedBox(height: 5.0),
+                              Text(
+                                auth.member.mobile!,
+                                style: textTheme.bodySmall?.copyWith(
+                                  color: lightGreyTextColor,
+                                ),
                               ),
                             ],
+                          ),
+                          trailing: const Icon(
+                            FeatherIcons.chevronRight,
+                            color: lightGreyTextColor,
                           ),
                         ),
                       )
@@ -247,7 +254,7 @@ class _ProfileState extends State<Profile> {
                           ),
                         ),
                       )
-                    : Container(),
+                    : const SizedBox(),
                 //_____________________________________________________Address Book
                 auth.status
                     ? Card(

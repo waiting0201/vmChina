@@ -189,6 +189,31 @@ class AuthChangeProvider with ChangeNotifier {
     }
   }
 
+  Future<bool> updatemobile(String memberid, String mobile) async {
+    try {
+      await setLoading(true);
+
+      HttpService httpService = HttpService();
+      Response response = await httpService.updatemobile(memberid, mobile);
+
+      var data = json.decode(response.toString());
+
+      if (data["statusCode"] == 200) {
+        await setLoading(false);
+
+        return true;
+      } else {
+        await setLoading(false);
+
+        return false;
+      }
+    } catch (e) {
+      await setLoading(false);
+
+      return false;
+    }
+  }
+
   Future<bool> signIn(String mobile, String password, bool ischeck) async {
     try {
       await setLoading(true);

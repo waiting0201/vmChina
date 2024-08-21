@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:vetrinamia_cn/screen/widgets/partial.dart';
 
 import '../../generated/l10n.dart' as lang;
 import '../../model/models.dart';
@@ -8,6 +7,7 @@ import '../../screen/authentication/auth_provider.dart';
 import '../../theme/theme_constants.dart';
 import '../widgets/common.dart';
 import '../widgets/constant.dart';
+import '../widgets/partial.dart';
 
 class Changepassword extends StatefulWidget {
   const Changepassword({super.key});

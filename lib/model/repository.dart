@@ -47,6 +47,17 @@ class HttpService {
     return response;
   }
 
+  Future<Response> postupdateaccountsendsms(
+      String mobile, String memberid) async {
+    Response response =
+        await _dio.post('/auth/postupdateaccountsendsms', queryParameters: {
+      "mobile": mobile,
+      "memberid": memberid,
+    });
+
+    return response;
+  }
+
   Future<Response> forget(String email) async {
     Response response = await _dio.post('/auth/forget', queryParameters: {
       "email": email,
@@ -161,6 +172,15 @@ class HttpService {
         await _dio.post('/auth/updatepassword', queryParameters: {
       "memberid": memberid,
       "password": password,
+    });
+
+    return response;
+  }
+
+  Future<Response> updatemobile(String memberid, String mobile) async {
+    Response response = await _dio.post('/auth/updatemobile', queryParameters: {
+      "memberid": memberid,
+      "mobile": mobile,
     });
 
     return response;
@@ -1295,6 +1315,17 @@ class HttpService {
           "shippingtype": shippingtype,
           "ispreorder": ispreorder,
         });
+
+    return response;
+  }
+
+  Future<Response> postcancelorder(
+    String orderid,
+  ) async {
+    Response response =
+        await _dio.post('/order/postcancelorder', queryParameters: {
+      "orderid": orderid,
+    });
 
     return response;
   }
