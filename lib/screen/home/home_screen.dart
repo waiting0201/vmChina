@@ -9,7 +9,6 @@ import '../../generated/l10n.dart' as lang;
 import '../../model/models.dart';
 import '../../model/repository.dart';
 import '../../theme/theme_constants.dart';
-import '../language/language_provider.dart';
 import '../authentication/auth_provider.dart';
 import '../widgets/common.dart';
 import '../widgets/constant.dart';
@@ -294,394 +293,383 @@ class _HomeScreenState extends State<HomeScreen> {
     final authchangeprovider =
         Provider.of<AuthChangeProvider>(context, listen: true);
 
-    return Consumer<LanguageChangeProvider>(
-      builder: (context, language, child) {
-        return !language.status
-            ? const SizedBox()
-            : Scaffold(
+    return Scaffold(
+      backgroundColor: whiteColor,
+      body: Builder(
+        //builer產生自己的newContext，屬於上層Scaffold
+        builder: (BuildContext newContext) => NestedScrollView(
+          floatHeaderSlivers: true,
+          headerSliverBuilder: (BuildContext context, bool isScrolled) {
+            return [
+              SliverAppBar(
+                toolbarHeight: 44,
+                elevation: 0.0,
                 backgroundColor: whiteColor,
-                body: Builder(
-                  //builer產生自己的newContext，屬於上層Scaffold
-                  builder: (BuildContext newContext) => NestedScrollView(
-                    floatHeaderSlivers: true,
-                    headerSliverBuilder:
-                        (BuildContext context, bool isScrolled) {
-                      return [
-                        SliverAppBar(
-                          toolbarHeight: 44,
-                          elevation: 0.0,
-                          backgroundColor: whiteColor,
-                          surfaceTintColor: whiteColor,
-                          automaticallyImplyLeading: false,
-                          centerTitle: true,
-                          title: Text(
-                            lang.S.of(context).appTitle,
-                            style: textTheme.titleLarge?.copyWith(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          iconTheme: const IconThemeData(
-                            color: lightIconColor,
-                          ),
-                          actions: const [
-                            ScanIcon(),
-                            CartIcon(),
-                          ],
-                          floating: false,
-                          snap: false,
-                          pinned: true,
-                        )
-                      ];
-                    },
-                    physics: const BouncingScrollPhysics(),
-                    body: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          //________________________________________________________homebanner
-                          _isHomebannerLoading
-                              ? Center(
-                                  child: Shimmer.fromColors(
-                                    baseColor: shimmerbaseColor,
-                                    highlightColor: shimmerhilightColor,
-                                    child: AspectRatio(
-                                      aspectRatio: 3 / 4,
-                                      child: Container(
-                                        color: whiteColor,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              : HomebannerCarousel(
-                                  homebanners: _homebanners,
-                                ),
-                          //________________________________________________________mission
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: verticalSpace,
-                              left: 50,
-                              right: 50,
-                            ),
-                            child: Text(
-                              lang.S.of(context).homeMainCaption,
-                              textAlign: TextAlign.center,
-                              style: textTheme.bodyMedium,
-                            ),
-                          ),
-                          //________________________________________________________new arrival
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: verticalSpace,
-                              left: horizonSpace,
-                            ),
-                            child: Text(
-                              lang.S.of(context).homeNewArrival,
-                              style: textTheme.titleSmall,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: 5,
-                              left: horizonSpace,
-                            ),
-                            child: Text(
-                              lang.S.of(context).homeShopLatestTitle,
-                              style: textTheme.titleLarge,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: 5,
-                              left: horizonSpace,
-                              right: horizonSpace,
-                            ),
-                            child: Text(
-                              lang.S.of(context).homeShopLatestCaption,
-                              style: textTheme.bodySmall,
-                            ),
-                          ),
-                          _isProductLoading
-                              ? Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 10,
-                                    left: horizonSpace,
-                                  ),
-                                  child: Center(
-                                    child: Shimmer.fromColors(
-                                      baseColor: shimmerbaseColor,
-                                      highlightColor: shimmerhilightColor,
-                                      child: Container(
-                                        height: 395,
-                                        color: whiteColor,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              : Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 10,
-                                  ),
-                                  child: ProductsHorizonSlideList(
-                                    products: _products,
-                                  ),
-                                ),
-                          //________________________________________________________more button
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              left: horizonSpace,
-                              right: horizonSpace,
-                            ),
-                            child: Center(
-                              child: OutlinedButton(
-                                onPressed: () {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const Home(
-                                        bottomNavIndex: 2,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: Text(
-                                  lang.S.of(context).commonShopNow,
-                                  style: textTheme.titleSmall?.copyWith(
-                                    color: darkColor,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          //________________________________________________________Shop the latest Brands
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: verticalSpace,
-                              left: 25,
-                            ),
-                            child: Text(
-                              lang.S.of(context).homeShopTheBrand,
-                              style: textTheme.titleSmall,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: 5,
-                              left: 25,
-                            ),
-                            child: Text(
-                              lang.S.of(context).homeShopTheBrandTitle,
-                              style: textTheme.titleLarge,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: 5,
-                              left: 25,
-                              right: 25,
-                            ),
-                            child: Text(
-                              lang.S.of(context).homeShopTheBrandCaption,
-                              style: textTheme.bodySmall,
-                            ),
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.only(
-                              top: 10,
-                              left: 25,
-                              right: 25,
-                            ),
-                            child: CurrentBrandsCarousel(),
-                          ),
-                          //________________________________________________________Brands Coming Soon
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: verticalSpace,
-                              left: 25,
-                            ),
-                            child: Text(
-                              lang.S.of(context).homePreviewComingSoon,
-                              style: textTheme.titleSmall,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: 5,
-                              left: 25,
-                            ),
-                            child: Text(
-                              lang.S.of(context).homeBrandComingSoonTitle,
-                              style: textTheme.titleLarge,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: 5,
-                              left: 25,
-                              right: 25,
-                            ),
-                            child: Text(
-                              lang.S.of(context).homeBrandComingSoonCaption,
-                              style: textTheme.bodySmall,
-                            ),
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.only(
-                              top: 10,
-                              left: 25,
-                              right: 25,
-                            ),
-                            child: ComingBrandsCarousel(),
-                          ),
-                          //________________________________________________________behind the scenes
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: verticalSpace,
-                              left: horizonSpace,
-                              right: horizonSpace,
-                            ),
+                surfaceTintColor: whiteColor,
+                automaticallyImplyLeading: false,
+                centerTitle: true,
+                title: Text(
+                  lang.S.of(context).appTitle,
+                  style: textTheme.titleLarge?.copyWith(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                iconTheme: const IconThemeData(
+                  color: lightIconColor,
+                ),
+                actions: const [
+                  ScanIcon(),
+                  CartIcon(),
+                ],
+                floating: false,
+                snap: false,
+                pinned: true,
+              )
+            ];
+          },
+          physics: const BouncingScrollPhysics(),
+          body: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                //________________________________________________________homebanner
+                _isHomebannerLoading
+                    ? Center(
+                        child: Shimmer.fromColors(
+                          baseColor: shimmerbaseColor,
+                          highlightColor: shimmerhilightColor,
+                          child: AspectRatio(
+                            aspectRatio: 3 / 4,
                             child: Container(
-                              padding: const EdgeInsets.all(50.0),
-                              width: double.infinity,
-                              color: bggray100,
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.only(bottom: 30.0),
-                                    child: Text(
-                                      lang.S.of(context).homeBehindTheScenes,
-                                      style: textTheme.titleLarge,
-                                    ),
-                                  ),
-                                  Text(
-                                    lang.S
-                                        .of(context)
-                                        .homeBehindTheScenesCaption,
-                                    style: textTheme.bodyMedium,
-                                    textAlign: TextAlign.center,
-                                  )
-                                ],
+                              color: whiteColor,
+                            ),
+                          ),
+                        ),
+                      )
+                    : HomebannerCarousel(
+                        homebanners: _homebanners,
+                      ),
+                //________________________________________________________mission
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: verticalSpace,
+                    left: 50,
+                    right: 50,
+                  ),
+                  child: Text(
+                    lang.S.of(context).homeMainCaption,
+                    textAlign: TextAlign.center,
+                    style: textTheme.bodyMedium,
+                  ),
+                ),
+                //________________________________________________________new arrival
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: verticalSpace,
+                    left: horizonSpace,
+                  ),
+                  child: Text(
+                    lang.S.of(context).homeNewArrival,
+                    style: textTheme.titleSmall,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 5,
+                    left: horizonSpace,
+                  ),
+                  child: Text(
+                    lang.S.of(context).homeShopLatestTitle,
+                    style: textTheme.titleLarge,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 5,
+                    left: horizonSpace,
+                    right: horizonSpace,
+                  ),
+                  child: Text(
+                    lang.S.of(context).homeShopLatestCaption,
+                    style: textTheme.bodySmall,
+                  ),
+                ),
+                _isProductLoading
+                    ? Padding(
+                        padding: const EdgeInsets.only(
+                          top: 10,
+                          left: horizonSpace,
+                        ),
+                        child: Center(
+                          child: Shimmer.fromColors(
+                            baseColor: shimmerbaseColor,
+                            highlightColor: shimmerhilightColor,
+                            child: Container(
+                              height: 395,
+                              color: whiteColor,
+                            ),
+                          ),
+                        ),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.only(
+                          top: 10,
+                        ),
+                        child: ProductsHorizonSlideList(
+                          products: _products,
+                        ),
+                      ),
+                //________________________________________________________more button
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: horizonSpace,
+                    right: horizonSpace,
+                  ),
+                  child: Center(
+                    child: OutlinedButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const Home(
+                              bottomNavIndex: 2,
+                            ),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        lang.S.of(context).commonShopNow,
+                        style: textTheme.titleSmall?.copyWith(
+                          color: darkColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                //________________________________________________________Shop the latest Brands
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: verticalSpace,
+                    left: 25,
+                  ),
+                  child: Text(
+                    lang.S.of(context).homeShopTheBrand,
+                    style: textTheme.titleSmall,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 5,
+                    left: 25,
+                  ),
+                  child: Text(
+                    lang.S.of(context).homeShopTheBrandTitle,
+                    style: textTheme.titleLarge,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 5,
+                    left: 25,
+                    right: 25,
+                  ),
+                  child: Text(
+                    lang.S.of(context).homeShopTheBrandCaption,
+                    style: textTheme.bodySmall,
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(
+                    top: 10,
+                    left: 25,
+                    right: 25,
+                  ),
+                  child: CurrentBrandsCarousel(),
+                ),
+                //________________________________________________________Brands Coming Soon
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: verticalSpace,
+                    left: 25,
+                  ),
+                  child: Text(
+                    lang.S.of(context).homePreviewComingSoon,
+                    style: textTheme.titleSmall,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 5,
+                    left: 25,
+                  ),
+                  child: Text(
+                    lang.S.of(context).homeBrandComingSoonTitle,
+                    style: textTheme.titleLarge,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 5,
+                    left: 25,
+                    right: 25,
+                  ),
+                  child: Text(
+                    lang.S.of(context).homeBrandComingSoonCaption,
+                    style: textTheme.bodySmall,
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(
+                    top: 10,
+                    left: 25,
+                    right: 25,
+                  ),
+                  child: ComingBrandsCarousel(),
+                ),
+                //________________________________________________________behind the scenes
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: verticalSpace,
+                    left: horizonSpace,
+                    right: horizonSpace,
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.all(50.0),
+                    width: double.infinity,
+                    color: bggray100,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 30.0),
+                          child: Text(
+                            lang.S.of(context).homeBehindTheScenes,
+                            style: textTheme.titleLarge,
+                          ),
+                        ),
+                        Text(
+                          lang.S.of(context).homeBehindTheScenesCaption,
+                          style: textTheme.bodyMedium,
+                          textAlign: TextAlign.center,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                //________________________________________________________designer video
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: horizonSpace,
+                  ),
+                  child: _isDesignervideoLoading
+                      ? Center(
+                          child: Shimmer.fromColors(
+                            baseColor: shimmerbaseColor,
+                            highlightColor: shimmerhilightColor,
+                            child: AspectRatio(
+                              aspectRatio: 16 / 9, // 16:9 aspect ratio
+                              child: Container(
+                                color: whiteColor,
                               ),
                             ),
                           ),
-                          //________________________________________________________designer video
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: horizonSpace,
-                            ),
-                            child: _isDesignervideoLoading
-                                ? Center(
-                                    child: Shimmer.fromColors(
-                                      baseColor: shimmerbaseColor,
-                                      highlightColor: shimmerhilightColor,
-                                      child: AspectRatio(
-                                        aspectRatio:
-                                            16 / 9, // 16:9 aspect ratio
-                                        child: Container(
-                                          color: whiteColor,
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                : DesignervideoCarousel(
-                                    designervideos: _designervideos),
-                          ),
-                          //________________________________________________________Explore the collections
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: verticalSpace,
-                              left: horizonSpace,
-                            ),
-                            child: Text(
-                              lang.S.of(context).homeLatestCollections,
-                              style: textTheme.titleSmall,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: 5,
-                              left: horizonSpace,
-                            ),
-                            child: Text(
-                              lang.S.of(context).homeExploreCollectionTitle,
-                              style: textTheme.titleLarge,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: 5,
-                              left: horizonSpace,
-                              right: horizonSpace,
-                            ),
-                            child: Text(
-                              lang.S.of(context).homeExploreCollectionCaption,
-                              style: textTheme.bodySmall,
+                        )
+                      : DesignervideoCarousel(designervideos: _designervideos),
+                ),
+                //________________________________________________________Explore the collections
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: verticalSpace,
+                    left: horizonSpace,
+                  ),
+                  child: Text(
+                    lang.S.of(context).homeLatestCollections,
+                    style: textTheme.titleSmall,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 5,
+                    left: horizonSpace,
+                  ),
+                  child: Text(
+                    lang.S.of(context).homeExploreCollectionTitle,
+                    style: textTheme.titleLarge,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 5,
+                    left: horizonSpace,
+                    right: horizonSpace,
+                  ),
+                  child: Text(
+                    lang.S.of(context).homeExploreCollectionCaption,
+                    style: textTheme.bodySmall,
+                  ),
+                ),
+                _isCollectionLoading
+                    ? Center(
+                        child: Shimmer.fromColors(
+                          baseColor: shimmerbaseColor,
+                          highlightColor: shimmerhilightColor,
+                          child: AspectRatio(
+                            aspectRatio: 3 / 4,
+                            child: Container(
+                              color: whiteColor,
                             ),
                           ),
-                          _isCollectionLoading
-                              ? Center(
-                                  child: Shimmer.fromColors(
-                                    baseColor: shimmerbaseColor,
-                                    highlightColor: shimmerhilightColor,
-                                    child: AspectRatio(
-                                      aspectRatio: 3 / 4,
-                                      child: Container(
-                                        color: whiteColor,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              : Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 10,
-                                  ),
-                                  child: CollectionsList(
-                                    collections: _collections,
-                                  ),
+                        ),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.only(
+                          top: 10,
+                        ),
+                        child: CollectionsList(
+                          collections: _collections,
+                        ),
+                      ),
+                //________________________________________________________whats new
+                _isWhatsnewLoading
+                    ? const SizedBox()
+                    : Padding(
+                        padding: const EdgeInsets.only(
+                          top: verticalSpace,
+                          left: horizonSpace,
+                          right: horizonSpace,
+                        ),
+                        child: Container(
+                          padding: const EdgeInsets.all(50.0),
+                          width: double.infinity,
+                          color: bggray100,
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 10.0),
+                                child: Text(
+                                  _whatsnew.title,
+                                  style: textTheme.titleLarge,
                                 ),
-                          //________________________________________________________whats new
-                          _isWhatsnewLoading
-                              ? const SizedBox()
-                              : Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: verticalSpace,
-                                    left: horizonSpace,
-                                    right: horizonSpace,
-                                  ),
-                                  child: Container(
-                                    padding: const EdgeInsets.all(50.0),
-                                    width: double.infinity,
-                                    color: bggray100,
-                                    child: Column(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              bottom: 10.0),
-                                          child: Text(
-                                            _whatsnew.title,
-                                            style: textTheme.titleLarge,
-                                          ),
-                                        ),
-                                        Text(
-                                          _whatsnew.summary!,
-                                          style: textTheme.bodyMedium,
-                                          textAlign: TextAlign.center,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                          _isWhatsnewLoading
-                              ? const SizedBox()
-                              : Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: horizonSpace),
-                                  child: ProductsHorizonSlideList(
-                                    products: _whatsnew.products!,
-                                  ),
-                                ),
-                          /*Padding(
+                              ),
+                              Text(
+                                _whatsnew.summary!,
+                                style: textTheme.bodyMedium,
+                                textAlign: TextAlign.center,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                _isWhatsnewLoading
+                    ? const SizedBox()
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: horizonSpace),
+                        child: ProductsHorizonSlideList(
+                          products: _whatsnew.products!,
+                        ),
+                      ),
+                /*Padding(
                             padding: const EdgeInsets.only(
                               top: verticalSpace,
                               left: horizonSpace,
@@ -740,90 +728,87 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                           ),*/
-                          //________________________________________________________Fashion shows
-                          const EventHorizonSlideList(),
-                          //________________________________________________________Sign or register
-                          authchangeprovider.status
-                              ? Container()
-                              : const Padding(
-                                  padding: EdgeInsets.only(
-                                    top: verticalSpace,
-                                  ),
-                                  child: AccountSection(),
-                                ),
-                          //________________________________________________________Category
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: verticalSpace,
-                              left: horizonSpace,
-                              right: horizonSpace,
-                            ),
-                            child: _isCategoryLoading
-                                ? Center(
-                                    child: Shimmer.fromColors(
-                                      baseColor: shimmerbaseColor,
-                                      highlightColor: shimmerhilightColor,
-                                      child: AspectRatio(
-                                        aspectRatio: 16 / 9,
-                                        child: Container(
-                                          color: whiteColor,
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                : CategorysList(
-                                    categorys: _categorys,
-                                  ),
-                          ),
-                          //________________________________________________________Search Bar
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: 10,
-                              left: horizonSpace,
-                              right: horizonSpace,
-                            ),
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                  backgroundColor: bggray100,
-                                  side: const BorderSide(color: bggray100),
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const Home(bottomNavIndex: 2),
-                                    ),
-                                  );
-                                },
-                                child: Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.search,
-                                      color: darkColor,
-                                    ),
-                                    const SizedBox(width: 5),
-                                    Text(
-                                      lang.S.of(context).homeSearch,
-                                      style: textTheme.titleSmall?.copyWith(
-                                        color: darkColor,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                //________________________________________________________Fashion shows
+                const EventHorizonSlideList(),
+                //________________________________________________________Sign or register
+                authchangeprovider.status
+                    ? Container()
+                    : const Padding(
+                        padding: EdgeInsets.only(
+                          top: verticalSpace,
+                        ),
+                        child: AccountSection(),
+                      ),
+                //________________________________________________________Category
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: verticalSpace,
+                    left: horizonSpace,
+                    right: horizonSpace,
+                  ),
+                  child: _isCategoryLoading
+                      ? Center(
+                          child: Shimmer.fromColors(
+                            baseColor: shimmerbaseColor,
+                            highlightColor: shimmerhilightColor,
+                            child: AspectRatio(
+                              aspectRatio: 16 / 9,
+                              child: Container(
+                                color: whiteColor,
                               ),
                             ),
                           ),
-                          const SizedBox(height: 10.0),
+                        )
+                      : CategorysList(
+                          categorys: _categorys,
+                        ),
+                ),
+                //________________________________________________________Search Bar
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 10,
+                    left: horizonSpace,
+                    right: horizonSpace,
+                  ),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: bggray100,
+                        side: const BorderSide(color: bggray100),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const Home(bottomNavIndex: 2),
+                          ),
+                        );
+                      },
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.search,
+                            color: darkColor,
+                          ),
+                          const SizedBox(width: 5),
+                          Text(
+                            lang.S.of(context).homeSearch,
+                            style: textTheme.titleSmall?.copyWith(
+                              color: darkColor,
+                            ),
+                          ),
                         ],
                       ),
                     ),
                   ),
                 ),
-              );
-      },
+                const SizedBox(height: 10.0),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
