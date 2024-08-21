@@ -195,8 +195,11 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) =>
-              isfirsttime == "y" ? const IntroScreen() : const Home(),
+          builder: (context) => isfirsttime == "y"
+              ? const IntroScreen()
+              : const Home(
+                  bottomNavIndex: 0,
+                ),
         ),
       );
     });

@@ -161,12 +161,20 @@ class _IntroScreenState extends State<IntroScreen> {
       },
       onSkip: () {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const Home()),
+          MaterialPageRoute(
+            builder: (_) => const Home(
+              bottomNavIndex: 0,
+            ),
+          ),
         );
       },
       onDone: () {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const Home()),
+          MaterialPageRoute(
+            builder: (_) => const Home(
+              bottomNavIndex: 0,
+            ),
+          ),
         );
       },
     );
