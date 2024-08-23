@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -54,7 +53,7 @@ class _CollectiondetailState extends State<Collectiondetail> {
           .then((value) {
         var data = json.decode(value.toString());
 
-        log('getphotos code: ${data["statusCode"]}');
+        debugPrint('getphotos code: ${data["statusCode"]}');
 
         if (data["statusCode"] == 200 && mounted) {
           setState(() {
@@ -65,7 +64,7 @@ class _CollectiondetailState extends State<Collectiondetail> {
           });
         } else if (mounted) {
           setState(() {
-            log('getphotos isloading');
+            debugPrint('getphotos isloading');
             _isPhotoLoading = false;
           });
         }
