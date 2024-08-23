@@ -609,6 +609,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "notificationTitle":
             MessageLookupByLibrary.simpleMessage("Notifications"),
         "orderdetailAddress": MessageLookupByLibrary.simpleMessage("Address"),
+        "orderdetailCancelCaption": MessageLookupByLibrary.simpleMessage(
+            "Orders that have not yet been paid can be canceled within 24 hours of placing the order. If you have any questions, please contact us at care@vetrinamia.com."),
+        "orderdetailCancelSuccess":
+            MessageLookupByLibrary.simpleMessage("Cancel Successfully"),
         "orderdetailCity": MessageLookupByLibrary.simpleMessage("City"),
         "orderdetailConsigneeInformation":
             MessageLookupByLibrary.simpleMessage("Shipping Information"),

@@ -514,6 +514,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("查看我们的隐私政策"),
         "notificationTitle": MessageLookupByLibrary.simpleMessage("通知"),
         "orderdetailAddress": MessageLookupByLibrary.simpleMessage("地址"),
+        "orderdetailCancelCaption": MessageLookupByLibrary.simpleMessage(
+            "尚未付款的订单可以在下单后 24 小时内取消。如果您有任何疑问，请通过 care@vetrinamia.com 联系我们"),
+        "orderdetailCancelSuccess":
+            MessageLookupByLibrary.simpleMessage("订单取消成功"),
         "orderdetailCity": MessageLookupByLibrary.simpleMessage("城市"),
         "orderdetailConsigneeInformation":
             MessageLookupByLibrary.simpleMessage("收货信息"),

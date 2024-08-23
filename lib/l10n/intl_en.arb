@@ -252,6 +252,8 @@
   "orderdetailSize": "Size",
   "orderdetailDuty": "Import duties included",
   "orderdetailOrderType": "Order Type",
+  "orderdetailCancelCaption": "Orders that have not yet been paid can be canceled within 24 hours of placing the order. If you have any questions, please contact us at care@vetrinamia.com.",
+  "orderdetailCancelSuccess": "Cancel Successfully",
   "notificationTitle": "Notifications",
   "notificationCaption": "Enable push notifications to receive information regarding our products, services and events.",
   "notificationOrderUpdate": "Order updates",

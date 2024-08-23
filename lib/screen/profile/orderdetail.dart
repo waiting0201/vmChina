@@ -59,6 +59,18 @@ class _OrderdetailState extends State<Orderdetail> {
           children: [
             Column(
               children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 25,
+                    right: 25,
+                  ),
+                  child: Text(
+                    lang.S.of(context).orderdetailCancelCaption,
+                    textAlign: TextAlign.center,
+                    style: textTheme.bodyMedium,
+                  ),
+                ),
+                const SizedBox(height: 10),
                 Container(
                   decoration: const BoxDecoration(
                     border: Border(
@@ -95,6 +107,8 @@ class _OrderdetailState extends State<Orderdetail> {
                               style: OutlinedButton.styleFrom(
                                 backgroundColor: primaryColor,
                                 side: const BorderSide(color: primaryColor),
+                                padding:
+                                    const EdgeInsets.only(left: 5, right: 5),
                               ),
                               onPressed: () async {
                                 HttpService httpService = HttpService();
@@ -104,8 +118,10 @@ class _OrderdetailState extends State<Orderdetail> {
                                   var data = json.decode(value.toString());
                                   if (data["statusCode"] == 200) {
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text('订单取消成功'),
+                                      SnackBar(
+                                        content: Text(lang.S
+                                            .of(context)
+                                            .orderdetailCancelSuccess),
                                       ),
                                     );
                                     Navigator.pop(context, true);
@@ -116,9 +132,8 @@ class _OrderdetailState extends State<Orderdetail> {
                               },
                               child: Text(
                                 lang.S.of(context).commonCancel,
-                                style: textTheme.bodySmall?.copyWith(
-                                  color: whiteColor,
-                                ),
+                                style: textTheme.bodySmall
+                                    ?.copyWith(color: whiteColor),
                               ),
                             ),
                           ),

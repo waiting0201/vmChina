@@ -252,6 +252,8 @@
     "orderdetailSize": "尺寸",
     "orderdetailDuty": "包含进口税",
     "orderdetailOrderType": "订单类型",
+    "orderdetailCancelCaption": "尚未付款的订单可以在下单后 24 小时内取消。如果您有任何疑问，请通过 care@vetrinamia.com 联系我们",
+    "orderdetailCancelSuccess": "订单取消成功",
     "notificationTitle": "通知",
     "notificationCaption": "开启推送通知，获取关于我们产品、服务和活动的信息。",
     "notificationOrderUpdate": "订单更新",

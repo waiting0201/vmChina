@@ -2582,6 +2582,26 @@ class S {
     );
   }
 
+  /// `Orders that have not yet been paid can be canceled within 24 hours of placing the order. If you have any questions, please contact us at care@vetrinamia.com.`
+  String get orderdetailCancelCaption {
+    return Intl.message(
+      'Orders that have not yet been paid can be canceled within 24 hours of placing the order. If you have any questions, please contact us at care@vetrinamia.com.',
+      name: 'orderdetailCancelCaption',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel Successfully`
+  String get orderdetailCancelSuccess {
+    return Intl.message(
+      'Cancel Successfully',
+      name: 'orderdetailCancelSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Notifications`
   String get notificationTitle {
     return Intl.message(
