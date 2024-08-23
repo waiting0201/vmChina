@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -87,9 +86,9 @@ class _ClubinsiderState extends State<Clubinsider> {
           .then((value) {
         var data = json.decode(value.toString());
 
-        log('getmembershipfees code: ${data["statusCode"]}');
+        debugPrint('getmembershipfees code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200) {
+        if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _membershipfees.addAll((data["data"] as List)
                 .map((e) => MembershipFee.fromMap(e))
@@ -98,15 +97,15 @@ class _ClubinsiderState extends State<Clubinsider> {
             _isLoading = false;
             if ((data["data"] as List).length < _take) _hasMore = false;
 
-            log('getmembershipfees isloading: $_isLoading');
-            log('getmembershipfees skip: $_skip');
+            debugPrint('getmembershipfees isloading: $_isLoading');
+            debugPrint('getmembershipfees skip: $_skip');
           });
         } else {
           setState(() {
             _isLoading = false;
             _hasMore = false;
 
-            log('getmembershipfees isloading: $_isLoading');
+            debugPrint('getmembershipfees isloading: $_isLoading');
           });
         }
       });
