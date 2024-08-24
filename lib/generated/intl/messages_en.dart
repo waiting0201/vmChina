@@ -170,7 +170,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "addressEmptyCaption": MessageLookupByLibrary.simpleMessage(
             "You don\'t have any saved addresses yet"),
         "addressTitle": MessageLookupByLibrary.simpleMessage("My Addresses"),
-        "appTitle": MessageLookupByLibrary.simpleMessage("WELCOME"),
+        "appTitle": MessageLookupByLibrary.simpleMessage("Vetrina Mia"),
         "brandsAZ": MessageLookupByLibrary.simpleMessage("Brands A-Z"),
         "brandsPopular": MessageLookupByLibrary.simpleMessage("Popular Brands"),
         "brandsTitle": MessageLookupByLibrary.simpleMessage("Brands"),
@@ -863,8 +863,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Enter password"),
         "signupPasswordRequired":
             MessageLookupByLibrary.simpleMessage("Password required"),
+        "signupPrivacy": MessageLookupByLibrary.simpleMessage(
+            "You have read and understood our"),
         "signupSuccessmessage": MessageLookupByLibrary.simpleMessage(
             "Your account has been created."),
+        "signupTerm": MessageLookupByLibrary.simpleMessage("Agree with our"),
         "signupTitle": MessageLookupByLibrary.simpleMessage("Join Us"),
         "sizeguideCaption": MessageLookupByLibrary.simpleMessage(
             "Find your perfect size using our size guides.\nWhile you browse, just choose one or more filters that suits your needs."),

@@ -8,6 +8,7 @@ import 'package:fluwx/fluwx.dart';
 
 import '../../generated/l10n.dart' as lang;
 import '../../theme/theme_constants.dart';
+import '../../model/models.dart';
 import '../../model/repository.dart';
 import '../authentication/auth_provider.dart';
 import '../widgets/constant.dart';
@@ -15,6 +16,7 @@ import '../widgets/library.dart';
 import '../widgets/partial.dart';
 import '../home/home.dart';
 import '../profile/profile.dart';
+import '../profile/lawdetail.dart';
 
 class SignUp extends StatefulWidget {
   final String? refer;
@@ -35,6 +37,7 @@ class _SignUpState extends State<SignUp> {
   final _firstname = TextEditingController();
   final _lastname = TextEditingController();
   final _mobile = TextEditingController();
+  final List<Law> _laws = [];
 
   late AuthChangeProvider _authChangeProvider;
   late bool hidePassword = true;
@@ -44,6 +47,9 @@ class _SignUpState extends State<SignUp> {
   late int _start;
   late bool _startLogin = false;
   late bool _isWeChatInstalled = false;
+  late bool _isLawLoading = false;
+  late bool _isAgreeTerm = false;
+  late bool _isAgreePrivacy = false;
   late Function(WeChatResponse) responseListener;
   String? _mobileError;
   Timer? _timer;
@@ -54,6 +60,7 @@ class _SignUpState extends State<SignUp> {
     _authChangeProvider =
         Provider.of<AuthChangeProvider>(context, listen: false);
 
+    getLaws();
     doInit();
   }
 
@@ -189,6 +196,34 @@ class _SignUpState extends State<SignUp> {
         return;
       }
     });
+  }
+
+  Future<void> getLaws() async {
+    if (!_isLawLoading && mounted) {
+      setState(() {
+        _isLawLoading = true;
+      });
+
+      HttpService httpService = HttpService();
+      await httpService.getlaws(null).then((value) {
+        var data = json.decode(value.toString());
+
+        debugPrint('getlaws code: ${data["statusCode"]}');
+
+        if (data["statusCode"] == 200 && mounted) {
+          setState(() {
+            _laws.addAll(
+                (data["data"] as List).map((e) => Law.fromMap(e)).toList());
+            _isLawLoading = false;
+          });
+        } else if (mounted) {
+          setState(() {
+            debugPrint('getlaws isloading');
+            _isLawLoading = false;
+          });
+        }
+      });
+    }
   }
 
   @override
@@ -572,105 +607,140 @@ class _SignUpState extends State<SignUp> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    setState(() {
-                                      _isLoging = true;
-                                    });
+                                  debugPrint(_isAgreeTerm.toString());
+                                  debugPrint(_isAgreePrivacy.toString());
+                                  if (_isAgreeTerm && _isAgreePrivacy) {
+                                    if (_formKey.currentState!.validate()) {
+                                      setState(() {
+                                        _isLoging = true;
+                                      });
 
-                                    _authChangeProvider
-                                        .signUp(
-                                            _code.text,
-                                            _password.text,
-                                            _firstname.text,
-                                            _lastname.text,
-                                            44,
-                                            _mobile.text)
-                                        .then(
-                                      (value) {
-                                        setState(() {
-                                          _isLoging = false;
-                                        });
-
-                                        if (value) {
+                                      _authChangeProvider
+                                          .signUp(
+                                              _code.text,
+                                              _password.text,
+                                              _firstname.text,
+                                              _lastname.text,
+                                              44,
+                                              _mobile.text)
+                                          .then(
+                                        (value) {
                                           setState(() {
-                                            showDialog(
-                                              barrierDismissible: false,
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  backgroundColor: whiteColor,
-                                                  title: const Text('恭喜你!'),
-                                                  content: Text(lang.S
-                                                      .of(context)
-                                                      .signupSuccessmessage),
-                                                  actions: [
-                                                    OutlinedButton(
-                                                      onPressed: () {
-                                                        Navigator
-                                                            .pushAndRemoveUntil(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder:
-                                                                (context) =>
-                                                                    const Home(
-                                                              bottomNavIndex: 0,
-                                                            ),
-                                                          ),
-                                                          (route) => false,
-                                                        );
-                                                      },
-                                                      child: Text(
-                                                        lang.S
-                                                            .of(context)
-                                                            .commonOk,
-                                                        style: textTheme
-                                                            .titleSmall
-                                                            ?.copyWith(
-                                                                color:
-                                                                    darkColor),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
+                                            _isLoging = false;
                                           });
-                                        } else {
-                                          setState(() {
-                                            showDialog(
-                                              barrierDismissible: false,
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  backgroundColor: whiteColor,
-                                                  title: const Text('Alert'),
-                                                  content: Text(
-                                                    lang.S
+
+                                          if (value) {
+                                            setState(() {
+                                              showDialog(
+                                                barrierDismissible: false,
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    backgroundColor: whiteColor,
+                                                    title: const Text('恭喜你!'),
+                                                    content: Text(lang.S
                                                         .of(context)
-                                                        .signupAlert,
-                                                  ),
-                                                  actions: [
-                                                    OutlinedButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: Text(
-                                                        lang.S
-                                                            .of(context)
-                                                            .commonExit,
-                                                        style: textTheme
-                                                            .titleSmall
-                                                            ?.copyWith(
-                                                                color:
-                                                                    darkColor),
+                                                        .signupSuccessmessage),
+                                                    actions: [
+                                                      OutlinedButton(
+                                                        onPressed: () {
+                                                          Navigator
+                                                              .pushAndRemoveUntil(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder:
+                                                                  (context) =>
+                                                                      const Home(
+                                                                bottomNavIndex:
+                                                                    0,
+                                                              ),
+                                                            ),
+                                                            (route) => false,
+                                                          );
+                                                        },
+                                                        child: Text(
+                                                          lang.S
+                                                              .of(context)
+                                                              .commonOk,
+                                                          style: textTheme
+                                                              .titleSmall
+                                                              ?.copyWith(
+                                                                  color:
+                                                                      darkColor),
+                                                        ),
                                                       ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            });
+                                          } else {
+                                            setState(() {
+                                              showDialog(
+                                                barrierDismissible: false,
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    backgroundColor: whiteColor,
+                                                    title: const Text('Alert'),
+                                                    content: Text(
+                                                      lang.S
+                                                          .of(context)
+                                                          .signupAlert,
                                                     ),
-                                                  ],
-                                                );
+                                                    actions: [
+                                                      OutlinedButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        child: Text(
+                                                          lang.S
+                                                              .of(context)
+                                                              .commonExit,
+                                                          style: textTheme
+                                                              .titleSmall
+                                                              ?.copyWith(
+                                                                  color:
+                                                                      darkColor),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            });
+                                          }
+                                        },
+                                      );
+                                    }
+                                  } else {
+                                    showDialog(
+                                      barrierDismissible: false,
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          backgroundColor: whiteColor,
+                                          title: const Text('Alert'),
+                                          content: const Text(
+                                            '请同意条款与隐私权',
+                                          ),
+                                          actions: [
+                                            OutlinedButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
                                               },
-                                            );
-                                          });
-                                        }
+                                              child: Text(
+                                                lang.S.of(context).commonExit,
+                                                style: textTheme.titleSmall
+                                                    ?.copyWith(
+                                                        color: darkColor),
+                                              ),
+                                            ),
+                                          ],
+                                        );
                                       },
                                     );
                                   }
@@ -714,14 +784,85 @@ class _SignUpState extends State<SignUp> {
                             horizontal: horizonSpace),
                         child: Column(
                           children: [
-                            Text.rich(
-                              TextSpan(
-                                children: parseTextWithStyles(
-                                  lang.S.of(context).signupNote,
-                                ),
+                            if (!_isLawLoading) ...[
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: 24,
+                                    height: 24,
+                                    child: Checkbox(
+                                      activeColor: Colors.yellow,
+                                      checkColor: Colors.black,
+                                      value: _isAgreeTerm,
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          _isAgreeTerm = newValue!;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  Text(
+                                    lang.S.of(context).signupTerm,
+                                    style: textTheme.titleSmall,
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              Lawdetail(law: _laws[1]),
+                                        ),
+                                      );
+                                    },
+                                    child: Text(
+                                      lang.S.of(context).termTitle,
+                                      style: textTheme.titleSmall?.copyWith(
+                                          decoration: TextDecoration.underline),
+                                    ),
+                                  )
+                                ],
                               ),
-                              style: textTheme.titleSmall,
-                            ),
+                              const SizedBox(height: 5),
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: 24,
+                                    height: 24,
+                                    child: Checkbox(
+                                      activeColor: Colors.yellow,
+                                      checkColor: Colors.black,
+                                      value: _isAgreePrivacy,
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          _isAgreePrivacy = newValue!;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  Text(
+                                    lang.S.of(context).signupPrivacy,
+                                    style: textTheme.titleSmall,
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              Lawdetail(law: _laws[0]),
+                                        ),
+                                      );
+                                    },
+                                    child: Text(
+                                      lang.S.of(context).privacyTitle,
+                                      style: textTheme.titleSmall?.copyWith(
+                                          decoration: TextDecoration.underline),
+                                    ),
+                                  )
+                                ],
+                              )
+                            ]
                           ],
                         ),
                       ),

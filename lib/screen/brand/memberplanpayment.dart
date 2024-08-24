@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:vetrinamia_cn/screen/widgets/extension.dart';
 
 import '../../generated/l10n.dart' as lang;
 import '../../model/models.dart';
@@ -11,6 +10,7 @@ import '../../model/repository.dart';
 import '../authentication/auth_provider.dart';
 import '../widgets/constant.dart';
 import '../widgets/partial.dart';
+import '../widgets/extension.dart';
 import 'memberplancomplete.dart';
 
 class MemberPlanPayment extends StatefulWidget {

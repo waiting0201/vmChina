@@ -50,10 +50,10 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
-  /// `WELCOME`
+  /// `Vetrina Mia`
   String get appTitle {
     return Intl.message(
-      'WELCOME',
+      'Vetrina Mia',
       name: 'appTitle',
       desc: '',
       args: [],
@@ -4177,6 +4177,26 @@ class S {
     return Intl.message(
       'By choosing "Sign Up", you confirm that you agree to out {Terms and Conditions} that you have read and understood our {Privacy Policy} and that you want to create your VM profile.',
       name: 'signupNote',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Agree with our`
+  String get signupTerm {
+    return Intl.message(
+      'Agree with our',
+      name: 'signupTerm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have read and understood our`
+  String get signupPrivacy {
+    return Intl.message(
+      'You have read and understood our',
+      name: 'signupPrivacy',
       desc: '',
       args: [],
     );

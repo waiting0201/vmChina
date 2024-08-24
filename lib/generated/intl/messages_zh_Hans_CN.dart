@@ -147,7 +147,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "addressEmptyCaption":
             MessageLookupByLibrary.simpleMessage("您还没有保存任何地址"),
         "addressTitle": MessageLookupByLibrary.simpleMessage("我的地址"),
-        "appTitle": MessageLookupByLibrary.simpleMessage("福催拿"),
+        "appTitle": MessageLookupByLibrary.simpleMessage("Vetrina Mia"),
         "brandsAZ": MessageLookupByLibrary.simpleMessage("品牌 A-Z"),
         "brandsPopular": MessageLookupByLibrary.simpleMessage("热门品牌"),
         "brandsTitle": MessageLookupByLibrary.simpleMessage("品牌"),
@@ -721,8 +721,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "signupPasswordPlaceholder":
             MessageLookupByLibrary.simpleMessage("输入密码"),
         "signupPasswordRequired": MessageLookupByLibrary.simpleMessage("密码必填"),
+        "signupPrivacy": MessageLookupByLibrary.simpleMessage("已阅读并理解我们的"),
         "signupSuccessmessage":
             MessageLookupByLibrary.simpleMessage("您的账号已创建。"),
+        "signupTerm": MessageLookupByLibrary.simpleMessage("同意我们的"),
         "signupTitle": MessageLookupByLibrary.simpleMessage("加入我们"),
         "sizeguideCaption": MessageLookupByLibrary.simpleMessage(
             "使用我们的尺码指南找到您的完美尺码。\n在浏览时，选择适合您需求的一个或多个筛选条件。"),

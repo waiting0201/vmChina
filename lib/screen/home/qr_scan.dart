@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -30,6 +29,11 @@ class _QRScan extends State<QRScan> {
 
   QRViewController? controller;
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
   @override
@@ -46,6 +50,35 @@ class _QRScan extends State<QRScan> {
   void dispose() {
     controller?.dispose();
     super.dispose();
+  }
+
+  void _showAlertDialog() {
+    TextTheme textTheme = Theme.of(context).textTheme;
+
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: whiteColor,
+          title: const Text('Alert'),
+          content: const Text(
+            '请同意相机的使用，此权限仅止于扫描二维码使用',
+          ),
+          actions: [
+            OutlinedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                lang.S.of(context).commonExit,
+                style: textTheme.titleSmall?.copyWith(color: darkColor),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<bool> getproduct(String sku) async {
@@ -181,7 +214,9 @@ class _QRScan extends State<QRScan> {
   //DADA-202401-0015-SHIRT-S!QAZxsw2#EDC
 
   void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
-    log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
+    debugPrint('${DateTime.now().toIso8601String()}_onPermissionSet $p');
+
+    _showAlertDialog();
 
     if (!p) {
       ctrl.dispose();

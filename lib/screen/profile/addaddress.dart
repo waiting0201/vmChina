@@ -1,15 +1,12 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:vetrinamia_cn/screen/widgets/partial.dart';
 
 import '../../generated/l10n.dart' as lang;
-import '../../model/repository.dart';
 import '../../model/models.dart';
 import '../../theme/theme_constants.dart';
 import '../authentication/auth_provider.dart';
 import '../widgets/constant.dart';
+import '../widgets/partial.dart';
 
 class Addaddress extends StatefulWidget {
   final ShippingLocation? shippinglocation;
