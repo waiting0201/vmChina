@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../generated/l10n.dart' as lang;
 import '../../model/models.dart';
+import '../../model/repository.dart';
 import '../../theme/theme_constants.dart';
 import '../authentication/auth_provider.dart';
 import '../widgets/constant.dart';

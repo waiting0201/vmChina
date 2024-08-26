@@ -579,7 +579,7 @@ class _ClubinsiderCardState extends State<ClubinsiderCard> {
                         child: Row(
                           children: [
                             Text(
-                              '${lang.S.of(context).clubinsiderSubscribed} : ${widget.membershipfee.orderdate}\n${lang.S.of(context).clubinsiderExpires} ${widget.membershipfee.expiredate}',
+                              '${lang.S.of(context).clubinsiderSubscribed} : ${widget.membershipfee.orderdate}\n${lang.S.of(context).clubinsiderExpires} : $_expiredate',
                               style: textTheme.bodyMedium,
                             ),
                           ],

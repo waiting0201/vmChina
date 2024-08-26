@@ -2052,6 +2052,16 @@ class S {
     );
   }
 
+  /// `The period begins after the first purchase`
+  String get clubinsiderExpireCaption {
+    return Intl.message(
+      'The period begins after the first purchase',
+      name: 'clubinsiderExpireCaption',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Auto-renew on`
   String get clubinsiderAutorenew {
     return Intl.message(

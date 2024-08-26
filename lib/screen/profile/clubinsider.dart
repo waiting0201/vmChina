@@ -59,10 +59,7 @@ class _ClubinsiderState extends State<Clubinsider> {
         if (data["statusCode"] == 200 && mounted) {
           setState(() {
             _setup = Setup.fromMap(data["data"]);
-            _isMembershipFree = (_setup.ischargemembershipfee == 0 &&
-                DateTime.parse(_setup.freemembershipfeeuntil!)
-                        .compareTo(DateTime.now()) >
-                    0);
+            _isMembershipFree = (_setup.ischargemembershipfee == 0);
             _isSetupLoading = false;
           });
         } else if (mounted) {

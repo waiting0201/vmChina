@@ -1169,6 +1169,30 @@ class HttpService {
     return response;
   }
 
+  Future<Response> getchinaprovinces() async {
+    Response response = await _dio.post('/country/getchinaprovinces');
+
+    return response;
+  }
+
+  Future<Response> getchinacitys(String code) async {
+    Response response =
+        await _dio.post('/country/getchinacitys', queryParameters: {
+      "code": code,
+    });
+
+    return response;
+  }
+
+  Future<Response> getchinaareas(String code) async {
+    Response response =
+        await _dio.post('/country/getchinaareas', queryParameters: {
+      "code": code,
+    });
+
+    return response;
+  }
+
   Future<Response> getcncountrylists(String? languageid) async {
     String slanguageid = await getLanguage();
     languageid = (languageid != null) ? languageid : slanguageid;

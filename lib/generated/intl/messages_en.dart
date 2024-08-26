@@ -260,6 +260,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "clubinsiderDiscount": MessageLookupByLibrary.simpleMessage("Discount"),
         "clubinsiderEmptyCaption": MessageLookupByLibrary.simpleMessage(
             "There\'s nothing here yet! Start adding to your list of favorites by checking out our many designers\' collections"),
+        "clubinsiderExpireCaption": MessageLookupByLibrary.simpleMessage(
+            "The period begins after the first purchase"),
         "clubinsiderExpires":
             MessageLookupByLibrary.simpleMessage("Expires on"),
         "clubinsiderPlan": MessageLookupByLibrary.simpleMessage("Plan"),

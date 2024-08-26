@@ -819,6 +819,81 @@ class Country {
       };
 }
 
+class ChinaProvince {
+  final String chinaprovincecode;
+  final String chinaprovincename;
+
+  ChinaProvince({
+    required this.chinaprovincecode,
+    required this.chinaprovincename,
+  });
+
+  factory ChinaProvince.fromJson(String str) =>
+      ChinaProvince.fromMap(json.decode(str));
+  String toJson() => json.encode(toMap());
+
+  ChinaProvince.fromMap(Map<String, dynamic> json)
+      : chinaprovincecode = json['chinaprovincecode'],
+        chinaprovincename = json['chinaprovincename'];
+
+  Map<String, dynamic> toMap() => {
+        'chinaprovincecode': chinaprovincecode,
+        'chinaprovincename': chinaprovincename,
+      };
+}
+
+class ChinaCity {
+  final String chinacitycode;
+  final String chinaprovincecode;
+  final String chinacityname;
+
+  ChinaCity({
+    required this.chinacitycode,
+    required this.chinaprovincecode,
+    required this.chinacityname,
+  });
+
+  factory ChinaCity.fromJson(String str) => ChinaCity.fromMap(json.decode(str));
+  String toJson() => json.encode(toMap());
+
+  ChinaCity.fromMap(Map<String, dynamic> json)
+      : chinacitycode = json['chinacitycode'],
+        chinaprovincecode = json['chinaprovincecode'],
+        chinacityname = json['chinacityname'];
+
+  Map<String, dynamic> toMap() => {
+        'chinacitycode': chinacitycode,
+        'chinaprovincecode': chinaprovincecode,
+        'chinacityname': chinacityname,
+      };
+}
+
+class ChinaArea {
+  final String chinaareacode;
+  final String chinacitycode;
+  final String chinaareaname;
+
+  ChinaArea({
+    required this.chinaareacode,
+    required this.chinacitycode,
+    required this.chinaareaname,
+  });
+
+  factory ChinaArea.fromJson(String str) => ChinaArea.fromMap(json.decode(str));
+  String toJson() => json.encode(toMap());
+
+  ChinaArea.fromMap(Map<String, dynamic> json)
+      : chinaareacode = json['chinaareacode'],
+        chinacitycode = json['chinacitycode'],
+        chinaareaname = json['chinaareaname'];
+
+  Map<String, dynamic> toMap() => {
+        'chinaareacode': chinaareacode,
+        'chinacitycode': chinacitycode,
+        'chinaareaname': chinaareaname,
+      };
+}
+
 class Faq {
   final String title;
   final List<Faqlist> faqlists;

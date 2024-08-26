@@ -199,6 +199,7 @@
   "clubinsiderDiscount": "Discount",
   "clubinsiderSubscribed": "Subscribed on",
   "clubinsiderExpires": "Expires on",
+  "clubinsiderExpireCaption": "The period begins after the first purchase",
   "clubinsiderAutorenew": "Auto-renew on",
   "clubinsiderAutorenewCancelled": "Auto-renew cancelled on",
   "clubinsiderCancelTitle": "Cancel Subscription",

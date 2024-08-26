@@ -221,6 +221,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "clubinsiderDiscount": MessageLookupByLibrary.simpleMessage("折扣"),
         "clubinsiderEmptyCaption": MessageLookupByLibrary.simpleMessage(
             "这里还没有内容！通过查看我们的众多设计师系列，开始添加到您的收藏列表中。"),
+        "clubinsiderExpireCaption":
+            MessageLookupByLibrary.simpleMessage("首购后, 会员期才开始"),
         "clubinsiderExpires": MessageLookupByLibrary.simpleMessage("到期时间"),
         "clubinsiderPlan": MessageLookupByLibrary.simpleMessage("计划"),
         "clubinsiderRenew": MessageLookupByLibrary.simpleMessage("重新加入"),

@@ -199,6 +199,7 @@
     "clubinsiderDiscount": "折扣",
     "clubinsiderSubscribed": "订阅时间",
     "clubinsiderExpires": "到期时间",
+    "clubinsiderExpireCaption": "首购后, 会员期才开始",
     "clubinsiderAutorenew": "自动续订时间",
     "clubinsiderAutorenewCancelled": "自动续订取消时间",
     "clubinsiderCancelTitle": "取消订阅",
