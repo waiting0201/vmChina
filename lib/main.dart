@@ -138,7 +138,7 @@ class _MyAppState extends State<MyApp> {
               return setDefaultLocale(locale!, supportLocales);
             },*/
             debugShowCheckedModeBanner: false,
-            title: '福催拿',
+            title: 'vetrinamia',
             theme: lightTheme,
             home: SplashScreen(
               defaultLocal: lang.currentLocale,
