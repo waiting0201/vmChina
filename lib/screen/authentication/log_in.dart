@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -6,12 +7,15 @@ import 'package:fluwx/fluwx.dart';
 
 import '../../generated/l10n.dart' as lang;
 import '../../theme/theme_constants.dart';
+import '../../model/models.dart';
+import '../../model/repository.dart';
 import '../authentication/auth_provider.dart';
 import '../widgets/constant.dart';
 import '../widgets/common.dart';
 import '../widgets/partial.dart';
 import '../home/home.dart';
 import '../profile/profile.dart';
+import '../profile/lawdetail.dart';
 import 'sign_up.dart';
 import 'forgot_password.dart';
 
@@ -31,6 +35,7 @@ class _LogInState extends State<LogIn> {
   final _formKey = GlobalKey<FormState>();
   final _mobile = TextEditingController();
   final _password = TextEditingController();
+  final List<Law> _laws = [];
 
   late AuthChangeProvider _authChangeProvider;
   late bool hidePassword = true;
@@ -39,6 +44,9 @@ class _LogInState extends State<LogIn> {
   late bool _isLoging = false;
   late bool _startLogin = false;
   late bool _isWeChatInstalled = false;
+  late bool _isLawLoading = false;
+  late bool _isAgreeTerm = false;
+  late bool _isAgreePrivacy = false;
   late Function(WeChatResponse) responseListener;
 
   @override
@@ -47,6 +55,7 @@ class _LogInState extends State<LogIn> {
     _authChangeProvider =
         Provider.of<AuthChangeProvider>(context, listen: false);
 
+    getLaws();
     doInit();
   }
 
@@ -160,6 +169,34 @@ class _LogInState extends State<LogIn> {
         return;
       }
     });
+  }
+
+  Future<void> getLaws() async {
+    if (!_isLawLoading && mounted) {
+      setState(() {
+        _isLawLoading = true;
+      });
+
+      HttpService httpService = HttpService();
+      await httpService.getlaws(null).then((value) {
+        var data = json.decode(value.toString());
+
+        debugPrint('getlaws code: ${data["statusCode"]}');
+
+        if (data["statusCode"] == 200 && mounted) {
+          setState(() {
+            _laws.addAll(
+                (data["data"] as List).map((e) => Law.fromMap(e)).toList());
+            _isLawLoading = false;
+          });
+        } else if (mounted) {
+          setState(() {
+            debugPrint('getlaws isloading');
+            _isLawLoading = false;
+          });
+        }
+      });
+    }
   }
 
   @override
@@ -444,36 +481,151 @@ class _LogInState extends State<LogIn> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                !_isWeChatInstalled
-                    ? const SizedBox()
-                    : Padding(
-                        padding: const EdgeInsets.only(left: 25, right: 25),
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          child: _startLogin
-                              ? const LoadingCircle()
-                              : ElevatedButton.icon(
-                                  icon: const Icon(
-                                    Icons.wechat,
-                                    color: whiteColor,
-                                  ),
-                                  onPressed: () {
-                                    doLogin();
-                                  },
-                                  label: Text(
-                                    lang.S
-                                        .of(context)
-                                        .loginSignInorRegisterwithwechat,
-                                    style: textTheme.titleSmall?.copyWith(
-                                      color: whiteColor,
-                                    ),
-                                  ),
-                                  style: OutlinedButton.styleFrom(
-                                    backgroundColor: wechatColor,
-                                  ),
+                if (_isWeChatInstalled) ...[
+                  Padding(
+                    padding: const EdgeInsets.only(left: 25, right: 25),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: _startLogin
+                          ? const LoadingCircle()
+                          : ElevatedButton.icon(
+                              icon: const Icon(
+                                Icons.wechat,
+                                color: whiteColor,
+                              ),
+                              onPressed: () {
+                                if (_isAgreeTerm && _isAgreePrivacy) {
+                                  doLogin();
+                                } else {
+                                  showDialog(
+                                    barrierDismissible: false,
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        backgroundColor: whiteColor,
+                                        title: const Text('Alert'),
+                                        content: const Text(
+                                          '请同意条款与隐私权',
+                                        ),
+                                        actions: [
+                                          OutlinedButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text(
+                                              lang.S.of(context).commonExit,
+                                              style: textTheme.titleSmall
+                                                  ?.copyWith(color: darkColor),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }
+                              },
+                              label: Text(
+                                lang.S
+                                    .of(context)
+                                    .loginSignInorRegisterwithwechat,
+                                style: textTheme.titleSmall?.copyWith(
+                                  color: whiteColor,
                                 ),
-                        ),
-                      ),
+                              ),
+                              style: OutlinedButton.styleFrom(
+                                backgroundColor: wechatColor,
+                              ),
+                            ),
+                    ),
+                  ),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: horizonSpace),
+                    child: Column(
+                      children: [
+                        if (!_isLawLoading) ...[
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: Checkbox(
+                                  activeColor: Colors.yellow,
+                                  checkColor: Colors.black,
+                                  value: _isAgreeTerm,
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      _isAgreeTerm = newValue!;
+                                    });
+                                  },
+                                ),
+                              ),
+                              Text(
+                                lang.S.of(context).signupTerm,
+                                style: textTheme.titleSmall,
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          Lawdetail(law: _laws[1]),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  lang.S.of(context).termTitle,
+                                  style: textTheme.titleSmall?.copyWith(
+                                      decoration: TextDecoration.underline),
+                                ),
+                              )
+                            ],
+                          ),
+                          const SizedBox(height: 5),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: Checkbox(
+                                  activeColor: Colors.yellow,
+                                  checkColor: Colors.black,
+                                  value: _isAgreePrivacy,
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      _isAgreePrivacy = newValue!;
+                                    });
+                                  },
+                                ),
+                              ),
+                              Text(
+                                lang.S.of(context).signupPrivacy,
+                                style: textTheme.titleSmall,
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          Lawdetail(law: _laws[0]),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  lang.S.of(context).privacyTitle,
+                                  style: textTheme.titleSmall?.copyWith(
+                                      decoration: TextDecoration.underline),
+                                ),
+                              )
+                            ],
+                          )
+                        ]
+                      ],
+                    ),
+                  ),
+                ],
               ],
             ),
           ),

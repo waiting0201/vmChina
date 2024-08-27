@@ -216,13 +216,14 @@ class _QRScan extends State<QRScan> {
   void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
     debugPrint('${DateTime.now().toIso8601String()}_onPermissionSet $p');
 
-    _showAlertDialog();
+    //_showAlertDialog();
 
     if (!p) {
       ctrl.dispose();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('no Permission')),
       );
+      Navigator.pop(context);
     }
   }
 }

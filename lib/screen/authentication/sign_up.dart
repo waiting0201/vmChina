@@ -12,7 +12,6 @@ import '../../model/models.dart';
 import '../../model/repository.dart';
 import '../authentication/auth_provider.dart';
 import '../widgets/constant.dart';
-import '../widgets/library.dart';
 import '../widgets/partial.dart';
 import '../home/home.dart';
 import '../profile/profile.dart';
@@ -761,7 +760,38 @@ class _SignUpState extends State<SignUp> {
                                       color: whiteColor,
                                     ),
                                     onPressed: () {
-                                      doLogin();
+                                      if (_isAgreeTerm && _isAgreePrivacy) {
+                                        doLogin();
+                                      } else {
+                                        showDialog(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              backgroundColor: whiteColor,
+                                              title: const Text('Alert'),
+                                              content: const Text(
+                                                '请同意条款与隐私权',
+                                              ),
+                                              actions: [
+                                                OutlinedButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text(
+                                                    lang.S
+                                                        .of(context)
+                                                        .commonExit,
+                                                    style: textTheme.titleSmall
+                                                        ?.copyWith(
+                                                            color: darkColor),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      }
                                     },
                                     label: Text(
                                       lang.S

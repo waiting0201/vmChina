@@ -115,7 +115,7 @@ class _CartState extends State<Cart> {
                           horizontal: 20,
                         ),
                         child: InkWell(
-                          onTap: () {
+                          onTap: () async {
                             OverlayEntry overlayEntry = OverlayEntry(
                               builder: (context) => Positioned(
                                 top: 0,
@@ -131,11 +131,11 @@ class _CartState extends State<Cart> {
                             Overlay.of(context).insert(overlayEntry);
 
                             HttpService httpService = HttpService();
-                            httpService
+                            await httpService
                                 .getproductbyid(_carts[i].productid, null)
                                 .then((value) {
                               var data = json.decode(value.toString());
-                              if (data["statusCode"] == 200) {
+                              if (data["statusCode"] == 200 && mounted) {
                                 overlayEntry.remove();
                                 Navigator.push(
                                   context,

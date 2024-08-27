@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:azlistview/azlistview.dart';
@@ -65,7 +64,7 @@ class _BrandalphabetsState extends State<Brandalphabets> {
           .then((value) {
         var data = json.decode(value.toString());
 
-        log('getbrands code: ${data["statusCode"]}');
+        debugPrint('getbrands code: ${data["statusCode"]}');
 
         if (data["statusCode"] == 200 && mounted) {
           setState(() {
@@ -74,13 +73,13 @@ class _BrandalphabetsState extends State<Brandalphabets> {
 
             _isLoading = false;
 
-            log('getbrands isloading: $_isLoading');
+            debugPrint('getbrands isloading: $_isLoading');
           });
         } else if (mounted) {
           setState(() {
             _isLoading = false;
 
-            log('getbrands isloading: $_isLoading');
+            debugPrint('getbrands isloading: $_isLoading');
           });
         }
       });

@@ -37,6 +37,9 @@ class _AddaddressState extends State<Addaddress> {
   late bool _isProvinceLoading = false;
   late bool _isCityLoading = false;
   late bool _isAreaLoading = false;
+  late int _selectedprovinceindex = 0;
+  late int _selectedcityindex = 0;
+  late int _selectedareaindex = 0;
 
   final List<ChinaProvince> _provinces = [];
   final List<ChinaCity> _citys = [];
@@ -278,7 +281,8 @@ class _AddaddressState extends State<Addaddress> {
                                               itemExtent: 40,
                                               scrollController:
                                                   FixedExtentScrollController(
-                                                initialItem: 0,
+                                                initialItem:
+                                                    _selectedprovinceindex,
                                               ),
                                               children: [
                                                 const Center(
@@ -297,6 +301,8 @@ class _AddaddressState extends State<Addaddress> {
                                               onSelectedItemChanged:
                                                   (int selectedItem) {
                                                 if (selectedItem > 0) {
+                                                  _selectedprovinceindex =
+                                                      selectedItem;
                                                   getCitys(_provinces[
                                                           selectedItem - 1]
                                                       .chinaprovincecode);
@@ -307,6 +313,7 @@ class _AddaddressState extends State<Addaddress> {
                                                       _provinces[
                                                           selectedItem - 1];
                                                 } else {
+                                                  _selectedprovinceindex = 0;
                                                   _state.text = '';
                                                 }
                                               },
@@ -376,7 +383,7 @@ class _AddaddressState extends State<Addaddress> {
                                               itemExtent: 40,
                                               scrollController:
                                                   FixedExtentScrollController(
-                                                initialItem: 0,
+                                                initialItem: _selectedcityindex,
                                               ),
                                               children: [
                                                 const Center(
@@ -395,6 +402,8 @@ class _AddaddressState extends State<Addaddress> {
                                               onSelectedItemChanged:
                                                   (int selectedItem) {
                                                 if (selectedItem > 0) {
+                                                  _selectedcityindex =
+                                                      selectedItem;
                                                   getAreas(
                                                       _citys[selectedItem - 1]
                                                           .chinacitycode);
@@ -404,6 +413,7 @@ class _AddaddressState extends State<Addaddress> {
                                                   _selectedcity =
                                                       _citys[selectedItem - 1];
                                                 } else {
+                                                  _selectedcityindex = 0;
                                                   _city.text = '';
                                                 }
                                               },
@@ -468,7 +478,7 @@ class _AddaddressState extends State<Addaddress> {
                                               itemExtent: 40,
                                               scrollController:
                                                   FixedExtentScrollController(
-                                                initialItem: 0,
+                                                initialItem: _selectedareaindex,
                                               ),
                                               children: [
                                                 const Center(
@@ -487,12 +497,15 @@ class _AddaddressState extends State<Addaddress> {
                                               onSelectedItemChanged:
                                                   (int selectedItem) {
                                                 if (selectedItem > 0) {
+                                                  _selectedareaindex =
+                                                      selectedItem;
                                                   _district.text =
                                                       _areas[selectedItem - 1]
                                                           .chinaareaname;
                                                   _selectedarea =
                                                       _areas[selectedItem - 1];
                                                 } else {
+                                                  _selectedareaindex = 0;
                                                   _district.text = '';
                                                 }
                                               },
