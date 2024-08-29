@@ -575,7 +575,7 @@ class _CheckoutState extends State<Checkout> {
                   MaterialPageRoute(
                     builder: (context) => SelectPayment(
                       shippinglocationid: _selected,
-                      shippingtype: "B",
+                      shippingtype: "O",
                     ),
                   ),
                 );

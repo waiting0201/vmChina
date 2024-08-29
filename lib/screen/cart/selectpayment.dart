@@ -141,12 +141,12 @@ class _SelectPaymentState extends State<SelectPayment> {
                   ElevatedButton(
                     onPressed: () {
                       setState(() {
-                        _selected = "CHINAPAY";
+                        _selected = "UPOP";
                       });
                     },
                     style: OutlinedButton.styleFrom(
                       backgroundColor: whiteColor,
-                      side: _selected.isNotEmpty && _selected == "CHINAPAY"
+                      side: _selected.isNotEmpty && _selected == "UPOP"
                           ? const BorderSide(
                               color: primaryColor,
                               width: 2.5,
