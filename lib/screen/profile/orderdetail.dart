@@ -165,7 +165,9 @@ class _OrderdetailState extends State<Orderdetail> {
                           ),
                           const Spacer(),
                           Text(
-                            widget.order.ordertype,
+                            widget.order.ordertype == 'Pre Order'
+                                ? '预购订单'
+                                : '一般订单',
                             style: textTheme.bodyMedium,
                           ),
                         ],

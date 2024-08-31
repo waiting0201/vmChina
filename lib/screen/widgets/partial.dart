@@ -839,7 +839,7 @@ class OrderCard extends StatelessWidget {
                           style: textTheme.titleLarge,
                         ),
                         Text(
-                          order.ordertype,
+                          order.ordertype == 'Pre Order' ? '预购订单' : '一般订单',
                           style: textTheme.bodySmall,
                         ),
                       ],
@@ -909,7 +909,17 @@ class OrderCard extends StatelessWidget {
                             ),
                             const Spacer(),
                             Text(
-                              order.orderstatus,
+                              order.orderstatus == 'Cancel'
+                                  ? '取消'
+                                  : order.orderstatus == 'Pending'
+                                      ? '待处理'
+                                      : order.orderstatus == 'Processing'
+                                          ? '处理中'
+                                          : order.orderstatus == 'Confirm'
+                                              ? '已确认'
+                                              : order.orderstatus == 'Complete'
+                                                  ? '已完成'
+                                                  : '已到货',
                               style: textTheme.bodyMedium?.copyWith(
                                 fontWeight: FontWeight.bold,
                                 color: primaryColor,
@@ -925,7 +935,13 @@ class OrderCard extends StatelessWidget {
                             ),
                             const Spacer(),
                             Text(
-                              order.paystatus,
+                              order.paystatus == 'Unpaid'
+                                  ? '未付款'
+                                  : order.paystatus == 'Paid'
+                                      ? '已付款'
+                                      : order.paystatus == 'Refound'
+                                          ? '退款'
+                                          : '终结',
                               style: textTheme.bodyMedium?.copyWith(
                                 fontWeight: FontWeight.bold,
                                 color: primaryColor,
