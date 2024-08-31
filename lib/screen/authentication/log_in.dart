@@ -483,7 +483,10 @@ class _LogInState extends State<LogIn> {
                 const SizedBox(height: 20),
                 if (_isWeChatInstalled) ...[
                   Padding(
-                    padding: const EdgeInsets.only(left: 25, right: 25),
+                    padding: const EdgeInsets.only(
+                      left: 25,
+                      right: 25,
+                    ),
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: _startLogin
@@ -538,9 +541,12 @@ class _LogInState extends State<LogIn> {
                             ),
                     ),
                   ),
+                  const SizedBox(height: 10),
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: horizonSpace),
+                    padding: const EdgeInsets.only(
+                      left: 25,
+                      right: 25,
+                    ),
                     child: Column(
                       children: [
                         if (!_isLawLoading) ...[

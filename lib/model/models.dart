@@ -94,6 +94,8 @@ class Order {
   final String address;
   final String? coupon;
   final String? remark;
+  final String isinbound;
+  final String? notificationdate;
   final List<OrderDetail> orderdetails;
 
   Order({
@@ -127,6 +129,8 @@ class Order {
     required this.address,
     this.coupon,
     this.remark,
+    required this.isinbound,
+    this.notificationdate,
   });
 
   factory Order.fromJson(String str) => Order.fromMap(json.decode(str));
@@ -162,6 +166,8 @@ class Order {
         address = json['address'],
         coupon = json['coupon'],
         remark = json['remark'],
+        isinbound = json['isinbound'],
+        notificationdate = json['notificationdate'],
         orderdetails = List<OrderDetail>.from(
             json['orderdetails'].map((x) => OrderDetail.fromMap(x)));
 
@@ -195,6 +201,8 @@ class Order {
         'address': address,
         'coupon': coupon,
         'remark': remark,
+        'isinbound': isinbound,
+        'notificationdate': notificationdate,
         'orderdetails': List<dynamic>.from(orderdetails.map((x) => x.toMap())),
       };
 }

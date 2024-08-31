@@ -97,7 +97,8 @@ class _OrderdetailState extends State<Orderdetail> {
                             style: textTheme.titleMedium,
                           ),
                         ),
-                        if (widget.order.orderstatus == "Processing" &&
+                        if ((widget.order.orderstatus == "Pending" ||
+                                widget.order.orderstatus == "Processing") &&
                             widget.order.paystatus == "Unpaid") ...[
                           const Spacer(),
                           SizedBox(
@@ -192,7 +193,13 @@ class _OrderdetailState extends State<Orderdetail> {
                           ),
                           const Spacer(),
                           Text(
-                            widget.order.paystatus,
+                            widget.order.paystatus == 'Unpaid'
+                                ? '未付款'
+                                : widget.order.paystatus == 'Paid'
+                                    ? '已付款'
+                                    : widget.order.paystatus == 'Refound'
+                                        ? '退款'
+                                        : '终结',
                             style: textTheme.bodyMedium,
                           ),
                         ],
@@ -220,7 +227,11 @@ class _OrderdetailState extends State<Orderdetail> {
                           ),
                           const Spacer(),
                           Text(
-                            widget.order.logisticstatus,
+                            widget.order.logisticstatus == 'Stocking'
+                                ? '理货中'
+                                : widget.order.logisticstatus == 'Delivered'
+                                    ? '已出货'
+                                    : '已送达',
                             style: textTheme.bodyMedium,
                           ),
                         ],
@@ -234,7 +245,18 @@ class _OrderdetailState extends State<Orderdetail> {
                           ),
                           const Spacer(),
                           Text(
-                            widget.order.orderstatus,
+                            widget.order.orderstatus == 'Cancel'
+                                ? '取消'
+                                : widget.order.orderstatus == 'Pending'
+                                    ? '待处理'
+                                    : widget.order.orderstatus == 'Processing'
+                                        ? '处理中'
+                                        : widget.order.orderstatus == 'Confirm'
+                                            ? '已确认'
+                                            : widget.order.orderstatus ==
+                                                    'Complete'
+                                                ? '已完成'
+                                                : '已到货',
                             style: textTheme.bodyMedium,
                           ),
                         ],

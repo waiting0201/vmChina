@@ -2051,50 +2051,52 @@ class MemberPlanIcon extends StatelessWidget {
               .singleWhere((e) => e.brandmemberplan!.brandid == brand.brandid);
           if (membershipfee.brandmemberplan!.plantitle == 'VIP') {
             bgcolor = redColor;
-          } else if (membershipfee.brandmemberplan!.plantitle == 'STANDARD') {
+          } else if (membershipfee.brandmemberplan!.plantitle == '俱乐部会员') {
             bgcolor = primaryColor;
           } else {
             bgcolor = infoColor;
           }
         }
 
-        return isbrandmember
-            ? OutlinedButton(
-                onPressed: () {},
-                style: OutlinedButton.styleFrom(
-                  backgroundColor: bgcolor,
-                  surfaceTintColor: whiteColor,
-                  side: BorderSide(color: bgcolor),
-                ),
-                child: Text(
-                  membershipfee.brandmemberplan!.plantitle,
-                  style: textTheme.bodySmall?.copyWith(
-                    color: whiteColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              )
-            : FloatingActionButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MemberPlan(
-                        brand: brand,
+        return brand.publishstatus == 2 || brand.publishstatus == 3
+            ? const SizedBox()
+            : isbrandmember
+                ? OutlinedButton(
+                    onPressed: () {},
+                    style: OutlinedButton.styleFrom(
+                      backgroundColor: bgcolor,
+                      surfaceTintColor: whiteColor,
+                      side: BorderSide(color: bgcolor),
+                    ),
+                    child: Text(
+                      membershipfee.brandmemberplan!.plantitle,
+                      style: textTheme.bodySmall?.copyWith(
+                        color: whiteColor,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
+                  )
+                : FloatingActionButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MemberPlan(
+                            brand: brand,
+                          ),
+                        ),
+                      );
+                    },
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(36.0),
+                    ),
+                    backgroundColor: primaryColor,
+                    child: const Icon(
+                      IconlyLight.addUser,
+                      size: 36.0,
+                      color: Colors.white,
+                    ),
                   );
-                },
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(36.0),
-                ),
-                backgroundColor: primaryColor,
-                child: const Icon(
-                  IconlyLight.addUser,
-                  size: 36.0,
-                  color: Colors.white,
-                ),
-              );
       },
     );
   }

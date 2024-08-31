@@ -1106,7 +1106,9 @@ class _ProductDetailState extends State<ProductDetail> {
                                   const EdgeInsets.only(left: 5, right: 5),
                               title: Text(
                                 _faqs[index].title,
-                                style: textTheme.bodyMedium,
+                                style: textTheme.bodyMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               trailing: const Icon(
                                 FeatherIcons.chevronRight,
