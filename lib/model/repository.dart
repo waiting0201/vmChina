@@ -669,6 +669,38 @@ class HttpService {
     return response;
   }
 
+  Future<Response> gethomecategorylists(
+      String? brandid, String? languageid) async {
+    String slanguageid = await getLanguage();
+    languageid = (languageid != null) ? languageid : slanguageid;
+    Response response = await _dio.post(
+      '/category/gethomecategorylists',
+      queryParameters: {
+        "brandid": brandid,
+        "languageid": languageid,
+      },
+      cancelToken: cancelToken,
+    );
+
+    return response;
+  }
+
+  Future<Response> getcategorybyid(
+      String categoryid, String? languageid) async {
+    String slanguageid = await getLanguage();
+    languageid = (languageid != null) ? languageid : slanguageid;
+    Response response = await _dio.post(
+      '/category/getcategorybyid',
+      queryParameters: {
+        "categoryid": categoryid,
+        "languageid": languageid,
+      },
+      cancelToken: cancelToken,
+    );
+
+    return response;
+  }
+
   Future<Response> getcategorybrandlists(String? languageid) async {
     String slanguageid = await getLanguage();
     languageid = (languageid != null) ? languageid : slanguageid;

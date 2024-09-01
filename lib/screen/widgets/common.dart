@@ -1455,17 +1455,42 @@ class CategorysList extends StatelessWidget {
           bottom: itemSpace,
         ),
         child: InkWell(
-          onTap: () {
+          onTap: () async {
             if (index == 0) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Categorydetail(
-                    category: categorys[index],
-                    brand: brand,
+              OverlayEntry overlayEntry = OverlayEntry(
+                builder: (context) => Positioned(
+                  top: 0,
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    color: Colors.black.withOpacity(0.5),
+                    child: const LoadingCircle(),
                   ),
                 ),
               );
+              Overlay.of(context).insert(overlayEntry);
+
+              HttpService httpService = HttpService();
+              await httpService
+                  .getcategorybyid(categorys[index].categoryid, null)
+                  .then((value) {
+                var data = json.decode(value.toString());
+                if (data["statusCode"] == 200) {
+                  overlayEntry.remove();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Categorydetail(
+                        category: Category.fromMap(data["data"]),
+                        brand: brand,
+                      ),
+                    ),
+                  );
+                } else {
+                  overlayEntry.remove();
+                }
+              });
             }
           },
           child: ImageStackCard(

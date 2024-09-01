@@ -248,7 +248,7 @@ class _HomeScreenState extends State<HomeScreen>
         _isCategoryLoading = true;
       });
 
-      await httpService.getcategorylists(null, null).then((value) {
+      await httpService.gethomecategorylists(null, null).then((value) {
         var data = json.decode(value.toString());
 
         //log('getcategorys code: ${data["statusCode"]}');
