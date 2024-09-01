@@ -10,6 +10,7 @@ import '../category/search.dart';
 import '../profile/favorite.dart';
 import '../profile/profile.dart';
 import 'home_screen.dart';
+import 'setup_provider.dart';
 
 class Home extends StatefulWidget {
   final int? bottomNavIndex;
@@ -24,8 +25,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final PageController _pageController = PageController();
-
   final List<Widget> _widgetOptions = <Widget>[
     const HomeScreen(),
     const Brands(),
@@ -34,6 +33,9 @@ class _HomeState extends State<Home> {
     const Profile(),
   ];
 
+  late PageController _pageController;
+  late SetupChangeProvider _setupChangeProvider;
+  late AuthChangeProvider _authChangeProvider;
   late int _bottomNavIndex;
   late Widget currentScreen;
   late bool status = false;
@@ -43,8 +45,13 @@ class _HomeState extends State<Home> {
     super.initState();
     _bottomNavIndex =
         widget.bottomNavIndex == null ? 0 : widget.bottomNavIndex!;
-    currentScreen = _widgetOptions.elementAt(_bottomNavIndex);
-    //_pageController.jumpToPage(_bottomNavIndex);
+    _pageController = PageController(initialPage: _bottomNavIndex);
+    //currentScreen = _widgetOptions.elementAt(_bottomNavIndex);
+
+    _setupChangeProvider =
+        Provider.of<SetupChangeProvider>(context, listen: false);
+    _authChangeProvider =
+        Provider.of<AuthChangeProvider>(context, listen: false);
   }
 
   @override
@@ -73,15 +80,13 @@ class _HomeState extends State<Home> {
           tooltip: lang.S.of(context).navMe),
     ];
 
-    final authchangeprovider =
-        Provider.of<AuthChangeProvider>(context, listen: false);
-
     return Scaffold(
       //鍵盤出現時，不會將頁面往上推
       resizeToAvoidBottomInset: false,
       backgroundColor: whiteColor,
       body: PageView(
         controller: _pageController,
+        physics: const NeverScrollableScrollPhysics(),
         onPageChanged: (index) {
           setState(() {
             _bottomNavIndex = index;
@@ -108,7 +113,8 @@ class _HomeState extends State<Home> {
             type: BottomNavigationBarType.fixed,
             onTap: (index) => setState(
               () {
-                status = authchangeprovider.status;
+                _setupChangeProvider.isloading;
+                status = _authChangeProvider.status;
                 if (status) {
                   _bottomNavIndex = index;
                   //currentScreen = _widgetOptions.elementAt(index);

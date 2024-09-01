@@ -115,6 +115,8 @@ class _SearchState extends State<Search>
   @override
   //main檔MaterialApp的context
   Widget build(BuildContext context) {
+    super.build(context);
+
     TextTheme textTheme = Theme.of(context).textTheme;
 
     return Scaffold(

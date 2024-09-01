@@ -13,9 +13,14 @@ class HttpService {
   //final baseUrl = "https://vmhkdemo-api.azurewebsites.net/api";
 
   HttpService() {
-    _dio = Dio(BaseOptions(
-      baseUrl: baseUrl,
-    ));
+    _dio = Dio(
+      BaseOptions(
+        baseUrl: baseUrl,
+        receiveDataWhenStatusError: true,
+        connectTimeout: const Duration(seconds: 60),
+        receiveTimeout: const Duration(seconds: 60),
+      ),
+    );
 
     initializeInterceptors();
   }
@@ -1879,7 +1884,7 @@ class HttpService {
           return handler.next(response);
         },
         onError: (DioException e, handler) async {
-          log('onError response statusCode: ${e.response?.statusCode}');
+          log('onError response statusCode: ${e.response?.statusCode} ${e.response?.statusMessage}');
 
           return handler.next(e);
         },

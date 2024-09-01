@@ -11,6 +11,7 @@ import '../../theme/theme_constants.dart';
 import '../../model/models.dart';
 import '../../model/repository.dart';
 import '../authentication/auth_provider.dart';
+import '../authentication/log_in.dart';
 import '../widgets/constant.dart';
 import '../widgets/partial.dart';
 import '../category/productdetail.dart';
@@ -51,8 +52,19 @@ class _FavoriteState extends State<Favorite>
   @override
   void initState() {
     super.initState();
+
     _authChangeProvider =
         Provider.of<AuthChangeProvider>(context, listen: false);
+    if (!_authChangeProvider.status) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const LogIn(),
+          ),
+        );
+      });
+    }
     _member = _authChangeProvider.member;
 
     _tabcontroller = TabController(length: _types.length, vsync: this);
@@ -164,6 +176,8 @@ class _FavoriteState extends State<Favorite>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     TextTheme textTheme = Theme.of(context).textTheme;
 
     return Scaffold(

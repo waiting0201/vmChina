@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:async/async.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 
 import '../../generated/l10n.dart' as lang;
@@ -31,7 +30,6 @@ class _BrandsState extends State<Brands>
   late bool _isCategoryLoading = false;
   late String _selected;
 
-  CancelableOperation? _operation;
   HttpService httpService = HttpService();
 
   @override
@@ -39,12 +37,7 @@ class _BrandsState extends State<Brands>
 
   @override
   void initState() {
-    _operation = CancelableOperation.fromFuture(
-      fetchAllData(), // 你的异步操作
-      onCancel: () {
-        debugPrint("操作被取消");
-      },
-    );
+    fetchAllData();
 
     super.initState();
   }
@@ -89,7 +82,6 @@ class _BrandsState extends State<Brands>
 
   @override
   void dispose() {
-    _operation?.cancel();
     httpService.canceltoken();
     super.dispose();
   }
@@ -97,6 +89,8 @@ class _BrandsState extends State<Brands>
   @override
   //main檔MaterialApp的context
   Widget build(BuildContext context) {
+    super.build(context);
+
     TextTheme textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
@@ -166,99 +160,105 @@ class _BrandsState extends State<Brands>
           ? const Center(
               child: LoadingCircle(),
             )
-          : TabBarView(
-              controller: _tabcontroller,
-              physics: const NeverScrollableScrollPhysics(),
-              children: _categorys.map((e) {
-                return SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      ListTile(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Brandalphabets(
-                                categoryid: e.categoryid,
-                                categorytitle: e.title,
-                              ),
-                            ),
-                          );
-                        },
-                        title: Text(
-                          '$_selected ${lang.S.of(context).brandsAZ}',
-                          style: textTheme.bodyMedium,
-                        ),
-                        trailing: const Icon(
-                          FeatherIcons.chevronRight,
-                          color: lightGreyTextColor,
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(
-                          left: horizonSpace,
-                          right: horizonSpace,
-                          bottom: 10,
-                        ),
-                        child: Divider(
-                          color: lightbackgroundColor,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 260,
-                        child: ListView.builder(
-                          addAutomaticKeepAlives: false,
-                          addRepaintBoundaries: false,
-                          padding: const EdgeInsets.only(
-                            left: 13,
-                            right: 13,
-                          ),
-                          physics: const BouncingScrollPhysics(),
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemExtent: 180,
-                          itemCount: e.subcategorys!.length,
-                          itemBuilder: (BuildContext context, int index) =>
-                              InkWell(
+          : RefreshIndicator(
+              onRefresh: fetchAllData,
+              child: TabBarView(
+                controller: _tabcontroller,
+                physics: const NeverScrollableScrollPhysics(),
+                children: _categorys.map(
+                  (e) {
+                    return SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          ListTile(
                             onTap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => Brandsubalphabets(
-                                    subcategoryid:
-                                        e.subcategorys![index].subcategoryid,
-                                    categorytitle:
-                                        '${e.title} ${e.subcategorys![index].title}',
+                                  builder: (context) => Brandalphabets(
+                                    categoryid: e.categoryid,
+                                    categorytitle: e.title,
                                   ),
                                 ),
                               );
                             },
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                left: 2,
-                                right: 2,
-                              ),
-                              child: SubCategoryCard(
-                                  subcategory: e.subcategorys![index]),
+                            title: Text(
+                              '$_selected ${lang.S.of(context).brandsAZ}',
+                              style: textTheme.bodyMedium,
+                            ),
+                            trailing: const Icon(
+                              FeatherIcons.chevronRight,
+                              color: lightGreyTextColor,
                             ),
                           ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 20),
-                        child: Center(
-                          child: Text(
-                            lang.S.of(context).brandsPopular,
-                            style: textTheme.titleLarge,
+                          const Padding(
+                            padding: EdgeInsets.only(
+                              left: horizonSpace,
+                              right: horizonSpace,
+                              bottom: 10,
+                            ),
+                            child: Divider(
+                              color: lightbackgroundColor,
+                            ),
                           ),
-                        ),
+                          SizedBox(
+                            height: 260,
+                            child: ListView.builder(
+                              addAutomaticKeepAlives: false,
+                              addRepaintBoundaries: false,
+                              padding: const EdgeInsets.only(
+                                left: 13,
+                                right: 13,
+                              ),
+                              physics: const BouncingScrollPhysics(),
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemExtent: 180,
+                              itemCount: e.subcategorys!.length,
+                              itemBuilder: (BuildContext context, int index) =>
+                                  InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Brandsubalphabets(
+                                        subcategoryid: e
+                                            .subcategorys![index].subcategoryid,
+                                        categorytitle:
+                                            '${e.title} ${e.subcategorys![index].title}',
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                    left: 2,
+                                    right: 2,
+                                  ),
+                                  child: SubCategoryCard(
+                                      subcategory: e.subcategorys![index]),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 20),
+                            child: Center(
+                              child: Text(
+                                lang.S.of(context).brandsPopular,
+                                style: textTheme.titleLarge,
+                              ),
+                            ),
+                          ),
+                          PopularBrandsList(categoryid: e.categoryid),
+                          const SizedBox(height: 50),
+                        ],
                       ),
-                      PopularBrandsList(categoryid: e.categoryid),
-                      const SizedBox(height: 50),
-                    ],
-                  ),
-                );
-              }).toList()),
+                    );
+                  },
+                ).toList(),
+              ),
+            ),
     );
   }
 }

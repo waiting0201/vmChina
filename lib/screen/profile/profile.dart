@@ -130,6 +130,8 @@ class _ProfileState extends State<Profile> with AutomaticKeepAliveClientMixin {
   @override
   //main檔MaterialApp的context
   Widget build(BuildContext context) {
+    super.build(context);
+
     TextTheme textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
