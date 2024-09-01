@@ -1198,14 +1198,16 @@ class _BrandMenuState extends State<BrandMenu> {
             style: textTheme.bodyMedium,
           ),
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Designers(
-                  brand: widget.brand,
+            if (widget.brand.publishstatus != 2) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Designers(
+                    brand: widget.brand,
+                  ),
                 ),
-              ),
-            );
+              );
+            }
           },
         ),
         const Divider(

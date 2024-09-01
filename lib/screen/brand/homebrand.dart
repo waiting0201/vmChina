@@ -668,17 +668,21 @@ class _HomebrandState extends State<Homebrand> {
                 child: Center(
                   child: OutlinedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Designers(
-                            brand: widget.brand,
+                      if (widget.brand.publishstatus != 2) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Designers(
+                              brand: widget.brand,
+                            ),
                           ),
-                        ),
-                      );
+                        );
+                      }
                     },
                     child: Text(
-                      lang.S.of(context).commonMore,
+                      widget.brand.publishstatus == 2
+                          ? lang.S.of(context).commonComingSoon
+                          : lang.S.of(context).commonSeeMore,
                       style: textTheme.titleSmall?.copyWith(
                         color: darkColor,
                       ),
