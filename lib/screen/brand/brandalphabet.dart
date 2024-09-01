@@ -36,10 +36,14 @@ class Brandalphabets extends StatefulWidget {
   State<Brandalphabets> createState() => _BrandalphabetsState();
 }
 
-class _BrandalphabetsState extends State<Brandalphabets> {
+class _BrandalphabetsState extends State<Brandalphabets>
+    with AutomaticKeepAliveClientMixin {
   final List<Brand> _brands = [];
 
   late bool _isLoading = false;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {

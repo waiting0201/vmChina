@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:async/async.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 
 import '../../generated/l10n.dart' as lang;
@@ -23,17 +23,37 @@ class Brands extends StatefulWidget {
   State<Brands> createState() => _BrandsState();
 }
 
-class _BrandsState extends State<Brands> with SingleTickerProviderStateMixin {
+class _BrandsState extends State<Brands>
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   final List<Category> _categorys = [];
 
   late TabController _tabcontroller;
   late bool _isCategoryLoading = false;
   late String _selected;
 
+  CancelableOperation? _operation;
+  HttpService httpService = HttpService();
+
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   void initState() {
+    _operation = CancelableOperation.fromFuture(
+      fetchAllData(), // 你的异步操作
+      onCancel: () {
+        debugPrint("操作被取消");
+      },
+    );
+
     super.initState();
-    getCategorys();
+  }
+
+  Future<void> fetchAllData() async {
+    await Future.wait([
+      getCategorys(),
+    ]);
+    // 处理结果...
   }
 
   Future<void> getCategorys() async {
@@ -42,11 +62,10 @@ class _BrandsState extends State<Brands> with SingleTickerProviderStateMixin {
         _isCategoryLoading = true;
       });
 
-      HttpService httpService = HttpService();
       await httpService.getcategorybrandlists(null).then((value) {
         var data = json.decode(value.toString());
 
-        log('getcategorys code: ${data["statusCode"]}');
+        debugPrint('getcategorys code: ${data["statusCode"]}');
 
         if (data["statusCode"] == 200 && mounted) {
           setState(() {
@@ -60,12 +79,19 @@ class _BrandsState extends State<Brands> with SingleTickerProviderStateMixin {
           });
         } else if (mounted) {
           setState(() {
-            log('getcategorys failed');
+            debugPrint('getcategorys failed');
             _isCategoryLoading = false;
           });
         }
       });
     }
+  }
+
+  @override
+  void dispose() {
+    _operation?.cancel();
+    httpService.canceltoken();
+    super.dispose();
   }
 
   @override

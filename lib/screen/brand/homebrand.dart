@@ -46,6 +46,8 @@ class _HomebrandState extends State<Homebrand> {
   late bool _isProductLoading = false;
   late bool _isCategoryLoading = false;
 
+  HttpService httpService = HttpService();
+
   @override
   void initState() {
     super.initState();
@@ -141,6 +143,7 @@ class _HomebrandState extends State<Homebrand> {
 
   @override
   void dispose() {
+    httpService.canceltoken();
     super.dispose();
   }
 
@@ -150,7 +153,6 @@ class _HomebrandState extends State<Homebrand> {
         _isBrandPhotoLoading = true;
       });
 
-      HttpService httpService = HttpService();
       await httpService.getbrandmediasbyid(widget.brand.brandid).then((value) {
         var data = json.decode(value.toString());
 
@@ -176,7 +178,6 @@ class _HomebrandState extends State<Homebrand> {
         _isDesignerLoading = true;
       });
 
-      HttpService httpService = HttpService();
       await httpService
           .getdesignerlistsbybrandid(widget.brand.brandid, null)
           .then((value) {
@@ -211,7 +212,6 @@ class _HomebrandState extends State<Homebrand> {
         _isCollectionLoading = true;
       });
 
-      HttpService httpService = HttpService();
       await httpService
           .getcollectionlistsbybrandid(widget.brand.brandid, 0, 10, null)
           .then((value) {
@@ -240,7 +240,6 @@ class _HomebrandState extends State<Homebrand> {
         _isProductLoading = true;
       });
 
-      HttpService httpService = HttpService();
       await httpService
           .getnewproductlistsbybrandid(widget.brand.brandid, 6, null)
           .then((value) {
@@ -267,7 +266,6 @@ class _HomebrandState extends State<Homebrand> {
         _isCategoryLoading = true;
       });
 
-      HttpService httpService = HttpService();
       await httpService
           .getcategorylists(widget.brand.brandid, null)
           .then((value) {

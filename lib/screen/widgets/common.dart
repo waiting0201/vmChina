@@ -9,6 +9,7 @@ import 'package:video_player/video_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:async/async.dart';
 
 import '../../generated/l10n.dart' as lang;
 import '../../model/models.dart';
@@ -1311,15 +1312,33 @@ class _PopularBrandsListState extends State<PopularBrandsList> {
 
   late bool _isBrandLoading = false;
 
+  CancelableOperation? _operation;
+  HttpService httpService = HttpService();
+
   @override
   void initState() {
+    _operation = CancelableOperation.fromFuture(
+      fetchAllData(), // 你的异步操作
+      onCancel: () {
+        debugPrint("操作被取消");
+      },
+    );
+
     super.initState();
-    getBrands();
   }
 
   @override
   void dispose() {
+    _operation?.cancel();
+    httpService.canceltoken();
     super.dispose();
+  }
+
+  Future<void> fetchAllData() async {
+    await Future.wait([
+      getBrands(),
+    ]);
+    // 处理结果...
   }
 
   Future<void> getBrands() async {

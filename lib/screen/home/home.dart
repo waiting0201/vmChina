@@ -24,6 +24,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final PageController _pageController = PageController();
+
   final List<Widget> _widgetOptions = <Widget>[
     const HomeScreen(),
     const Brands(),
@@ -42,6 +44,7 @@ class _HomeState extends State<Home> {
     _bottomNavIndex =
         widget.bottomNavIndex == null ? 0 : widget.bottomNavIndex!;
     currentScreen = _widgetOptions.elementAt(_bottomNavIndex);
+    //_pageController.jumpToPage(_bottomNavIndex);
   }
 
   @override
@@ -77,7 +80,15 @@ class _HomeState extends State<Home> {
       //鍵盤出現時，不會將頁面往上推
       resizeToAvoidBottomInset: false,
       backgroundColor: whiteColor,
-      body: currentScreen,
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (index) {
+          setState(() {
+            _bottomNavIndex = index;
+          });
+        },
+        children: _widgetOptions,
+      ),
       bottomNavigationBar: SafeArea(
         top: false,
         left: false,
@@ -98,10 +109,10 @@ class _HomeState extends State<Home> {
             onTap: (index) => setState(
               () {
                 status = authchangeprovider.status;
-                //已登入
                 if (status) {
                   _bottomNavIndex = index;
-                  currentScreen = _widgetOptions.elementAt(index);
+                  //currentScreen = _widgetOptions.elementAt(index);
+                  _pageController.jumpToPage(index);
                 } else {
                   if (index == 3) {
                     Navigator.push(
@@ -112,7 +123,8 @@ class _HomeState extends State<Home> {
                     );
                   } else {
                     _bottomNavIndex = index;
-                    currentScreen = _widgetOptions.elementAt(index);
+                    //currentScreen = _widgetOptions.elementAt(index);
+                    _pageController.jumpToPage(index);
                   }
                 }
               },

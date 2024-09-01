@@ -36,7 +36,7 @@ class Profile extends StatefulWidget {
   State<Profile> createState() => _ProfileState();
 }
 
-class _ProfileState extends State<Profile> {
+class _ProfileState extends State<Profile> with AutomaticKeepAliveClientMixin {
   late bool _isFaqLoading = false;
   late bool _isLawLoading = false;
 
@@ -51,6 +51,9 @@ class _ProfileState extends State<Profile> {
     buildSignature: 'Unknown',
     installerStore: 'Unknown',
   );
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {

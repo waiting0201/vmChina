@@ -1,9 +1,10 @@
 import 'dart:convert';
-import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:dio/dio.dart';
 import 'package:provider/provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:shimmer/shimmer.dart';
@@ -78,6 +79,10 @@ class _ProductDetailState extends State<ProductDetail> {
   late bool isStock = true;
   late double _price;
 
+  HttpService httpService = HttpService();
+  HttpService productbybrandService = HttpService();
+  HttpService productbycollectionService = HttpService();
+
   @override
   void initState() {
     super.initState();
@@ -97,10 +102,10 @@ class _ProductDetailState extends State<ProductDetail> {
     getManufactures();
     getFaqs();
     getDesigners();
-    if (_product.productsizes!.length > 1) getSizes();
     getCollections();
     getSetup();
 
+    if (_product.productsizes!.length > 1) getSizes();
     if (_product.productsizes!.isNotEmpty) {
       setState(() {
         _size.text = _product.productsizes![0].size;
@@ -114,6 +119,9 @@ class _ProductDetailState extends State<ProductDetail> {
 
   @override
   void dispose() {
+    httpService.canceltoken();
+    productbybrandService.canceltoken();
+    productbycollectionService.canceltoken();
     super.dispose();
   }
 
@@ -123,22 +131,20 @@ class _ProductDetailState extends State<ProductDetail> {
         _isSetupLoading = true;
       });
 
-      HttpService httpService = HttpService();
-      await httpService.getsetup().then((value) {
-        var data = json.decode(value.toString());
+      Response response = await httpService.getsetup();
+      var data = json.decode(response.toString());
 
-        if (data["statusCode"] == 200 && mounted) {
-          setState(() {
-            _setup = Setup.fromMap(data["data"]);
-            _isMembershipFree = (_setup.ischargemembershipfee == 0);
-            _isSetupLoading = false;
-          });
-        } else if (mounted) {
-          setState(() {
-            _isSetupLoading = false;
-          });
-        }
-      });
+      if (data["statusCode"] == 200 && mounted) {
+        setState(() {
+          _setup = Setup.fromMap(data["data"]);
+          _isMembershipFree = (_setup.ischargemembershipfee == 0);
+          _isSetupLoading = false;
+        });
+      } else if (mounted) {
+        setState(() {
+          _isSetupLoading = false;
+        });
+      }
     }
   }
 
@@ -148,26 +154,25 @@ class _ProductDetailState extends State<ProductDetail> {
         _isPhotoLoading = true;
       });
 
-      HttpService httpService = HttpService();
-      await httpService.getproductmediasbyid(_product.productid).then((value) {
-        var data = json.decode(value.toString());
+      Response response =
+          await httpService.getproductmediasbyid(_product.productid);
+      var data = json.decode(response.toString());
 
-        log('getphotos code: ${data["statusCode"]}');
+      debugPrint('getphotos code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200 && mounted) {
-          setState(() {
-            _photos.addAll((data["data"] as List)
-                .map((e) => ProductMedia.fromMap(e))
-                .toList());
-            _isPhotoLoading = false;
-          });
-        } else if (mounted) {
-          setState(() {
-            log('getphotos isloading');
-            _isPhotoLoading = false;
-          });
-        }
-      });
+      if (data["statusCode"] == 200 && mounted) {
+        setState(() {
+          _photos.addAll((data["data"] as List)
+              .map((e) => ProductMedia.fromMap(e))
+              .toList());
+          _isPhotoLoading = false;
+        });
+      } else if (mounted) {
+        setState(() {
+          debugPrint('getphotos isloading');
+          _isPhotoLoading = false;
+        });
+      }
     }
   }
 
@@ -177,24 +182,23 @@ class _ProductDetailState extends State<ProductDetail> {
         _isBrandLoading = true;
       });
 
-      HttpService httpService = HttpService();
-      await httpService.getbrandbyid(_product.brandid, null).then((value) {
-        var data = json.decode(value.toString());
+      Response response =
+          await httpService.getbrandbyid(_product.brandid, null);
+      var data = json.decode(response.toString());
 
-        log('getbrand code: ${data["statusCode"]}');
+      debugPrint('getbrand code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200 && mounted) {
-          setState(() {
-            _brand = Brand.fromMap(data["data"]);
-            _isBrandLoading = false;
-          });
-        } else if (mounted) {
-          setState(() {
-            log('getbrand isloading');
-            _isBrandLoading = false;
-          });
-        }
-      });
+      if (data["statusCode"] == 200 && mounted) {
+        setState(() {
+          _brand = Brand.fromMap(data["data"]);
+          _isBrandLoading = false;
+        });
+      } else if (mounted) {
+        setState(() {
+          debugPrint('getbrand isloading');
+          _isBrandLoading = false;
+        });
+      }
     }
   }
 
@@ -204,32 +208,29 @@ class _ProductDetailState extends State<ProductDetail> {
         _isDesignerLoading = true;
       });
 
-      HttpService httpService = HttpService();
-      await httpService
-          .getdesignerlistsbybrandid(widget.product.brandid, null)
-          .then((value) {
-        var data = json.decode(value.toString());
+      Response response = await httpService.getdesignerlistsbybrandid(
+          widget.product.brandid, null);
 
-        log('getdesigners code: ${data["statusCode"]}');
+      var data = json.decode(response.toString());
 
-        if (data["statusCode"] == 200 && mounted) {
-          setState(() {
-            _designers.addAll((data["data"] as List)
-                .map((e) => Designer.fromMap(e))
-                .toList());
+      debugPrint('getdesigners code: ${data["statusCode"]}');
 
-            _isDesignerLoading = false;
+      if (data["statusCode"] == 200 && mounted) {
+        setState(() {
+          _designers.addAll(
+              (data["data"] as List).map((e) => Designer.fromMap(e)).toList());
 
-            log('getdesigners isloading: $_isDesignerLoading');
-          });
-        } else if (mounted) {
-          setState(() {
-            _isDesignerLoading = false;
+          _isDesignerLoading = false;
 
-            log('getdesigners isloading');
-          });
-        }
-      });
+          debugPrint('getdesigners isloading: $_isDesignerLoading');
+        });
+      } else if (mounted) {
+        setState(() {
+          _isDesignerLoading = false;
+
+          debugPrint('getdesigners isloading');
+        });
+      }
     }
   }
 
@@ -239,28 +240,24 @@ class _ProductDetailState extends State<ProductDetail> {
         _isProductByBrandLoading = true;
       });
 
-      HttpService httpService = HttpService();
-      await httpService
-          .getproductlistswithoutselfbybrandid(_product.brandid,
-              _product.productid, _product.collectionid!, null)
-          .then((value) {
-        var data = json.decode(value.toString());
+      Response response = await httpService.getproductlistswithoutselfbybrandid(
+          _product.brandid, _product.productid, _product.collectionid!, null);
+      var data = json.decode(response.toString());
 
-        log('getproductsbybrand code: ${data["statusCode"]}');
+      debugPrint('getproductsbybrand code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200 && mounted) {
-          setState(() {
-            _productsbybrand.addAll(
-                (data["data"] as List).map((e) => Product.fromMap(e)).toList());
-            _isProductByBrandLoading = false;
-          });
-        } else if (mounted) {
-          setState(() {
-            log('getproductsbybrand isloading');
-            _isProductByBrandLoading = false;
-          });
-        }
-      });
+      if (data["statusCode"] == 200 && mounted) {
+        setState(() {
+          _productsbybrand.addAll(
+              (data["data"] as List).map((e) => Product.fromMap(e)).toList());
+          _isProductByBrandLoading = false;
+        });
+      } else if (mounted) {
+        setState(() {
+          debugPrint('getproductsbybrand isloading');
+          _isProductByBrandLoading = false;
+        });
+      }
     }
   }
 
@@ -270,28 +267,25 @@ class _ProductDetailState extends State<ProductDetail> {
         _isProductByCollectionLoading = true;
       });
 
-      HttpService httpService = HttpService();
-      await httpService
-          .getproductlistswithoutselfbycollectionid(
-              _product.collectionid!, _product.productid, null)
-          .then((value) {
-        var data = json.decode(value.toString());
+      Response response =
+          await httpService.getproductlistswithoutselfbycollectionid(
+              _product.collectionid!, _product.productid, null);
+      var data = json.decode(response.toString());
 
-        log('getproductsbycollection code: ${data["statusCode"]}');
+      debugPrint('getproductsbycollection code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200 && mounted) {
-          setState(() {
-            _productsbycollection.addAll(
-                (data["data"] as List).map((e) => Product.fromMap(e)).toList());
-            _isProductByCollectionLoading = false;
-          });
-        } else if (mounted) {
-          setState(() {
-            log('getproductsbycollection isloading');
-            _isProductByCollectionLoading = false;
-          });
-        }
-      });
+      if (data["statusCode"] == 200 && mounted) {
+        setState(() {
+          _productsbycollection.addAll(
+              (data["data"] as List).map((e) => Product.fromMap(e)).toList());
+          _isProductByCollectionLoading = false;
+        });
+      } else if (mounted) {
+        setState(() {
+          debugPrint('getproductsbycollection isloading');
+          _isProductByCollectionLoading = false;
+        });
+      }
     }
   }
 
@@ -301,28 +295,25 @@ class _ProductDetailState extends State<ProductDetail> {
         _isMessageLoading = true;
       });
 
-      HttpService httpService = HttpService();
-      await httpService
-          .getorderdetailmessagesbyproductid(_product.productid, null)
-          .then((value) {
-        var data = json.decode(value.toString());
+      Response response = await httpService.getorderdetailmessagesbyproductid(
+          _product.productid, null);
+      var data = json.decode(response.toString());
 
-        log('getmessages code: ${data["statusCode"]}');
+      debugPrint('getmessages code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200 && mounted) {
-          setState(() {
-            _messages.addAll((data["data"] as List)
-                .map((e) => OrderDetailMessage.fromMap(e))
-                .toList());
-            _isMessageLoading = false;
-          });
-        } else if (mounted) {
-          setState(() {
-            log('getmessages isloading');
-            _isMessageLoading = false;
-          });
-        }
-      });
+      if (data["statusCode"] == 200 && mounted) {
+        setState(() {
+          _messages.addAll((data["data"] as List)
+              .map((e) => OrderDetailMessage.fromMap(e))
+              .toList());
+          _isMessageLoading = false;
+        });
+      } else if (mounted) {
+        setState(() {
+          debugPrint('getmessages isloading');
+          _isMessageLoading = false;
+        });
+      }
     }
   }
 
@@ -332,28 +323,25 @@ class _ProductDetailState extends State<ProductDetail> {
         _isManufactureLoading = true;
       });
 
-      HttpService httpService = HttpService();
-      await httpService
-          .getmanufacturelistsbyproductid(_product.productid, null)
-          .then((value) {
-        var data = json.decode(value.toString());
+      Response response = await httpService.getmanufacturelistsbyproductid(
+          _product.productid, null);
+      var data = json.decode(response.toString());
 
-        log('getmanufactures code: ${data["statusCode"]}');
+      debugPrint('getmanufactures code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200 && mounted) {
-          setState(() {
-            _manufactures.addAll((data["data"] as List)
-                .map((e) => Manufacture.fromMap(e))
-                .toList());
-            _isManufactureLoading = false;
-          });
-        } else if (mounted) {
-          setState(() {
-            log('getmanufactures isloading');
-            _isManufactureLoading = false;
-          });
-        }
-      });
+      if (data["statusCode"] == 200 && mounted) {
+        setState(() {
+          _manufactures.addAll((data["data"] as List)
+              .map((e) => Manufacture.fromMap(e))
+              .toList());
+          _isManufactureLoading = false;
+        });
+      } else if (mounted) {
+        setState(() {
+          debugPrint('getmanufactures isloading');
+          _isManufactureLoading = false;
+        });
+      }
     }
   }
 
@@ -363,27 +351,25 @@ class _ProductDetailState extends State<ProductDetail> {
         _isFaqLoading = true;
       });
 
-      HttpService httpService = HttpService();
-      await httpService.getfaqlists(null).then((value) {
-        var data = json.decode(value.toString());
+      Response response = await httpService.getfaqlists(null);
+      var data = json.decode(response.toString());
 
-        log('getfaqs code: ${data["statusCode"]}');
+      debugPrint('getfaqs code: ${data["statusCode"]}');
 
-        if (data["statusCode"] == 200 && mounted) {
-          setState(() {
-            _faqs.addAll((data["data"] as List)
-                .skip(1)
-                .map((e) => Faq.fromMap(e))
-                .toList());
-            _isFaqLoading = false;
-          });
-        } else if (mounted) {
-          setState(() {
-            log('getfaqs isloading');
-            _isFaqLoading = false;
-          });
-        }
-      });
+      if (data["statusCode"] == 200 && mounted) {
+        setState(() {
+          _faqs.addAll((data["data"] as List)
+              .skip(1)
+              .map((e) => Faq.fromMap(e))
+              .toList());
+          _isFaqLoading = false;
+        });
+      } else if (mounted) {
+        setState(() {
+          debugPrint('getfaqs isloading');
+          _isFaqLoading = false;
+        });
+      }
     }
   }
 
@@ -393,26 +379,22 @@ class _ProductDetailState extends State<ProductDetail> {
         _isSizeLoading = true;
       });
 
-      HttpService httpService = HttpService();
-      await httpService
-          .getsizelistsbycategoryidandtype(
-              _product.categoryid, _product.sizetype!)
-          .then((value) {
-        var data = json.decode(value.toString());
+      Response response = await httpService.getsizelistsbycategoryidandtype(
+          _product.categoryid, _product.sizetype!);
+      var data = json.decode(response.toString());
 
-        if (data["statusCode"] == 200 && mounted) {
-          setState(() {
-            _sizes.addAll(
-                (data["data"] as List).map((e) => VSize.fromMap(e)).toList());
-            _isSizeLoading = false;
-          });
-        } else if (mounted) {
-          setState(() {
-            log('getsize isloading');
-            _isSizeLoading = false;
-          });
-        }
-      });
+      if (data["statusCode"] == 200 && mounted) {
+        setState(() {
+          _sizes.addAll(
+              (data["data"] as List).map((e) => VSize.fromMap(e)).toList());
+          _isSizeLoading = false;
+        });
+      } else if (mounted) {
+        setState(() {
+          debugPrint('getsize isloading');
+          _isSizeLoading = false;
+        });
+      }
     }
   }
 
@@ -422,25 +404,22 @@ class _ProductDetailState extends State<ProductDetail> {
         _isCollectionLoading = true;
       });
 
-      HttpService httpService = HttpService();
-      await httpService
-          .getcollectionlistsbybrandid(widget.product.brandid, 0, 10, null)
-          .then((value) {
-        var data = json.decode(value.toString());
+      Response response = await httpService.getcollectionlistsbybrandid(
+          widget.product.brandid, 0, 10, null);
+      var data = json.decode(response.toString());
 
-        if (data["statusCode"] == 200 && mounted) {
-          setState(() {
-            _collections.addAll((data["data"] as List)
-                .map((e) => Collection.fromMap(e))
-                .toList());
-            _isCollectionLoading = false;
-          });
-        } else if (mounted) {
-          setState(() {
-            _isCollectionLoading = false;
-          });
-        }
-      });
+      if (data["statusCode"] == 200 && mounted) {
+        setState(() {
+          _collections.addAll((data["data"] as List)
+              .map((e) => Collection.fromMap(e))
+              .toList());
+          _isCollectionLoading = false;
+        });
+      } else if (mounted) {
+        setState(() {
+          _isCollectionLoading = false;
+        });
+      }
     }
   }
 

@@ -25,7 +25,7 @@ class Favorite extends StatefulWidget {
 }
 
 class _FavoriteState extends State<Favorite>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   final List<Product> _products = [];
   final List<Brand> _brands = [];
   final int _producttake = 10;
@@ -44,6 +44,9 @@ class _FavoriteState extends State<Favorite>
   late int _productskip = 0;
   late int _brandskip = 0;
   late Member _member;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {

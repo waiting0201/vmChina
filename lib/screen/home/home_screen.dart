@@ -25,7 +25,8 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>
+    with AutomaticKeepAliveClientMixin {
   final List<Homebanner> _homebanners = [];
   final List<DesignerVideo> _designervideos = [];
   final List<Collection> _collections = [];
@@ -41,6 +42,12 @@ class _HomeScreenState extends State<HomeScreen> {
   late bool _isCategoryLoading = false;
   late bool _isWhatsnewLoading = false;
   late String isfirsttime = "y";
+
+  HttpService httpService = HttpService();
+  HttpService whatsnewService = HttpService();
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -113,6 +120,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
+    httpService.canceltoken();
+    whatsnewService.canceltoken();
     super.dispose();
   }
 
@@ -122,7 +131,6 @@ class _HomeScreenState extends State<HomeScreen> {
         _isHomebannerLoading = true;
       });
 
-      HttpService httpService = HttpService();
       await httpService.gethomebannerlists(0, 10, null).then((value) {
         var data = json.decode(value.toString());
 
@@ -151,7 +159,6 @@ class _HomeScreenState extends State<HomeScreen> {
         _isDesignervideoLoading = true;
       });
 
-      HttpService httpService = HttpService();
       await httpService.getdesignervideolists(0, 5, null).then((value) {
         var data = json.decode(value.toString());
 
@@ -180,7 +187,6 @@ class _HomeScreenState extends State<HomeScreen> {
         _isCollectionLoading = true;
       });
 
-      HttpService httpService = HttpService();
       await httpService.getpublishstatuscollectionlists(1, null).then((value) {
         var data = json.decode(value.toString());
 
@@ -209,11 +215,8 @@ class _HomeScreenState extends State<HomeScreen> {
         _isProductLoading = true;
       });
 
-      HttpService httpService = HttpService();
       await httpService.getnewproductlists(0, 6, null).then((value) {
         var data = json.decode(value.toString());
-
-        //log('getproducts code: ${data["statusCode"]}');
 
         if (data["statusCode"] == 200 && mounted) {
           setState(() {
@@ -223,7 +226,6 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         } else if (mounted) {
           setState(() {
-            //log('getproducts isloading');
             _isProductLoading = false;
           });
         }
@@ -237,7 +239,6 @@ class _HomeScreenState extends State<HomeScreen> {
         _isCategoryLoading = true;
       });
 
-      HttpService httpService = HttpService();
       await httpService.getcategorylists(null, null).then((value) {
         var data = json.decode(value.toString());
 
@@ -268,8 +269,7 @@ class _HomeScreenState extends State<HomeScreen> {
         _isWhatsnewLoading = true;
       });
 
-      HttpService httpService = HttpService();
-      await httpService.getlatestwhatsnew(null).then((value) {
+      await whatsnewService.getlatestwhatsnew(null).then((value) {
         var data = json.decode(value.toString());
 
         if (data["statusCode"] == 200 && mounted) {

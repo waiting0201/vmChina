@@ -21,7 +21,8 @@ class Search extends StatefulWidget {
   State<Search> createState() => _SearchState();
 }
 
-class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
+class _SearchState extends State<Search>
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   final TextEditingController _textcontroller = TextEditingController();
   final List<Category> _categorys = [];
   final List<Product> _products = [];
@@ -34,6 +35,9 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
   //late bool _isLoading = false;
   late bool _isSearchKeyword = false;
   late bool _isWhatsnewLoading = false;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
