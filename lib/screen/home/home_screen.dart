@@ -64,6 +64,13 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Future<void> _refreshData() async {
+    _homebanners.clear();
+    _designervideos.clear();
+    _collections.clear();
+    _products.clear();
+    _categorys.clear();
+    _whatsnew.products!.clear();
+
     getHomebanners();
     getDesignervideos();
     getCollections();
