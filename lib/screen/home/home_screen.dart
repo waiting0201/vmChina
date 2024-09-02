@@ -746,7 +746,7 @@ class _HomeScreenState extends State<HomeScreen>
                   const EventHorizonSlideList(),
                   //________________________________________________________Sign or register
                   authchangeprovider.status
-                      ? Container()
+                      ? const SizedBox()
                       : const Padding(
                           padding: EdgeInsets.only(
                             top: verticalSpace,

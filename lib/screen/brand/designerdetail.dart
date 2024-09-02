@@ -129,7 +129,9 @@ class _DesignerdetailState extends State<Designerdetail> {
       });
 
       HttpService httpService = HttpService();
-      await httpService.getcategorylists(widget.brandid, null).then((value) {
+      await httpService
+          .getbrandcategorylists(widget.brandid, null)
+          .then((value) {
         var data = json.decode(value.toString());
 
         if (data["statusCode"] == 200 && mounted) {

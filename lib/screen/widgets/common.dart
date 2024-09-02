@@ -973,7 +973,7 @@ class _BrandMenuState extends State<BrandMenu> {
     } else {
       HttpService httpService = HttpService();
       await httpService
-          .getcategorylists(widget.brand.brandid, null)
+          .getbrandcategorylists(widget.brand.brandid, null)
           .then((value) {
         var data = json.decode(value.toString());
 

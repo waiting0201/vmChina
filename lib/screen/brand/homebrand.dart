@@ -267,7 +267,7 @@ class _HomebrandState extends State<Homebrand> {
       });
 
       await httpService
-          .getcategorylists(widget.brand.brandid, null)
+          .getbrandcategorylists(widget.brand.brandid, null)
           .then((value) {
         var data = json.decode(value.toString());
 
