@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -47,7 +46,6 @@ class _ProductDetailState extends State<ProductDetail> {
   final List<ProductMedia> _photos = [];
   final List<Product> _productsbybrand = [];
   final List<Product> _productsbycollection = [];
-  final List<OrderDetailMessage> _messages = [];
   final List<Manufacture> _manufactures = [];
   final List<Designer> _designers = [];
   final List<Faq> _faqs = [];
@@ -65,7 +63,6 @@ class _ProductDetailState extends State<ProductDetail> {
   late bool _isPhotoLoading = false;
   late bool _isProductByBrandLoading = false;
   late bool _isProductByCollectionLoading = false;
-  late bool _isMessageLoading = false;
   late bool _isManufactureLoading = false;
   late bool _isFaqLoading = false;
   late bool _isDesignerLoading = false;
@@ -98,7 +95,6 @@ class _ProductDetailState extends State<ProductDetail> {
     getPhotos();
     getProductsByBrandID();
     getProductsByCollectionID();
-    getMessages();
     getManufactures();
     getFaqs();
     getDesigners();
@@ -284,34 +280,6 @@ class _ProductDetailState extends State<ProductDetail> {
         setState(() {
           debugPrint('getproductsbycollection isloading');
           _isProductByCollectionLoading = false;
-        });
-      }
-    }
-  }
-
-  Future<void> getMessages() async {
-    if (!_isMessageLoading && mounted) {
-      setState(() {
-        _isMessageLoading = true;
-      });
-
-      Response response = await httpService.getorderdetailmessagesbyproductid(
-          _product.productid, null);
-      var data = json.decode(response.toString());
-
-      debugPrint('getmessages code: ${data["statusCode"]}');
-
-      if (data["statusCode"] == 200 && mounted) {
-        setState(() {
-          _messages.addAll((data["data"] as List)
-              .map((e) => OrderDetailMessage.fromMap(e))
-              .toList());
-          _isMessageLoading = false;
-        });
-      } else if (mounted) {
-        setState(() {
-          debugPrint('getmessages isloading');
-          _isMessageLoading = false;
         });
       }
     }
@@ -1099,106 +1067,6 @@ class _ProductDetailState extends State<ProductDetail> {
                       );
                     },
                   ),
-                  _isMessageLoading
-                      ? Padding(
-                          padding: const EdgeInsets.only(
-                            top: verticalSpace,
-                            left: horizonSpace,
-                            right: horizonSpace,
-                          ),
-                          child: Shimmer.fromColors(
-                            baseColor: shimmerbaseColor,
-                            highlightColor: shimmerhilightColor,
-                            child: AspectRatio(
-                              aspectRatio: 4 / 3,
-                              child: Container(
-                                color: whiteColor,
-                              ),
-                            ),
-                          ),
-                        )
-                      : _messages.isNotEmpty
-                          ? Padding(
-                              padding: const EdgeInsets.only(
-                                top: verticalSpace,
-                                left: horizonSpace,
-                                right: horizonSpace,
-                              ),
-                              child: ListView.builder(
-                                addAutomaticKeepAlives: false,
-                                addRepaintBoundaries: false,
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: _messages.length,
-                                itemBuilder: (_, i) {
-                                  return Card(
-                                    elevation: 1,
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      padding: const EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        color: colorScheme.secondaryContainer,
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(6),
-                                        ),
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          ListTile(
-                                            contentPadding: EdgeInsets.zero,
-                                            visualDensity: const VisualDensity(
-                                              vertical: -2,
-                                            ),
-                                            leading: CircleAvatar(
-                                              backgroundImage:
-                                                  CachedNetworkImageProvider(
-                                                _messages[i].memberphoto,
-                                              ),
-                                              radius: 25,
-                                            ),
-                                            title: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  '${_messages[i].firstname} ${_messages[i].lastname}',
-                                                  style: textTheme.titleSmall,
-                                                ),
-                                                Text(
-                                                  _messages[i].createdate,
-                                                  maxLines: 1,
-                                                  overflow: TextOverflow.fade,
-                                                  style: textTheme.bodySmall
-                                                      ?.copyWith(
-                                                          color:
-                                                              lightTitleColor),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 15,
-                                          ),
-                                          Text(
-                                            _messages[i].message,
-                                            maxLines: 3,
-                                            overflow: TextOverflow.ellipsis,
-                                            style:
-                                                textTheme.bodyMedium?.copyWith(
-                                              color: lightTitleColor,
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            )
-                          : const SizedBox(),
                   //________________________________________________________Shop the collection
                   _productsbycollection.isNotEmpty
                       ? Padding(

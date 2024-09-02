@@ -634,7 +634,7 @@ class _PreorderState extends State<Preorder> {
                     .then((value) {
                   var data = json.decode(value.toString());
 
-                  if (data["statusCode"] == 200 && mounted) {
+                  if (data["statusCode"] == 200) {
                     overlayEntry.remove();
                     Navigator.pushAndRemoveUntil(
                       context,

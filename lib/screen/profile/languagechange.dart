@@ -93,7 +93,7 @@ class _LanguagechangeState extends State<Languagechange> {
                       List<Widget>.generate(_languages.length, (int index) {
                     return ListTile(
                       title: Text(
-                        '${_languages[index].langtitle} - ${_languages[index].currtitle}',
+                        _languages[index].langtitle,
                         style: textTheme.bodyMedium,
                       ),
                       trailing: (region.currentLanguage ==

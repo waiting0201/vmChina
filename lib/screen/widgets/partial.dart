@@ -2067,10 +2067,10 @@ class MemberPlanIcon extends StatelessWidget {
               .singleWhere((e) => e.brandmemberplan!.brandid == brand.brandid);
           if (membershipfee.brandmemberplan!.plantitle == 'VIP') {
             bgcolor = redColor;
-          } else if (membershipfee.brandmemberplan!.plantitle == '俱乐部会员') {
-            bgcolor = primaryColor;
-          } else {
+          } else if (membershipfee.brandmemberplan!.plantitle == 'STANDARD') {
             bgcolor = infoColor;
+          } else {
+            bgcolor = primaryColor;
           }
         }
 
@@ -2085,7 +2085,7 @@ class MemberPlanIcon extends StatelessWidget {
                       side: BorderSide(color: bgcolor),
                     ),
                     child: Text(
-                      membershipfee.brandmemberplan!.plantitle,
+                      '俱乐部会员',
                       style: textTheme.bodySmall?.copyWith(
                         color: whiteColor,
                         fontWeight: FontWeight.bold,
