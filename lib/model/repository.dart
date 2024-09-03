@@ -1917,10 +1917,10 @@ class HttpService {
       InterceptorsWrapper(
         onRequest: (options, handler) {
           options.followRedirects = false;
-          options.validateStatus = (status) {
-            // 只允许200到500之间的状态码
-            return true;
-          };
+          //options.validateStatus = (status) {
+          // 只允许200到500之间的状态码
+          //return true;
+          //};
           //log('header token: ${accessToken.toString()}');
           //log('header Key: ${apiKey.toString()}');
           /*

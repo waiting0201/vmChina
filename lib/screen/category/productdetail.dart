@@ -734,7 +734,9 @@ class _ProductDetailState extends State<ProductDetail> {
                       ),
                     ),
 
-                  if (!_isSetupLoading && _setup.discounttype == 1) ...[
+                  if (!_isBrandLoading &&
+                      !_isSetupLoading &&
+                      _setup.discounttype == 1) ...[
                     Padding(
                       padding: const EdgeInsets.only(
                         top: 0,
@@ -1104,7 +1106,9 @@ class _ProductDetailState extends State<ProductDetail> {
                                 top: 5.0,
                               ),
                               child: ProductsHorizonSlideList(
-                                  products: _productsbycollection),
+                                products: _productsbycollection,
+                                isreplacement: true,
+                              ),
                             )
                           : const SizedBox(),
                   //________________________________________________________Shop the brand
@@ -1144,7 +1148,9 @@ class _ProductDetailState extends State<ProductDetail> {
                                 top: 5.0,
                               ),
                               child: ProductsHorizonSlideList(
-                                  products: _productsbybrand),
+                                products: _productsbybrand,
+                                isreplacement: true,
+                              ),
                             )
                           : const SizedBox(),
                   //________________________________________________________brand

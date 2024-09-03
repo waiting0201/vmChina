@@ -1509,10 +1509,12 @@ class CategorysList extends StatelessWidget {
 
 class ProductsHorizonSlideList extends StatelessWidget {
   final List<Product> products;
+  final bool isreplacement;
 
   const ProductsHorizonSlideList({
     super.key,
     required this.products,
+    this.isreplacement = false,
   });
 
   @override
@@ -1554,14 +1556,26 @@ class ProductsHorizonSlideList extends StatelessWidget {
               var data = json.decode(value.toString());
               if (data["statusCode"] == 200) {
                 overlayEntry.remove();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProductDetail(
-                      product: Product.fromMap(data["data"]),
+
+                if (isreplacement) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProductDetail(
+                        product: Product.fromMap(data["data"]),
+                      ),
                     ),
-                  ),
-                );
+                  );
+                } else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProductDetail(
+                        product: Product.fromMap(data["data"]),
+                      ),
+                    ),
+                  );
+                }
               } else {
                 overlayEntry.remove();
               }
