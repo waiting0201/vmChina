@@ -1915,7 +1915,12 @@ class HttpService {
     _dio.interceptors.clear();
     _dio.interceptors.add(
       InterceptorsWrapper(
-        onRequest: (options, handler) async {
+        onRequest: (options, handler) {
+          options.followRedirects = false;
+          options.validateStatus = (status) {
+            // 只允许200到500之间的状态码
+            return true;
+          };
           //log('header token: ${accessToken.toString()}');
           //log('header Key: ${apiKey.toString()}');
           /*
